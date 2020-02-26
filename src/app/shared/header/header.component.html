@@ -1,36 +1,52 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <button #mobileButton class="navbar-toggler collapsed" (click)="toogleMobileNav($event)" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+<nav ngxNavbarDynamicExpand class="navbar-light bg-light">
+  <a class="navbar-brand" href="#">  </a>
+
+  <button
+    class="navbar-toggler"
+    type="button"
+    (click)="collapse.toggle()"
+    aria-controls="main-nav"
+    aria-expanded="false"
+    aria-label="Navigáció kapcsoló"
+  >
+    <span
+      class="navbar-toggler-icon d-flex align-items-center justify-content-center"
+    >
+    </span>
   </button>
-  <a class="navbar-brand" href="#">Navbar</a>
-
-  <div #navList class="collapse navbar-collapse" id="navbarTogglerDemo03">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+  <ngx-navbar-collapse id="main-nav" #collapse="ngxNavbarCollapse" >
+    <ul class="navbar-nav mr-auto">
+      <li *ngFor="let route of routes" class="nav-item" [ngClass]="{ active: route.active }">
+        <a (click)="linkTo(route)" class="nav-link">{{ route.name }}</a>
+      </li>
+      <!-- <li class="nav-item active">
+        <a class="nav-link" href="#">Новые автомобили</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="#">Финанисирование</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+        <a class="nav-link" href="#">Трейд-ин</a>
       </li>
-
-      <li class="nav-item dropdown">
-        <a (click)="showDropDown($event)" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Гарантия</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Ономнаши</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Контакты</a>
+      </li> -->
+      <!-- <li dropdown (onShown)="onShown()" (onHidden)="onHidden()" (isOpenChange)="isOpenChange()" class="nav-item">
+        <a href class="nav-link" id="basic-link" dropdownToggle (click)="false"
+            aria-controls="basic-link-dropdown">Click me for a dropdown, yo!</a>
+        <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="basic-link">
+          <li *ngFor="let choice of items">
+            <a class="dropdown-item" href="#">{{choice}}</a>
+          </li>
+        </ul>
+      </li> -->
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-  </div>
+  </ngx-navbar-collapse>
 </nav>

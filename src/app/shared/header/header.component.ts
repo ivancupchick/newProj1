@@ -1,45 +1,112 @@
-import { Component, OnInit, ViewChild, Renderer2, ElementRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ElementRef, ViewChildren, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRouteSnapshot, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+interface CustomRoute {
+  name: string;
+  active: boolean;
+  route: string;
+  items?: CustomRoute[];
+}
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass']
 })
-export class HeaderComponent implements OnInit {
-  @ViewChild('mobileButton') mobileButton: ElementRef<HTMLButtonElement>;
-  @ViewChild('navList') navList: ElementRef<HTMLElement>;
+export class HeaderComponent implements OnInit, AfterViewInit {
+  routes: CustomRoute[] = [{
+    name: 'Главная', active: false, route: ''
+  }, {
+      name: 'Новые автомобили',
+      active: false,
+      route: 'new-cars',
+      items: [
+        { name: 'Кроссоверы', active: false, route: 'crossover' },
+        { name: 'Универсамы', active: false, route: 'universal' },
+        { name: 'Седаны', active: false, route: 'sedan' },
+        { name: 'Минивэны', active: false, route: 'minivan' },
+        { name: 'Хэтчбэки', active: false, route: 'hatchback' }
+      ]
+    }, {
+      name: 'Финансирование',
+      active: false,
+      route: 'funding',
+      items: [
+        { name: 'Условия', active: false, route: 'conditions' },
+        { name: 'Расчет', active: false, route: 'calculations' }
+      ]
+    }, {
+      name: 'Трейд-ин', active: false, route: 'trade-in'
+    }, {
+      name: 'Гарантия', active: false, route: 'guarantee'
+    }, {
+      name: 'Контакты', active: false, route: 'contacts'
+    }, {
+      name: 'логин', active: false, route: 'login'
+    }
+  ];
 
-  @ViewChildren('ddNavItem') dropDownNavItems: ElementRef<HTMLElement>[];
+  constructor(private rederer: Renderer2, private router: Router, private route: ActivatedRoute) { // private location: Location
+    // var pathString = location.path();
+    //   console.log('appComponent: pathString...');
+    //   console.log(pathString);
 
-  constructor(private rederer: Renderer2) { }
+
+  }
 
   ngOnInit(): void {
+    this.router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        const currentsRoutes: string[] = e.url.split('/').join('?').split('?');
+        const currentRoute = currentsRoutes[1];
+
+        this.routes.forEach((route) => {
+          if (route.route !== currentRoute) {
+            route.active = false;
+          } else {
+            route.active = true;
+          }
+
+          if (route.items && Array.isArray(route.items) && route.items.length > 0) {
+            route.items.forEach((childRoute) => {
+              if (childRoute.route !== currentRoute) {
+                childRoute.active = false;
+              } else {
+                childRoute.active = true;
+                route.active = true;
+              }
+            });
+          }
+        });
+      }
+    });
+    // console.log(this.router.url);
+    // // this.route. .url.subscribe(res => console.log(...res));
+    // const modules: string[] = this.router.url.split('/').join('?').split('?');
+    // console.log(modules[1]);
   }
 
-  toogleMobileNav(e: Event) {
-    const COLLAPSEDCLASS = 'collapsed';
-    console.log(this.mobileButton);
-    console.log(this.navList);
-    if (this.mobileButton.nativeElement.classList.contains(COLLAPSEDCLASS)) { // show
-      this.rederer.removeClass(this.mobileButton.nativeElement, COLLAPSEDCLASS);
-      this.rederer.addClass(this.navList.nativeElement, 'show');
-    } else { // hide
-      this.rederer.addClass(this.mobileButton.nativeElement, COLLAPSEDCLASS);
-      this.rederer.removeClass(this.navList.nativeElement, 'show');
-    }
+  ngAfterViewInit() {
+    const modules: string[] = this.router.url.split('/').join('?').split('?');
+    console.log(modules[1]);
   }
 
-  showDropDown(e: Event) {
-    const dropDownA: HTMLElement = (e.target as HTMLElement);
-    const parentDropDownA: HTMLElement = this.rederer.parentNode(dropDownA);
-    const menuDropDownA: HTMLElement = this.rederer.nextSibling(dropDownA);
+  onHidden(): void {
+    console.log('Dropdown is hidden');
+  }
+  onShown(): void {
+    console.log('Dropdown is shown');
+  }
+  isOpenChange(): void {
+    console.log('Dropdown state is changed');
+  }
 
-    if (parentDropDownA.classList.contains('show')) {
-      this.rederer.removeClass(parentDropDownA, 'show');
-      this.rederer.removeClass(menuDropDownA, 'show');
-    } else {
-      this.rederer.addClass(parentDropDownA, 'show');
-      this.rederer.addClass(menuDropDownA, 'show');
-    }
+  linkTo(...routes: CustomRoute[]) {
+    // console.log(routes);
+    this.router.navigateByUrl(`${routes[0].route}?id=1`);
+
+    // console.log(this.route.snapshot);
   }
 }
