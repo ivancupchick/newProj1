@@ -1,5 +1,5 @@
 <nav ngxNavbarDynamicExpand class="navbar-light bg-light">
-  <a class="navbar-brand" href="#">  </a>
+  <a class="navbar-brand admin-indicator" *ngIf="(user | async) && (userInfo | async)?.role === 'Admin'" href="" (click)="linkToAdmin($event)">Admin</a>
 
   <button
     class="navbar-toggler"
@@ -16,8 +16,15 @@
   </button>
   <ngx-navbar-collapse id="main-nav" #collapse="ngxNavbarCollapse" >
     <ul class="navbar-nav mr-auto">
-      <li *ngFor="let route of routes" class="nav-item" [ngClass]="{ active: route.active }">
+      <li
+        *ngFor="let route of routes"
+        class="nav-item"
+        [ngClass]="{ active: route.active, 'nav-items': !!route.items }"
+        [tooltip]="!!route.items ? tolTemplate : null"
+        containerClass="toolTipClass">
+
         <a (click)="linkTo(route)" class="nav-link">{{ route.name }}</a>
+        <ng-template #tolTemplate>menu</ng-template>
       </li>
       <!-- <li class="nav-item active">
         <a class="nav-link" href="#">Новые автомобили</a>

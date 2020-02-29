@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, Renderer2, ElementRef, ViewChildren, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { AuthService, UserInfo } from 'src/app/services/auth.service';
+import { User } from 'firebase';
 
 interface CustomRoute {
   name: string;
@@ -16,6 +18,9 @@ interface CustomRoute {
   styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
+  user: Observable<User>;
+  userInfo: BehaviorSubject<UserInfo>;
+
   routes: CustomRoute[] = [{
     name: 'Главная', active: false, route: ''
   }, {
@@ -43,12 +48,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       name: 'Гарантия', active: false, route: 'guarantee'
     }, {
       name: 'Контакты', active: false, route: 'contacts'
-    }, {
-      name: 'логин', active: false, route: 'login'
     }
   ];
 
-  constructor(private rederer: Renderer2, private router: Router, private route: ActivatedRoute) { // private location: Location
+  constructor(private rederer: Renderer2, private router: Router, private authService: AuthService) { // private location: Location
     // var pathString = location.path();
     //   console.log('appComponent: pathString...');
     //   console.log(pathString);
@@ -81,6 +84,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
           }
         });
       }
+
+      this.user = this.authService.user;
+      this.user
+        .pipe(
+          take(1)
+        )
+        .subscribe(user => {
+          this.authService.getUserInfo();
+        });
+      this.authService.getUserInfo();
+      this.userInfo = this.authService.userInfo;
     });
     // console.log(this.router.url);
     // // this.route. .url.subscribe(res => console.log(...res));
@@ -108,5 +122,12 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.router.navigateByUrl(`${routes[0].route}?id=1`);
 
     // console.log(this.route.snapshot);
+  }
+
+  linkToAdmin(e: Event) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    this.router.navigateByUrl(`admin-edit`);
   }
 }

@@ -2,11 +2,7 @@
   display: flex
   justify-content: center
   align-items: center
-
-.header
-  padding: 5px
-  display: flex
-  justify-content: center
+  flex-direction: column
 
 form
   display: flex
@@ -15,7 +11,7 @@ form
   // height: 400px
   padding: 10px 20px
 
-  input + label
+  input + label, input + div
     margin-top: 20px
 
 .buttons
@@ -26,19 +22,23 @@ form
   &> button + button
     margin-left: 10px
 
+  &> button
+    width: 120px
+
 .submit
+  display: flex
+  justify-content: center
   border-radius: 5px
-  width: 120px
   height: 40px
   margin: 10px
   font-weight: bold
+  padding: 0 15px
   color: white
   border: 1px #31708E solid
   background-color: #31708E
 
 .cancel
   border-radius: 5px
-  width: 120px
   height: 40px
   margin: 10px
   font-weight: bold

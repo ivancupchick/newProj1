@@ -1,0 +1,113 @@
+<div class="main-content">
+  <div class="col-12">
+    <tabset>
+      <tab heading="Атрибуты">
+        <div>
+          <span class="header-of-module">Атрибуты</span>
+
+          <div class="panelBar">
+            <div class="panelBar">
+              <label>Название атрибута</label>
+              <input [(ngModel)]="newAttributeName" type="text" name="" id="" placeholder="">
+              <button type="button" class="btn btn-primary" (click)="createAttribute()">Добавить Атрибут</button>
+            </div>
+          </div>
+
+          <span>Таблица существующих атрибутов:</span>
+          <div class="all-of-attributes">
+            <div *ngFor="let attribute of attributes" class="all-of-attributes-row">
+              {{ attribute }}
+            </div>
+          </div>
+        </div>
+      </tab>
+
+      <tab heading="Модельный ряд">
+        <div>
+          <span class="header-of-module">Марки</span>
+
+          <div class="panelBar">
+            <button type="button" class="btn btn-primary"
+              [(ngModel)]="isShowCreateMarkForm" btnCheckbox
+              [btnCheckboxTrue]="true" [btnCheckboxFalse]="false">
+              Создать марку
+            </button>
+          </div>
+
+          <accordion [isAnimated]="true">
+            <accordion-group heading="Марка 1">
+              This content is straight in the template.
+            </accordion-group>
+          </accordion>
+
+          <div *ngIf="isShowCreateMarkForm" class="wrapper-create-mark">
+            <label for="newMarkName">Название марки</label>
+            <input type="text" name="newMarkName" id="newMarkName" [(ngModel)]="newMark.name">
+
+            <label for="newMarkDescription">Описание марки</label>
+            <textarea name="newMarkDescription" id="newMarkDescription" [(ngModel)]="newMark.description"></textarea>
+
+            <span>Список моделей:</span>
+            <div class="models">
+              <div class="model" *ngFor="let model of newMark.models">
+                <div class="model-row">
+                  <span>Название модели</span>
+                  <input type="text" [(ngModel)]="model.name">
+                </div>
+                <div class="model-row">
+                  <span>Описание модели</span>
+                  <textarea type="text" [(ngModel)]="model.description"></textarea>
+                </div>
+                <div class="model-row">
+                  <span>Главная фотография модели</span>
+                  <span>{{model.mainPhoto.filePathFirebase}}</span>
+                  <img style="width: 200px;" *ngIf="!!model.mainPhoto" [src]="model.mainPhoto.url" alt="" sizes="" srcset="">
+                  <input type="file" name="" id="" (change)="uploadMainPhotoForModel($event, model)">
+                </div>
+                <div class="model-row">
+                  <span>Галерея</span>
+                  <span *ngFor="let photo of model.photos">{{photo}}</span>
+                </div>
+                <div class="model-row ">
+                  <span>Аттрибиты</span>
+                  <div class="table-attributes">
+                    <div *ngFor="let attrubute of model.attributes" class="table-attribute">
+                      <div class="key-of-attrubute">
+                        <input [(ngModel)]="attrubute.name"
+                          [typeahead]="attributes"
+                          [isAnimated]="true"
+                          class="form-control"
+                          placeholder="Название" />
+                        <!-- <input autocomplete="off" #groupInput placeholder="Название" [(ngModel)]="group" name="group" id="group" required>
+
+                        <div class="anchor-groups">
+                          <div *ngIf="isVisibleAttributes" class="available-groups">
+                            <div *ngFor="let group of availableGroups" class="group" (click)="setGroupValue(group)">
+                              {{group.name}}
+                            </div>
+                          </div>
+                        </div> -->
+                      </div>
+                      <div class="value-of-attrubute">
+                        <input class="form-control" type="text" name="" id="" placeholder="Значение" [(ngModel)]="attrubute.value" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panelBar">
+                    <button type="button" class="btn btn-primary" (click)="createAttributeInModel(model)">Добавить Атрибут</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panelBar">
+              <button type="button" class="btn btn-primary" (click)="createModel()">Добавить модель</button>
+              <button type="button" class="btn btn-primary" (click)="createMark()">Данные заполнены, создать марку</button>
+            </div>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>

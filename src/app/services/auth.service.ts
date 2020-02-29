@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFireAuth} from '@angular/fire/auth';
 import { User, auth } from 'firebase/app';
 
-import { Observable, from, of, zip } from 'rxjs';
+import { Observable, from, of, zip, BehaviorSubject } from 'rxjs';
 import { take, tap, concatMap, catchError, map, mergeMap } from 'rxjs/operators';
 import 'firebase/database';
 // import { UserInfo, UserGroup, IUserInfo, IUserGroup } from './entities';
 // import { UserInfosService } from '../server/user-infos.service';
 // import { UserGroupsService } from '../server/user-groups.service';
 
-interface UserInfo {
+export interface UserInfo {
   uid: string;
   role: 'User' | 'Admin';
 }
@@ -19,28 +19,33 @@ interface UserInfo {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   user: Observable<User>;
 
   currentUID: string;
 
   linkUsers: AngularFireList<UserInfo>;
-  userInfo: UserInfo;
+  userInfo: BehaviorSubject<UserInfo> = new BehaviorSubject(null);
 
-  users: UserInfo[];
+  users: UserInfo[] = [];
 
-  constructor(private afAuth: AngularFireAuth, private  db: AngularFireDatabase) {
-    // this.linkUsers = db.list('users');
-    // this.user = afAuth.authState;
+  constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase) {
+    this.linkUsers = db.list('users');
+    this.user = afAuth.authState;
 
-    // this.user.subscribe( (user) => {
-    //   if (user) {
-    //     this.currentUID = user.uid;
-    //   }
-    // });
+    this.user.subscribe( (user) => { // unsubscribe please
+      if (user) {
+        this.currentUID = user.uid;
+        this.getUserInfo().subscribe();
+      }
+    });
 
     // this.userInfo = this.receiveUserInfo();
     // console.log(this.userInfo);
+  }
+
+  ngOnDestroy() {
+    //
   }
 
   public getUserInfo(): Observable<UserInfo> {
@@ -53,7 +58,13 @@ export class AuthService {
           const userInfo = user
             ? users.find(userObs => userObs.uid === user.uid)
             : null;
-          return userInfo || null;
+
+          if (!userInfo) {
+            return null;
+          }
+
+          this.userInfo.next(userInfo);
+          return userInfo;
         })
       );
 
@@ -68,7 +79,7 @@ export class AuthService {
     // });
   }
 
-  private pushUserInfoToDB(credential: auth.UserCredential): Observable<boolean> {
+  private pushUserInfoToDB = (credential: auth.UserCredential): Observable<boolean> => {
     if (!credential) {
       return null;
     }
@@ -124,12 +135,13 @@ export class AuthService {
   //   return this.afAuth.authState;
   // }
 
-  loginWithEmail(email: string, password: string): Observable<any> {
-    return from(this.afAuth.signInWithEmailAndPassword(email, password));
+  loginWithEmail = (options: { email: string, password: string }): Observable<any> => {
+    return from(this.afAuth.signInWithEmailAndPassword(options.email, options.password));
   }
 
   loginWithGoogle(): Observable<boolean> {
-    return from(this.afAuth.signInWithPopup( new auth.GoogleAuthProvider() ))
+    const self = this;
+    return from(self.afAuth.signInWithPopup( new auth.GoogleAuthProvider() ))
       .pipe(
         catchError(err => {
           console.log(err);
@@ -152,7 +164,7 @@ export class AuthService {
   //   );
   // }
 
-  public createUserWithEmail(options: { email: string, password: string }): Observable<boolean> {
+  public createUserWithEmail = (options: { email: string, password: string }): Observable<boolean> => {
     return from(this.afAuth.createUserWithEmailAndPassword(options.email, options.password))
       .pipe(
         concatMap((credential) => {
@@ -189,7 +201,7 @@ export class AuthService {
 
   public logOut(): void {
     this.currentUID = '';
-    this.userInfo = null;
+    this.userInfo.next(null);
     this.afAuth.signOut();
   }
 

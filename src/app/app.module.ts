@@ -6,10 +6,16 @@ import { NgxNavbarModule } from 'ngx-bootstrap-navbar';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +31,11 @@ import { GuaranteeComponent } from './pages/guarantee/guarantee.component';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './pages/login/login.component';
+import { AdminEditComponent } from './pages/admin-edit/admin-edit.component';
+import { MarksService } from './services/marks.service';
+import 'firebase/database';
+import 'firebase/storage';
+import { UploadService } from './services/upload.service';
 
 @NgModule({
   declarations: [
@@ -37,12 +48,15 @@ import { LoginComponent } from './pages/login/login.component';
     TradeInComponent,
     ContactsComponent,
     GuaranteeComponent,
-    LoginComponent
+    LoginComponent,
+    AdminEditComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
+    AngularFireStorageModule,
+
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -51,10 +65,17 @@ import { LoginComponent } from './pages/login/login.component';
     NgxNavbarModule,
 
     BsDropdownModule.forRoot(),
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    TabsModule.forRoot(),
+    AccordionModule.forRoot(),
+    ButtonsModule.forRoot(),
+    TypeaheadModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   providers: [
-    AuthService
+    AuthService,
+    MarksService,
+    UploadService
   ],
   bootstrap: [AppComponent]
 })

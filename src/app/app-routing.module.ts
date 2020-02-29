@@ -8,6 +8,7 @@ import { TradeInComponent } from './pages/trade-in/trade-in.component';
 import { ContactsComponent } from './pages/contacts/contacts.component';
 import { GuaranteeComponent } from './pages/guarantee/guarantee.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AdminEditComponent } from './pages/admin-edit/admin-edit.component';
 
 
 const routes: Routes = [
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'trade-in', component: TradeInComponent },
   { path: 'guarantee', component: GuaranteeComponent },
   { path: 'contacts', component: ContactsComponent },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'admin-edit', component: AdminEditComponent }
 ];
 
 @NgModule({

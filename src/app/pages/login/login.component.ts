@@ -5,56 +5,45 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.sass'],
-  providers: [
-    AuthService
-  ]
+  styleUrls: ['./login.component.sass']
 })
 export class LoginComponent implements OnInit {
   email: any;
   name: any;
   password: any;
+  isLogging = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  ngOnInit() {
-    console.log(1);
-  }
+  ngOnInit() {}
 
   onSubmit(formData) {
-    // this.authService.loginWithEmail(formData.value.email, formData.value.password)
-    //   .subscribe(success => {
-    //     console.log(success);
-    //     this.linkToHome();
-    //   }, error => {
-    //     console.log(error);
-    //     // this.error = error;
-    //   });
+    const obs = this.isLogging
+      ? this.authService.createUserWithEmail
+      : this.authService.loginWithEmail;
 
-    // this.authService.createUserWithEmail(formData.value)
-    //   .subscribe(res => {
-    //     console.log(res);
-    //     if (res) {
-    //       this.linkToHome();
-    //     } else {
-    //       alert('Что-то пошло не так...');
-    //     }
-    //   }, error => {
-    //     console.log(error);
-    //   });
+    obs(formData.value).subscribe(
+      success => {
+        console.log(success);
+        this.linkToHome();
+      }, error => {
+        console.log(error);
+        alert(error);
+        // this.error = error;
+      }
+    );
   }
 
   linkToHome() {
-    console.log(1);
     this.router.navigateByUrl('');
   }
 
   loginGoogle() {
-    // this.authService.loginWithGoogle()
-    //   .subscribe((res) => {
-    //     if (res) {
-    //       this.linkToHome();
-    //     }
-    //   });
+    this.authService.loginWithGoogle()
+      .subscribe((res) => {
+        if (res) {
+          this.linkToHome();
+        }
+      });
   }
 }
