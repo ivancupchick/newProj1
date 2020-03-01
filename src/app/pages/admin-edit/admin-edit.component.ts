@@ -39,7 +39,10 @@ export class AdminEditComponent implements OnInit {
       },
       photos: [],
       comps: [],
-      attributes: []
+      attributes: [{
+        name: 'Тип кузова',
+        value: ''
+      }]
     });
   }
 

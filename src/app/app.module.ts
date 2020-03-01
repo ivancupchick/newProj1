@@ -11,6 +11,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -36,6 +37,8 @@ import { MarksService } from './services/marks.service';
 import 'firebase/database';
 import 'firebase/storage';
 import { UploadService } from './services/upload.service';
+import { ModelsGridComponent } from './shared/models-grid/models-grid.component';
+import { ModelPresentationComponent } from './pages/model-presentation/model-presentation.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,9 @@ import { UploadService } from './services/upload.service';
     ContactsComponent,
     GuaranteeComponent,
     LoginComponent,
-    AdminEditComponent
+    AdminEditComponent,
+    ModelsGridComponent,
+    ModelPresentationComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -70,7 +75,8 @@ import { UploadService } from './services/upload.service';
     AccordionModule.forRoot(),
     ButtonsModule.forRoot(),
     TypeaheadModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    PopoverModule.forRoot()
   ],
   providers: [
     AuthService,

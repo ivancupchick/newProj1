@@ -2,6 +2,7 @@
   cursor: pointer
   display: flex
   align-items: center
+  position: relative
 
   &.nav-items::after
     display: inline-block
@@ -18,11 +19,15 @@
 
 
 
-.admin-indicator
+::ng-deep.admin-indicator
   color: #ff7474
 
   &:hover
     color: #ff2a2ade
 
-.toolTipClass
-  background: green
+::ng-deep.custom-popover-class
+  &.bs-popover-right
+    margin-left: 0
+
+  .popover-arrow.arrow
+    display: none

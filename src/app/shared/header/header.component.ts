@@ -1,15 +1,89 @@
-import { Component, OnInit, ViewChild, Renderer2, ElementRef, ViewChildren, AfterViewInit } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, ActivatedRoute, NavigationEnd } from '@angular/router';
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  AfterViewInit,
+  TemplateRef
+} from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { AuthService, UserInfo } from 'src/app/services/auth.service';
 import { User } from 'firebase';
+import { PopoverDirective } from 'ngx-bootstrap/popover/public_api';
+import { Model, MarksService, Mark } from 'src/app/services/marks.service';
+
+function getParentsOfTarget(event: Event): HTMLElement[] {
+  return (event as any).path
+    ? (event as any).path
+    : event.composedPath
+      ? event.composedPath()
+      : composedPath(event.target as Element);
+}
+
+function composedPath(el: Element): HTMLElement[] {
+    const path = [];
+
+    while (el) {
+      path.push(el);
+
+      if (el.tagName === 'HTML') {
+        path.push(document);
+        path.push(window);
+
+        return path;
+      }
+
+      el = el.parentElement;
+    }
+}
+
+function eventInTarget(event: MouseEvent, targetRef: TemplateRef<any> | HTMLElement): boolean {
+  const target: Element = !(targetRef instanceof TemplateRef)
+    ? targetRef
+    : (targetRef.elementRef.nativeElement as Comment).nextElementSibling;
+
+  const targetRect = target && target.getBoundingClientRect ? target.getBoundingClientRect() : null;
+
+  if (!targetRect) {
+    return false;
+  }
+
+  if (event.pageX >= targetRect.left && event.pageX <= targetRect.right &&
+      event.pageY >= targetRect.top && event.pageY <= targetRect.bottom) {
+    let isEventInTarget = false;
+
+    const parents = getParentsOfTarget(event);
+
+    if (!parents) {
+      return false;
+    }
+
+    parents.find((item: HTMLElement) => {
+      if (!item || item === document.body) {
+        return true;
+      }
+
+      if (!!item && (target === item)) {
+        isEventInTarget = true;
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    return !!isEventInTarget;
+  } else {
+    return false;
+  }
+}
 
 interface CustomRoute {
   name: string;
   active: boolean;
   route: string;
   items?: CustomRoute[];
+  custumParams?: any;
 }
 
 @Component({
@@ -21,6 +95,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   user: Observable<User>;
   userInfo: BehaviorSubject<UserInfo>;
 
+  marks: Mark[] = [];
+
+  poppovers: { popoverComponent: PopoverDirective, eventInitiator: HTMLElement, popoverRef: TemplateRef<any> }[] = [];
+
   routes: CustomRoute[] = [{
     name: 'Главная', active: false, route: ''
   }, {
@@ -28,11 +106,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       active: false,
       route: 'new-cars',
       items: [
-        { name: 'Кроссоверы', active: false, route: 'crossover' },
-        { name: 'Универсамы', active: false, route: 'universal' },
-        { name: 'Седаны', active: false, route: 'sedan' },
-        { name: 'Минивэны', active: false, route: 'minivan' },
-        { name: 'Хэтчбэки', active: false, route: 'hatchback' }
+        { name: 'Кроссоверы', active: false, route: 'crossover', custumParams: { models: [] } },
+        { name: 'Универсалы', active: false, route: 'universal', custumParams: { models: [] } },
+        { name: 'Седаны', active: false, route: 'sedan', custumParams: { models: [] } },
+        { name: 'Минивэны', active: false, route: 'minivan', custumParams: { models: [] } },
+        { name: 'Хэтчбэки', active: false, route: 'hatchback', custumParams: { models: [] } }
       ]
     }, {
       name: 'Финансирование',
@@ -51,15 +129,45 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  constructor(private rederer: Renderer2, private router: Router, private authService: AuthService) { // private location: Location
-    // var pathString = location.path();
-    //   console.log('appComponent: pathString...');
-    //   console.log(pathString);
-
-
-  }
+  constructor(
+    private renderer: Renderer2,
+    private router: Router,
+    private authService: AuthService,
+    private marksService: MarksService
+  ) {}
 
   ngOnInit(): void {
+    this.marksService.getMarks().subscribe(marks => {
+      this.marks = marks;
+      const allModels: Model[] = [];
+      marks.forEach(mark => {
+        allModels.push(...mark.models);
+      });
+
+      const routeNewCars = this.routes.find(r => r.route === 'new-cars');
+
+      allModels.forEach(model => {
+        const type = model.attributes.find(attribute => attribute.name === 'Тип кузова').value;
+
+        const pushModel = (path: string) => {
+          const route = routeNewCars.items.find(r => r.route === path);
+          if (route && route.custumParams && route.custumParams.models) {
+            route.custumParams.models.push(model);
+          }
+        };
+
+        switch (type) {
+          case 'Кроссовер': pushModel('crossover'); break;
+          case 'Универсал': pushModel('universal'); break;
+          case 'Седан': pushModel('sedan'); break;
+          case 'Минивэн': pushModel('minivan'); break;
+          case 'Хэтчбэк': pushModel('hatchback'); break;
+        }
+      });
+    });
+
+    this.renderer.listen('document', 'mouseover', (e: MouseEvent) => this.mouseOver(e) );
+
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         const currentsRoutes: string[] = e.url.split('/').join('?').split('?');
@@ -117,11 +225,46 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     console.log('Dropdown state is changed');
   }
 
-  linkTo(...routes: CustomRoute[]) {
-    // console.log(routes);
-    this.router.navigateByUrl(`${routes[0].route}?id=1`);
+  registerPopover(popover: PopoverDirective, eventInitiator: HTMLElement, popoverRef: TemplateRef<any>) {
+    const notIs = !this.poppovers.find(p => p.popoverComponent === popover);
+    if (this.poppovers.length > 0 && notIs) {
+      this.poppovers = this.poppovers.filter(savedPopover => {
+        savedPopover.popoverComponent.hide();
 
-    // console.log(this.route.snapshot);
+        return false;
+      });
+    }
+
+    if (notIs) {
+      this.poppovers.push({ popoverComponent: popover, eventInitiator, popoverRef });
+
+      popover.onHidden.pipe(take(1)).subscribe(hide => {
+        this.poppovers = this.poppovers.filter(savedPopover => savedPopover.popoverComponent !== popover);
+      });
+
+      popover.show();
+    }
+  }
+
+  mouseOver(e: MouseEvent) {
+    if (this.poppovers.length > 0) {
+      this.poppovers = this.poppovers.filter(popover => {
+        if (eventInTarget(e, popover.popoverRef) || eventInTarget(e, popover.eventInitiator)) {
+          return true;
+        } else {
+          popover.popoverComponent.hide();
+          return false;
+        }
+      });
+    }
+  }
+
+  linkTo(...routes: CustomRoute[]) {
+    let url: string = routes[0].route;
+    if (routes.length > 1) {
+      url += `?type=${routes.filter((v, i) => i !== 0).join(',')}`;
+    }
+    this.router.navigateByUrl(url);
   }
 
   linkToAdmin(e: Event) {
@@ -129,5 +272,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     e.preventDefault();
 
     this.router.navigateByUrl(`admin-edit`);
+  }
+
+  linkToModelPresentation(model: Model) {
+    this.marks.find((ma, maI) => {
+      const idMarkModel = ma.models.findIndex(mo => mo === model);
+
+      if (idMarkModel !== -1) {
+        this.router.navigateByUrl(`model-presentation?idMark=${maI}&idModel=${idMarkModel}`);
+        return true;
+      }
+      return false;
+    });
   }
 }

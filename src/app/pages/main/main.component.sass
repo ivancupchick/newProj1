@@ -19,3 +19,12 @@
 .fadeIn
   -webkit-animation-name: fadeIn
   animation-name: fadeIn
+
+.container
+  .tab-container
+    ::ng-deep.nav-tabs
+      .nav-item
+        &:last-child
+          margin-right: auto
+        &:first-child
+          margin-left: auto

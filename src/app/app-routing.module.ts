@@ -9,6 +9,7 @@ import { ContactsComponent } from './pages/contacts/contacts.component';
 import { GuaranteeComponent } from './pages/guarantee/guarantee.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AdminEditComponent } from './pages/admin-edit/admin-edit.component';
+import { ModelPresentationComponent } from './pages/model-presentation/model-presentation.component';
 
 
 const routes: Routes = [
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'guarantee', component: GuaranteeComponent },
   { path: 'contacts', component: ContactsComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'admin-edit', component: AdminEditComponent }
+  { path: 'admin-edit', component: AdminEditComponent },
+  { path: 'model-presentation', component: ModelPresentationComponent }
 ];
 
 @NgModule({

@@ -16,44 +16,49 @@
   </button>
   <ngx-navbar-collapse id="main-nav" #collapse="ngxNavbarCollapse" >
     <ul class="navbar-nav mr-auto">
-      <li
-        *ngFor="let route of routes"
-        class="nav-item"
-        [ngClass]="{ active: route.active, 'nav-items': !!route.items }"
-        [tooltip]="!!route.items ? tolTemplate : null"
-        containerClass="toolTipClass">
+      <ng-container *ngFor="let route of routes">
 
-        <a (click)="linkTo(route)" class="nav-link">{{ route.name }}</a>
-        <ng-template #tolTemplate>menu</ng-template>
-      </li>
-      <!-- <li class="nav-item active">
-        <a class="nav-link" href="#">Новые автомобили</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Финанисирование</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Трейд-ин</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Гарантия</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Ономнаши</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Контакты</a>
-      </li> -->
-      <!-- <li dropdown (onShown)="onShown()" (onHidden)="onHidden()" (isOpenChange)="isOpenChange()" class="nav-item">
-        <a href class="nav-link" id="basic-link" dropdownToggle (click)="false"
-            aria-controls="basic-link-dropdown">Click me for a dropdown, yo!</a>
-        <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu"
-            role="menu" aria-labelledby="basic-link">
-          <li *ngFor="let choice of items">
-            <a class="dropdown-item" href="#">{{choice}}</a>
+        <ng-template #usualA>
+          <li class="nav-item"
+              [ngClass]="{ active: route.active }">
+
+            <a (click)="linkTo(route)"
+              class="nav-link"
+              aria-controls="basic-link-dropdown">{{ route.name }}</a>
           </li>
-        </ul>
-      </li> -->
+        </ng-template>
+
+        <li *ngIf="!!route.items else usualA"
+            class="nav-item"
+            [ngClass]="{ active: route.active, 'nav-items': !!route.items }"
+            dropdown>
+
+          <a (click)="!route.items ? linkTo(route) : false"
+            class="nav-link"
+            dropdownToggle
+            aria-controls="basic-link-dropdown">{{ route.name }}</a>
+
+          <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="basic-link">
+            <li #eventInitiator *ngFor="let childRoute of route.items">
+              <a placement="right"
+                (mouseenter)="registerPopover(pop, eventInitiator, popTemplate)"
+                [popover]="popTemplate"
+                containerClass="custom-popover-class"
+                (click)="linkTo(route, childRoute.route)"
+                class="dropdown-item"
+                #pop="bs-popover">{{childRoute.name}}</a>
+
+              <ng-template #popTemplate>
+                <app-models-grid
+                  [models]="childRoute && childRoute.custumParams && childRoute.custumParams.models"
+                  (selectionModel)="linkToModelPresentation($event)">
+                </app-models-grid>
+              </ng-template>
+            </li>
+          </ul>
+        </li>
+      </ng-container>
     </ul>
   </ngx-navbar-collapse>
 </nav>

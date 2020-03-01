@@ -31,12 +31,16 @@
   </carousel>
   <br>
 
-  <div class="col-12">
+  <div class="container">
     <tabset>
-      <tab heading="Justified">Justified content</tab>
-      <tab heading="SJ">Short Labeled Justified content</tab>
-      <tab heading="Long Justified">Long Labeled Justified content</tab>
+      <tab *ngFor="let tab of tabs" [heading]="tab.title">
+        <app-models-grid
+          [models]="tab.models"
+          (selectionModel)="linkToModelPresentation($event)">
+        </app-models-grid>
+      </tab>
     </tabset>
+    <hr>
   </div>
 
 </div>

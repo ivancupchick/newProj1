@@ -1,0 +1,4 @@
+<div class="model" *ngFor="let model of models" (click)="selectModel(model)">
+  <img [src]="model.mainPhoto.url" [alt]="model.name">
+  <span>{{ model.name }}</span>
+</div>
