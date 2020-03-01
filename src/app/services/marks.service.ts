@@ -33,29 +33,56 @@ export interface Mark {
   models: Model[];
 }
 
+export interface MarkWithKey {
+  mark: Mark;
+  key: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class MarksService {
   private marksRef: AngularFireList<Mark>;
   marks: BehaviorSubject<Mark[]> = new BehaviorSubject([]);
+  marksWithKeys: BehaviorSubject<MarkWithKey[]> = new BehaviorSubject([]);
 
   constructor(private db: AngularFireDatabase) {
     this.marksRef = db.list('marks');
-    this.marksRef.valueChanges()
-      .subscribe(
-        arg => this.marks.next(arg || []),
-        errors => console.log(errors)
+    // this.marksRef.valueChanges()
+    //   .subscribe(
+    //     arg => this.marks.next(arg || []),
+    //     errors => console.log(errors)
+    //   );
+
+    this.marksRef.snapshotChanges()
+      .subscribe(changes => {
+        const value: MarkWithKey[] = !changes
+          ? []
+          : changes.map(c => ({ mark: c.payload.val(), key: c.payload.key }));
+
+        this.marksWithKeys.next(value);
+
+        this.marks.next(value.map(m => m.mark));
+      }
       );
   }
 
-  getMarks(): Observable<Mark[]> {
-    return this.marks.asObservable();
+  getMarks(): Observable<MarkWithKey[]> {
+    return this.marksWithKeys.asObservable();
   }
 
   createMark(mark: Mark): Observable<any> {
     return new Observable(obs => {
       this.marksRef.push(mark)
+        .then(res => {
+          obs.next(res);
+        });
+    });
+  }
+
+  updateMark(key: string, mark: Mark): Observable<any> {
+    return new Observable(obs => {
+      this.marksRef.update(key, mark)
         .then(res => {
           obs.next(res);
         });

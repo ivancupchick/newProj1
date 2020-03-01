@@ -13,6 +13,13 @@
 
 
 .wrapper-create-mark
+  display: flex
+  flex-direction: column
+  margin: 10px 0
+  padding: 0 10px
+  border-bottom: #ccc 1px solid
+  border-top: #ccc 1px solid
+
   .models
     width: 100%
     border: #ccc 1px solid
@@ -25,6 +32,16 @@
       flex-direction: column
 
       &-row
+        margin: 0 5px
+        padding: 5px
+        display: flex
+
+        span
+          min-width: 30%
+
+        input, textarea
+          &:not(.originally)
+            flex: 1 1 auto
 
 
         .table-attributes

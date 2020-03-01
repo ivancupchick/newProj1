@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Mark, Model, MarksService } from 'src/app/services/marks.service';
+import { Mark, Model, MarksService, MarkWithKey } from 'src/app/services/marks.service';
 import { AttributesService } from 'src/app/services/attributes.service';
 import { UploadService } from 'src/app/services/upload.service';
 
@@ -9,6 +9,9 @@ import { UploadService } from 'src/app/services/upload.service';
   styleUrls: ['./admin-edit.component.sass']
 })
 export class AdminEditComponent implements OnInit {
+  markWithKey: MarkWithKey[];
+  marks: Mark[];
+
   newAttributeName: string;
 
   isShowCreateMarkForm = false;
@@ -24,13 +27,19 @@ export class AdminEditComponent implements OnInit {
   constructor(private attributesService: AttributesService, private uploadService: UploadService, private marksService: MarksService) { }
 
   ngOnInit(): void {
+    this.marksService.getMarks().subscribe(m => {
+      this.markWithKey = m;
+      console.log(m.map(mm => mm.mark));
+      this.marks = m.map(mm => mm.mark);
+    });
+
     this.attributesService.getAttributes().subscribe(attributes => {
       this.attributes = [...attributes];
     });
   }
 
-  createModel() {
-    this.newMark.models.push({
+  createModel(mark: Mark) {
+    mark.models.push({
       name: '',
       description: '',
       mainPhoto: {
@@ -76,14 +85,30 @@ export class AdminEditComponent implements OnInit {
     this.newAttributeName = null;
   }
 
-  createMark() {
-    this.marksService.createMark(this.newMark)
-      .subscribe(res => {
-        console.log(res);
-        alert('все найс');
-      }, err => {
-        console.log(err);
-        alert('ошибка');
-      });
+  createOrUpdateMark(mark: Mark) {
+    const savedMarkId = this.marks.findIndex(m => m === mark);
+    const savedMark = savedMarkId !== -1
+      ? this.markWithKey.find((m, i) => i === savedMarkId)
+      : null;
+
+    if (savedMark) {
+      this.marksService.updateMark(savedMark.key, mark)
+        .subscribe(res => {
+          console.log(res);
+          alert('все найс');
+        }, err => {
+          console.log(err);
+          alert('ошибка');
+        });
+    } else {
+      this.marksService.createMark(mark)
+        .subscribe(res => {
+          console.log(res);
+          alert('все найс');
+        }, err => {
+          console.log(err);
+          alert('ошибка');
+        });
+    }
   }
 }

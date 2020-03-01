@@ -26,10 +26,10 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.marksService.getMarks().subscribe(marks => {
-      this.marks = marks;
+      this.marks = marks.map(m => m.mark);
 
       const allModels: Model[] = [];
-      marks.forEach(mark => {
+      this.marks.forEach(mark => {
         allModels.push(...mark.models);
       });
 

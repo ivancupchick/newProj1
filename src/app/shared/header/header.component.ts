@@ -11,7 +11,7 @@ import { take } from 'rxjs/operators';
 import { AuthService, UserInfo } from 'src/app/services/auth.service';
 import { User } from 'firebase';
 import { PopoverDirective } from 'ngx-bootstrap/popover/public_api';
-import { Model, MarksService, Mark } from 'src/app/services/marks.service';
+import { Model, MarksService, Mark, MarkWithKey } from 'src/app/services/marks.service';
 
 function getParentsOfTarget(event: Event): HTMLElement[] {
   return (event as any).path
@@ -138,10 +138,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.marksService.getMarks().subscribe(marks => {
-      this.marks = marks;
-      const allModels: Model[] = [];
-      marks.forEach(mark => {
-        allModels.push(...mark.models);
+      this.marks = marks.map(m => m.mark);
+      let allModels: Model[] = [];
+      this.marks.forEach(mark => {
+        allModels = [...allModels, ...((mark && mark.models) || [])];
       });
 
       const routeNewCars = this.routes.find(r => r.route === 'new-cars');
