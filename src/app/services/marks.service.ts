@@ -3,9 +3,10 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { BehaviorSubject, Observable } from 'rxjs';
 import 'firebase/database';
 
-interface Attribute {
+export interface Attribute {
   name: string;
   value: string;
+  variants?: any[]; // virtual
 }
 
 interface Comp {

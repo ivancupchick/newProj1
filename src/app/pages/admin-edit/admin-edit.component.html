@@ -5,20 +5,65 @@
         <div>
           <span class="header-of-module">Атрибуты</span>
 
-          <div class="panelBar">
-            <div class="panelBar">
-              <label>Название атрибута</label>
-              <input [(ngModel)]="newAttributeName" type="text" name="newAttributeName" id="" placeholder="">
-              <button type="button" class="btn btn-primary" (click)="createAttribute()">Добавить Атрибут</button>
-            </div>
-          </div>
+          <p-toolbar>
+            <div class="ui-toolbar-group-left">
+              <button (click)="addAttribte()" pButton type="button" label="Добавить аттриут" icon="pi pi-plus"></button>
+              <button (click)="createAttributes()" pButton type="button" label="Сохранить изменения" icon="pi pi-check" class="ui-button-warning"></button>
+              <button (click)="refresfAttributes()" pButton type="button" label="Перезагрузить атрибуты" icon="pi pi-plus" class="ui-button-secondary"></button>
 
-          <span>Таблица существующих атрибутов:</span>
-          <div class="all-of-attributes">
-            <div *ngFor="let attribute of attributes" class="all-of-attributes-row">
-              {{ attribute }}
+              <!-- <button pButton type="button" label="Upload" icon="pi pi-upload" class="ui-button-success"></button>
+
+              <i class="pi pi-bars"></i>
+
+              <p-splitButton label="Save" icon="pi pi-check" [model]="items" styleClass="ui-button-warning"></p-splitButton> -->
             </div>
-          </div>
+
+            <!-- <div class="ui-toolbar-group-right">
+              <button pButton type="button" icon="pi pi-search"></button>
+              <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button>
+              <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>
+            </div> -->
+          </p-toolbar>
+
+          <p-table [value]="attributes">
+            <ng-template pTemplate="header" let-attribute>
+              <tr>
+                <th>Название</th>
+                <th>Тип</th>
+                <th>Значения</th>
+                <th>Должен быть везде?</th>
+                <th> </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-attribute>
+              <tr>
+                <td>
+                  <input type="text" pInputText [(ngModel)]="attribute.name"/>
+                </td>
+                <td>
+                  <select [(ngModel)]="attribute.type">
+                    <option *ngFor="let type of typeAutoAttribute" [value]="type.value">{{type.name}}</option>
+                  </select>
+                </td>
+                <td>
+                  <p-chips *ngIf="attribute?.type === TypeAutoAttribute.select" [(ngModel)]="attribute.variants" placeholder="Значения"></p-chips>
+                </td>
+                <td>
+                  <p-checkbox [(ngModel)]="attribute.isRequired" binary="true"></p-checkbox>
+                </td>
+                <td>
+                  <p-button styleClass="ui-button-danger" icon="pi pi-times" iconPos="left" (click)="deleteAttribute(attribute)"></p-button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+          <!-- <div class="panelBar">
+            <label>Название атрибута</label>
+            <button pButton type="button" (click)="addAttribte()">Добавить аттрибут</button>
+            <button pButton type="button" class="ui-button-success" (click)="createAttributes()">Сохранить изменения</button>
+            <p-button label="Click" styleClass="ui-button-success" (click)="createAttributes()">Сохранить изменения</p-button>
+          </div> -->
         </div>
       </tab>
 
@@ -47,20 +92,67 @@
 
           <ng-template #inputMark let-contextMarkAndKey>
             <form #formData='ngForm' class="wrapper-create-mark">
-              <label for="newMarkName">Название марки</label>
-              <input type="text" name="newMarkName-{{contextMarkAndKey.key}}" id="newMarkName-{{contextMarkAndKey.key}}" [(ngModel)]="contextMarkAndKey.mark.name"  required>
+              <span class="ui-float-label input-wifth100">
+                <input id="newMarkName-{{contextMarkAndKey.key}}" type="text" name="newMarkName-{{contextMarkAndKey.key}}" [(ngModel)]="contextMarkAndKey.mark.name" required pInputText>
+                <label for="newMarkName-{{contextMarkAndKey.key}}">Название марки</label>
+              </span>
+              <!-- <label for="newMarkName">Название марки</label>
+              <input type="text" name="newMarkName-{{contextMarkAndKey.key}}" id="newMarkName-{{contextMarkAndKey.key}}" [(ngModel)]="contextMarkAndKey.mark.name"  required> -->
 
-              <label for="newMarkDescription">Описание марки</label>
-              <textarea name="newMarkDescription-{{contextMarkAndKey.key}}" id="newMarkDescription-{{contextMarkAndKey.key}}" [(ngModel)]="contextMarkAndKey.mark.description" required></textarea>
+              <span class="ui-float-label input-wifth100">
+                <!-- <input
+                  id="newMarkDescription-{{contextMarkAndKey.key}}"
+                  type="text" name="newMarkDescription-{{contextMarkAndKey.key}}"
+                  [(ngModel)]="contextMarkAndKey.mark.description"
+                  required
+                  pInputText
+                > -->
+                <label for="newMarkDescription-{{contextMarkAndKey.key}}">Описание марки</label>
+                <textarea
+                  id="newMarkDescription-{{contextMarkAndKey.key}}"
+                  type="text" name="newMarkDescription-{{contextMarkAndKey.key}}"
+                  [(ngModel)]="contextMarkAndKey.mark.description"
+                  required
+                  pInputTextarea
+                  autoResize="autoResize">
+                </textarea>
+              </span>
 
-              <div class="panelBar">
-                <button type="button" class="btn btn-primary" (click)="createModel(contextMarkAndKey.mark)">Добавить модель</button>
-              </div>
+              <!-- <label for="newMarkDescription">Описание марки</label>
+              <textarea name="newMarkDescription-{{contextMarkAndKey.key}}" id="newMarkDescription-{{contextMarkAndKey.key}}" [(ngModel)]="contextMarkAndKey.mark.description" required></textarea> -->
+
+              <p-toolbar>
+                <div class="ui-toolbar-group-left">
+                  <!-- <button type="button" class="btn btn-primary" (click)="createModel(contextMarkAndKey.mark)">Добавить модель</button> -->
+                  <button (click)="createModel(contextMarkAndKey.mark)" pButton type="button" label="Добавить модель" icon="pi pi-plus"></button>
+                </div>
+              </p-toolbar>
 
               <span>Список моделей:</span>
               <div class="models">
                 <div class="model" *ngFor="let model of contextMarkAndKey.mark.models; let indexM = index">
-                  {{model.name}}
+                  <p-toolbar>
+                    <div class="ui-toolbar-group-left">
+                      <button (click)="createAttributeInModel(model)" pButton type="button" label="Добавить аттриут" icon="pi pi-plus"></button>
+                      <!-- <button (click)="createAttributes()" pButton type="button" label="Сохранить изменения" icon="pi pi-check" class="ui-button-warning"></button> -->
+                      <!-- <button (click)="refresfAttributes()" pButton type="button" label="Перезагрузить атрибуты" icon="pi pi-plus" class="ui-button-secondary"></button> -->
+
+                      <!-- <button type="button" class="btn btn-primary" (click)="createAttributeInModel(model)">Добавить Атрибут</button> -->
+
+                      <!-- <button pButton type="button" label="Upload" icon="pi pi-upload" class="ui-button-success"></button>
+
+                      <i class="pi pi-bars"></i>
+
+                      <p-splitButton label="Save" icon="pi pi-check" [model]="items" styleClass="ui-button-warning"></p-splitButton> -->
+                    </div>
+                    <div class="ui-toolbar-group-right">
+                      <button (click)="deleteModelFromMark(contextMarkAndKey.mark, model)" pButton type="button" label="Удалить модель" icon="pi pi-trash" class="ui-button-danger"></button>
+                      <!-- <button pButton type="button" icon="pi pi-search"></button>
+                      <button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button>
+                      <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button> -->
+                    </div>
+                  </p-toolbar>
+                  <!-- {{model.name}} -->
                   <div class="model-row">
                     <span>Название модели</span>
                     <input type="text" [(ngModel)]="model.name" name="nameOfModel-{{contextMarkAndKey.key}}={{'' + indexM}}" required>
@@ -82,13 +174,16 @@
                   <div class="model-row ">
                     <span>Аттрибиты</span>
                     <div class="table-attributes">
-                      <div *ngFor="let attrubute of model.attributes; let indexMM = index" class="table-attribute">
+                      <div *ngFor="let attribute of model.attributes; let indexMM = index" class="table-attribute">
                         <div class="key-of-attrubute">
-                          <input [(ngModel)]="attrubute.name"
-                            [typeahead]="attributes"
+                          <input
+                            [(ngModel)]="attribute.name"
+                            [typeahead]="attributesNames"
                             [isAnimated]="true"
                             class="form-control"
+                            (typeaheadOnSelect)="addVariantToAttribute(attribute)"
                             placeholder="Название" name="attribute-name-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM + ''}}" required />
+
                           <!-- <input autocomplete="off" #groupInput placeholder="Название" [(ngModel)]="group" name="group" id="group" required>
 
                           <div class="anchor-groups">
@@ -100,13 +195,49 @@
                           </div> -->
                         </div>
                         <div class="value-of-attrubute">
-                          <input class="form-control" type="text" name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}" id="" placeholder="Значение" [(ngModel)]="attrubute.value" required />
-                        </div>
-                      </div>
-                    </div>
+                          <input
+                            *ngIf="!isSelectableAttribute(attribute)"
+                            class="form-control"
+                            type="text"
+                            name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}"
+                            id=""
+                            placeholder="Значение"
+                            [(ngModel)]="attribute.value"
+                            required />
+<!--
+                            placeholder="Значение" -->
+                            <!-- name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}" -->
+                          <!-- <p-dropdown
+                            *ngIf="isSelectableAttribute(attribute)"
+                            [options]="getSelectItemsForAttribute(attribute)"
+                            [ngModelOptions]="{standalone: true}"
+                            [(ngModel)]="attribute.value"
+                            required>
+                          </p-dropdown> -->
 
-                    <div class="panelBar">
-                      <button type="button" class="btn btn-primary" (click)="createAttributeInModel(model)">Добавить Атрибут</button>
+                          <!-- <select
+                              *ngIf="isSelectableAttribute(attribute) && isShowSpecial"
+                              [(ngModel)]="attribute.value"
+                              name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}"
+                              required>
+                            <option *ngFor="let item of (attribute.variants || [])" [value]="item.label">{{item.value}}</option>
+                          </select> -->
+
+                          <p-dropdown
+                            *ngIf="isSelectableAttribute(attribute)"
+                            [options]="attribute.variants || []"
+                            [(ngModel)]="attribute.value"
+                            [ngModelOptions]="{standalone: true}"
+                            name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}"
+                            required>
+                          </p-dropdown>
+                        </div>
+
+                        <div class="buttons">
+                          <p-button [disabled]="attribute.isRequired"  styleClass="ui-button-danger" icon="pi pi-trash" iconPos="left" (click)="deleteAttributeFromModel(model, attribute)"></p-button>
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                 </div>

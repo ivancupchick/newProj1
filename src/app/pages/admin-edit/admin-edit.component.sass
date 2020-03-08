@@ -11,12 +11,12 @@
   .header-of-module
     font-size: 1.5rem
 
-
 .wrapper-create-mark
   display: flex
   flex-direction: column
   margin: 10px 0
   padding: 0 10px
+  padding-top: 20px
   border-bottom: #ccc 1px solid
   border-top: #ccc 1px solid
 
@@ -27,6 +27,7 @@
     flex-direction: column
 
     .model
+      padding: .25rem
       border: #a8a8a8 1px solid
       display: flex
       flex-direction: column
@@ -53,8 +54,28 @@
             width: 100%
             display: flex
 
-            &> *
+            // .buttons
+            //   ::ng-deep
+
+            &> *:not(.buttons)
               width: 50%
 
       // * + input, textarea
       //   flex: 1 1 auto
+
+p-toolbar
+  ::ng-deep.ui-toolbar
+    margin-bottom: .25rem
+    margin-top: .25rem
+
+    .ui-toolbar-group-left
+      button + button
+        margin-left: .25rem
+
+.ui-float-label.input-wifth100
+  width: 100%
+
+
+
+  & > *
+    width: 100%

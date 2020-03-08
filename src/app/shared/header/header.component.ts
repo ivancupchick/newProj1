@@ -147,7 +147,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       const routeNewCars = this.routes.find(r => r.route === 'new-cars');
 
       allModels.forEach(model => {
-        const type = model.attributes.find(attribute => attribute.name === 'Тип кузова').value;
+        const type = (model.attributes || []).find(attribute => attribute.name === 'Тип кузова');
+        const typeValue = type ? type.value : null;
 
         const pushModel = (path: string) => {
           const route = routeNewCars.items.find(r => r.route === path);
@@ -156,7 +157,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
           }
         };
 
-        switch (type) {
+        switch (typeValue) {
           case 'Кроссовер': pushModel('crossover'); break;
           case 'Универсал': pushModel('universal'); break;
           case 'Седан': pushModel('sedan'); break;

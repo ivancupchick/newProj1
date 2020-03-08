@@ -34,14 +34,15 @@ export class MainComponent implements OnInit {
       });
 
       allModels.forEach(model => {
-        const type = model.attributes.find(attribute => attribute.name === 'Тип кузова').value;
+        const type = (model.attributes || []).find(attribute => attribute.name === 'Тип кузова');
+        const typeValue = type ? type.value : null;
 
         const pushModel = (title: string) => {
           const tab = this.tabs.find(t => t.title === title);
           tab.models.push(model);
         };
 
-        switch (type) {
+        switch (typeValue) {
           case 'Кроссовер': pushModel('Кроссоверы'); break;
           case 'Универсал': pushModel('Универсалы'); break;
           case 'Седан': pushModel('Седаны'); break;

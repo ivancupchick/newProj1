@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Mark, Model, MarksService, MarkWithKey } from 'src/app/services/marks.service';
-import { AttributesService } from 'src/app/services/attributes.service';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Mark, Model, MarksService, MarkWithKey, Attribute } from 'src/app/services/marks.service';
+import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/services/attributes.service';
 import { UploadService } from 'src/app/services/upload.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-edit',
@@ -9,10 +10,17 @@ import { UploadService } from 'src/app/services/upload.service';
   styleUrls: ['./admin-edit.component.sass']
 })
 export class AdminEditComponent implements OnInit {
+  TypeAutoAttribute = TypeAutoAttribute;
+  typeAutoAttribute = [{
+    name: 'С вариантами',
+    value: TypeAutoAttribute.select
+  }, {
+    name: 'Текст',
+    value: TypeAutoAttribute.text
+  }];
+
   markWithKey: MarkWithKey[];
   marks: Mark[];
-
-  newAttributeName: string;
 
   isShowCreateMarkForm = false;
 
@@ -22,23 +30,47 @@ export class AdminEditComponent implements OnInit {
     models: []
   };
 
-  attributes: string[];
+  attributes: AutoAttribute[] = [];
+  savedAttributes: AutoAttribute[] = [];
+  attributesNames: string[] = [];
 
-  constructor(private attributesService: AttributesService, private uploadService: UploadService, private marksService: MarksService) { }
+  constructor(
+    private attributesService: AttributesService,
+    private uploadService: UploadService,
+    private marksService: MarksService,
+    private cd: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.marksService.getMarks().subscribe(m => {
       this.markWithKey = m;
-      console.log(m.map(mm => mm.mark));
       this.marks = m.map(mm => mm.mark);
     });
 
     this.attributesService.getAttributes().subscribe(attributes => {
+      this.savedAttributes = [...attributes];
       this.attributes = [...attributes];
+      this.attributesNames = attributes.map(a => a.name);
     });
   }
 
+  isSelectableAttribute(attribute: Attribute) {
+    const attributeObj = this.attributes.find(a => a.name === attribute.name);
+
+    return attributeObj ? attributeObj.type === TypeAutoAttribute.select : false;
+  }
+
+  addVariantToAttribute(attribute: Attribute) {
+    const attributeObj = this.attributes.find(a => a.name === attribute.name);
+
+    attribute.variants = [{label: 'Выберите значение', value: ''}, ...attributeObj.variants
+      .map(v => ({ label: v, value: v }))];
+  }
+
   createModel(mark: Mark) {
+    const attributes = this.savedAttributes
+      .map(sa => ({ name: sa.name, value: '', isRequired: sa.isRequired }));
+
     mark.models.push({
       name: '',
       description: '',
@@ -48,10 +80,7 @@ export class AdminEditComponent implements OnInit {
       },
       photos: [],
       comps: [],
-      attributes: [{
-        name: 'Тип кузова',
-        value: ''
-      }]
+      attributes
     });
   }
 
@@ -63,6 +92,10 @@ export class AdminEditComponent implements OnInit {
   }
 
   createAttributeInModel(model: Model) {
+    if (!model.attributes) {
+      model.attributes = [];
+    }
+
     model.attributes.push({
       name: '',
       value: ''
@@ -80,9 +113,30 @@ export class AdminEditComponent implements OnInit {
       });
   }
 
-  createAttribute() {
-    this.attributesService.createAttributes([this.newAttributeName]);
-    this.newAttributeName = null;
+  createAttributes() {
+    this.attributesService.setAttributes(this.attributes);
+  }
+
+  addAttribte() {
+    this.attributes.push({
+      name: '',
+      type: TypeAutoAttribute.text,
+      isRequired: false
+    });
+  }
+
+  deleteAttributeFromModel(model: Model, attribute: Attribute) {
+    model.attributes = model.attributes.filter((ma, i) => ma !== attribute);
+  }
+
+  refresfAttributes() {
+    this.attributesService.getAttributes().pipe(take(1)).subscribe(attributes => {
+      this.attributes = [...attributes];
+    });
+  }
+
+  deleteAttribute(attr: AutoAttribute) {
+    this.attributes = this.attributes.filter(a => a !== attr);
   }
 
   createOrUpdateMark(mark: Mark) {
@@ -110,5 +164,9 @@ export class AdminEditComponent implements OnInit {
           alert('ошибка');
         });
     }
+  }
+
+  deleteModelFromMark(mark: Mark, model: Model) {
+    mark.models = mark.models.filter(m => m !== model);
   }
 }

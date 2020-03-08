@@ -18,6 +18,14 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
+import { ChipsModule } from 'primeng/chips';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
+import { DropdownModule } from 'primeng/dropdown';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -68,6 +76,14 @@ import { ModelPresentationComponent } from './pages/model-presentation/model-pre
     FormsModule,
 
     NgxNavbarModule,
+
+    ChipsModule,
+    CheckboxModule,
+    ButtonModule,
+    InputTextModule,
+    TableModule,
+    ToolbarModule,
+    DropdownModule,
 
     BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),
