@@ -19,7 +19,7 @@ export interface PhotoUrlFirebase {
   filePathFirebase: string;
 }
 
-export interface DesignModule {
+export interface DesignModuleData {
   title: string;
   subTitle: string;
   descriptionTitle: string;
@@ -27,7 +27,7 @@ export interface DesignModule {
   photos: PhotoUrlFirebase[];
 }
 
-export interface GalleryModule {
+export interface GalleryModuleData {
   title: string;
   subTitle: string;
   descriptionTitle: string;
@@ -35,7 +35,7 @@ export interface GalleryModule {
   photos: PhotoUrlFirebase[];
 }
 
-export interface OborudovanieModule {
+export interface EquipmentModuleData {
   title: string;
   subTitle: string;
   descriptionTitle: string;
@@ -46,13 +46,12 @@ export interface OborudovanieModule {
 export enum PresModuleType {
   design = 'design',
   gallery = 'gallery',
-  oborudovanie = 'oborudovanie'
+  equipment = 'equipment'
 }
 
-export type PresModule =
-  { type: PresModuleType.design; data: DesignModule } |
-  { type: PresModuleType.gallery; data: GalleryModule } |
-  { type: PresModuleType.oborudovanie; data: OborudovanieModule };
+export type PresModule = { type: PresModuleType.design; data: DesignModuleData } |
+                         { type: PresModuleType.gallery; data: GalleryModuleData } |
+                         { type: PresModuleType.equipment; data: EquipmentModuleData };
 
 export interface Model {
   name: string;

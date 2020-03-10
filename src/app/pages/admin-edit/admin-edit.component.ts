@@ -1,5 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Mark, Model, MarksService, MarkWithKey, Attribute, PhotoUrlFirebase, PresModuleType, PresModule } from 'src/app/services/marks.service';
+import {
+  Mark,
+  Model,
+  MarksService,
+  MarkWithKey,
+  Attribute,
+  PhotoUrlFirebase,
+  PresModuleType,
+  PresModule
+} from 'src/app/services/marks.service';
 import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/services/attributes.service';
 import { UploadService } from 'src/app/services/upload.service';
 import { take } from 'rxjs/operators';
@@ -23,7 +32,7 @@ export class AdminEditComponent implements OnInit {
     value: PresModuleType.gallery
   }, {
     label: 'Оборудование',
-    value: PresModuleType.oborudovanie
+    value: PresModuleType.equipment
   }];
 
   TypeAutoAttribute = TypeAutoAttribute;
@@ -132,7 +141,7 @@ export class AdminEditComponent implements OnInit {
     switch (type) {
       case PresModuleType.design: return 'Дизайн';
       case PresModuleType.gallery: return 'Галлерея';
-      case PresModuleType.oborudovanie: return 'Оборудование';
+      case PresModuleType.equipment: return 'Оборудование';
     }
   }
 
@@ -163,7 +172,7 @@ export class AdminEditComponent implements OnInit {
         };
         break;
 
-      case PresModuleType.oborudovanie:
+      case PresModuleType.equipment:
         moduleData.data = {
           title: '',
           subTitle: '',

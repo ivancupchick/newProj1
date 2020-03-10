@@ -16,9 +16,9 @@
 
   <div class="module">
     <div *ngFor="let module of model.modulesInPres" class="module-wrapper">
-      <ng-container *ngIf="module.type === PresModuleType.design">
-        <span>{{ module.data.title }}</span>
-      </ng-container>
+      <app-design-module *ngIf="module.type === PresModuleType.design" [moduleData]="module.data"></app-design-module>
+      <app-gallery-module *ngIf="module.type === PresModuleType.gallery" [moduleData]="module.data"></app-gallery-module>
+      <app-equipment-module *ngIf="module.type === PresModuleType.equipment" [moduleData]="module.data"></app-equipment-module>
     </div>
   </div>
 </div>
