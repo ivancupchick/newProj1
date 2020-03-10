@@ -25,6 +25,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
+import { OrderListModule } from 'primeng/orderlist';
+import { CarouselModule as PrimeCarouselModule } from 'primeng/carousel';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -84,6 +87,9 @@ import { ModelPresentationComponent } from './pages/model-presentation/model-pre
     TableModule,
     ToolbarModule,
     DropdownModule,
+    FileUploadModule,
+    OrderListModule,
+    PrimeCarouselModule,
 
     BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),

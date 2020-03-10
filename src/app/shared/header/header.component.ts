@@ -146,6 +146,12 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
       const routeNewCars = this.routes.find(r => r.route === 'new-cars');
 
+      routeNewCars.items.forEach(route => {
+        if (route && route.custumParams && route.custumParams.models) {
+          route.custumParams.models = [];
+        }
+      });
+
       allModels.forEach(model => {
         const type = (model.attributes || []).find(attribute => attribute.name === 'Тип кузова');
         const typeValue = type ? type.value : null;

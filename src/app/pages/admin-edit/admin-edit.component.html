@@ -107,15 +107,16 @@
                   required
                   pInputText
                 > -->
-                <label for="newMarkDescription-{{contextMarkAndKey.key}}">Описание марки</label>
+
                 <textarea
                   id="newMarkDescription-{{contextMarkAndKey.key}}"
                   type="text" name="newMarkDescription-{{contextMarkAndKey.key}}"
                   [(ngModel)]="contextMarkAndKey.mark.description"
                   required
-                  pInputTextarea
-                  autoResize="autoResize">
+                  class="ui-inputtext ui-corner-all ui-state-default ui-widget"
+                  pInputTextarea>
                 </textarea>
+                <!-- <label for="newMarkDescription-{{contextMarkAndKey.key}}">Описание марки</label> -->
               </span>
 
               <!-- <label for="newMarkDescription">Описание марки</label>
@@ -162,16 +163,24 @@
                     <textarea type="text" [(ngModel)]="model.description" name="descriptionOfModel-{{contextMarkAndKey.key}}={{'' + indexM}}"></textarea>
                   </div>
                   <div class="model-row">
-                    <span>Главная фотография модели</span>
+                    <label for="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}">Главная фотография модели</label>
                     <span>{{model.mainPhoto.filePathFirebase}}</span>
                     <img style="width: 200px;" *ngIf="!!model.mainPhoto" [src]="model.mainPhoto.url" alt="" sizes="" srcset="">
-                    <input class="originally" type="file" name="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}" id="" (change)="uploadMainPhotoForModel($event, model)">
+                    <input
+                      *ngIf="!model.mainPhoto"
+                      class="originally"
+                      type="file"
+                      name="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      id="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      (change)="uploadMainPhotoForModel($event, model)">
                   </div>
                   <div class="model-row">
-                    <span>Галерея</span>
-                    <span *ngFor="let photo of model.photos">{{photo}}</span>
+                    <span>Фото сверху презентации</span>
+                    <span>{{model.mainPresenPhoto?.filePathFirebase}}</span>
+                    <img style="width: 200px;" *ngIf="!!model.mainPresenPhoto" [src]="model.mainPresenPhoto.url" alt="" sizes="" srcset="">
+                    <input *ngIf="!model.mainPresenPhoto" class="originally" type="file" name="fileMainPresenPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}" id="" (change)="uploadMainPresenPhotoForModel($event, model)">
                   </div>
-                  <div class="model-row ">
+                  <div class="model-row">
                     <span>Аттрибиты</span>
                     <div class="table-attributes">
                       <div *ngFor="let attribute of model.attributes; let indexMM = index" class="table-attribute">
@@ -183,16 +192,6 @@
                             class="form-control"
                             (typeaheadOnSelect)="addVariantToAttribute(attribute)"
                             placeholder="Название" name="attribute-name-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM + ''}}" required />
-
-                          <!-- <input autocomplete="off" #groupInput placeholder="Название" [(ngModel)]="group" name="group" id="group" required>
-
-                          <div class="anchor-groups">
-                            <div *ngIf="isVisibleAttributes" class="available-groups">
-                              <div *ngFor="let group of availableGroups" class="group" (click)="setGroupValue(group)">
-                                {{group.name}}
-                              </div>
-                            </div>
-                          </div> -->
                         </div>
                         <div class="value-of-attrubute">
                           <input
@@ -204,34 +203,16 @@
                             placeholder="Значение"
                             [(ngModel)]="attribute.value"
                             required />
-<!--
-                            placeholder="Значение" -->
-                            <!-- name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}" -->
-                          <!-- <p-dropdown
-                            *ngIf="isSelectableAttribute(attribute)"
-                            [options]="getSelectItemsForAttribute(attribute)"
-                            [ngModelOptions]="{standalone: true}"
-                            [(ngModel)]="attribute.value"
-                            required>
-                          </p-dropdown> -->
-
-                          <!-- <select
-                              *ngIf="isSelectableAttribute(attribute) && isShowSpecial"
-                              [(ngModel)]="attribute.value"
-                              name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}"
-                              required>
-                            <option *ngFor="let item of (attribute.variants || [])" [value]="item.label">{{item.value}}</option>
-                          </select> -->
-
+                              <!-- [ngModelOptions]="{standalone: true}" -->
                           <p-dropdown
                             *ngIf="isSelectableAttribute(attribute)"
                             [options]="attribute.variants || []"
                             [(ngModel)]="attribute.value"
-                            [ngModelOptions]="{standalone: true}"
                             name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}"
                             required>
                           </p-dropdown>
                         </div>
+
 
                         <div class="buttons">
                           <p-button [disabled]="attribute.isRequired"  styleClass="ui-button-danger" icon="pi pi-trash" iconPos="left" (click)="deleteAttributeFromModel(model, attribute)"></p-button>
@@ -239,6 +220,116 @@
 
                       </div>
                     </div>
+                  </div>
+
+                  <div class="model-row-big">
+                    <span>Модули</span>
+
+                    <p-toolbar>
+                      <div class="ui-toolbar-group-left">
+                        <form #formCreateMuduleData='ngForm'>
+                          <button [disabled]="!formCreateMuduleData.valid" (click)="addModuleToModelPres(model, formCreateMuduleData)" pButton type="button" label="Добавить модуль в презентацию" icon="pi pi-plus"></button>
+                          <p-dropdown
+                            [options]="presModuleType"
+                            name="type"
+                            id="type"
+                            ngModel
+                            required>
+                          </p-dropdown>
+                        </form>
+                      </div>
+                    </p-toolbar>
+
+                    <p-orderList [value]="model.modulesInPres">
+                      <ng-template let-module pTemplate="item">
+                        <div class="ui-helper-clearfix">
+                          <span> Тип модуля: {{ getModuleType(module.type) }} </span>
+                          <span> Заголовок: {{ module.data.title || "НЕНАЗНАЧЕН" }} </span>
+                          <span> Подзаголовок: {{ module.data.subTitle || "НЕНАЗНАЧЕН" }} </span>
+                          <!-- <img src="assets/showcase/images/demo/car/{{car.brand}}.png" style="display:inline-block;margin:2px 0 2px 2px" width="48"> -->
+                          <!-- <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{module.data.brand}} - {{car.year}} - {{car.color}}</div> -->
+                        </div>
+                      </ng-template>
+                    </p-orderList>
+
+                    <div class="modules-list">
+                      <ng-container *ngFor="let module of model.modulesInPres; let indexMM = index" >
+                        <div class="modules-list-item">
+                          <!-- <div class="modules-list-item-row">
+                            <span>{{ indexMM }}</span>
+                          </div> -->
+
+                          <span class="ui-float-label input-wifth100 modules-list-item-row">
+                            <input
+                              id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-title"
+                              type="text"
+                              name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-title"
+                              [(ngModel)]="module.data.title"
+                              required
+                              pInputText>
+                            <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-title">Название блока</label>
+                          </span>
+
+                          <span class="ui-float-label input-wifth100 modules-list-item-row">
+                            <input
+                              id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subTitle"
+                              type="text"
+                              name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subTitle"
+                              [(ngModel)]="module.data.subTitle"
+                              pInputText>
+                            <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subTitle">Подназвание</label>
+                          </span>
+
+                          <span class="ui-float-label input-wifth100 modules-list-item-row">
+                            <input
+                              id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-descriptionTitle"
+                              type="text"
+                              name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-descriptionTitle"
+                              [(ngModel)]="module.data.descriptionTitle"
+                              required
+                              pInputText>
+                            <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-descriptionTitle">Заголовок описания</label>
+                          </span>
+
+                          <span class="ui-float-label input-wifth100 modules-list-item-row">
+                            <input
+                              id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-descriptionText"
+                              type="text"
+                              name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-descriptionText"
+                              [(ngModel)]="module.data.descriptionText"
+                              required
+                              pInputText>
+                            <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-descriptionText">Текст описания</label>
+                          </span>
+
+                          <p-carousel
+                            [value]="getGalleryModulePhotos(module.data.photos)"
+                            [circular]="false">
+                            <p-header>
+                              <h3>Фотки для блока</h3>
+                            </p-header>
+                            <ng-template let-photo pTemplate="item">
+                              <div class="photo-in-carousel">
+                                <!-- <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-photo-{{.index}}">Фото</label> -->
+                                <!-- <span>{{photo?.filePathFirebase}}</span> -->
+                                <img style="width: 200px;" *ngIf="!!photo" [src]="photo?.url" alt="" sizes="" srcset="">
+                                <!-- name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-photo-{{i}}"
+                                  id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-photo-{{i}}" -->
+                                <input
+                                  *ngIf="!photo"
+                                  class="originally"
+                                  type="file"
+                                  (change)="uploadPhotoToModule($event, module)">
+
+                                <p-button *ngIf="!!photo" styleClass="ui-button-danger" icon="pi pi-times" iconPos="left" (click)="deletePhotosFormModule(module, photo)"></p-button>
+
+                              </div>
+                            </ng-template>
+                          </p-carousel>
+                        </div>
+                      </ng-container>
+                    </div>
+
                   </div>
                 </div>
               </div>

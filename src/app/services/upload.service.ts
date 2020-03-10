@@ -11,8 +11,8 @@ export class UploadService {
 
   constructor(private storage: AngularFireStorage) { }
 
-  uploadModelMainPhoto(file: File): Observable<{ loading: number, url: string, filePathFirebase: string }> {
-    const filePath = `uploadModelMainPhoto/${file.name}`;
+  uploadPhoto(file: File, filePath: string): Observable<{ loading: number, url: string, filePathFirebase: string }> {
+    // const filePath = `uploadModelMainPhoto/${file.name}`;
     const task = this.storage.upload(filePath, file);
     const fileRef = this.storage.ref(filePath);
 

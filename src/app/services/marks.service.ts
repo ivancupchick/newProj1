@@ -9,23 +9,60 @@ export interface Attribute {
   variants?: any[]; // virtual
 }
 
-interface Comp {
+interface Comp { // TODO!
   name: string;
   description: string;
 }
 
-interface PhotoUrlFirebase {
+export interface PhotoUrlFirebase {
   url: string;
   filePathFirebase: string;
 }
+
+export interface DesignModule {
+  title: string;
+  subTitle: string;
+  descriptionTitle: string;
+  descriptionText: string;
+  photos: PhotoUrlFirebase[];
+}
+
+export interface GalleryModule {
+  title: string;
+  subTitle: string;
+  descriptionTitle: string;
+  descriptionText: string;
+  photos: PhotoUrlFirebase[];
+}
+
+export interface OborudovanieModule {
+  title: string;
+  subTitle: string;
+  descriptionTitle: string;
+  descriptionText: string;
+  photos: PhotoUrlFirebase[];
+}
+
+export enum PresModuleType {
+  design = 'design',
+  gallery = 'gallery',
+  oborudovanie = 'oborudovanie'
+}
+
+export type PresModule =
+  { type: PresModuleType.design; data: DesignModule } |
+  { type: PresModuleType.gallery; data: GalleryModule } |
+  { type: PresModuleType.oborudovanie; data: OborudovanieModule };
 
 export interface Model {
   name: string;
   description: string;
   mainPhoto: PhotoUrlFirebase;
+  mainPresenPhoto: PhotoUrlFirebase;
   photos: PhotoUrlFirebase[];
   comps: Comp[];
   attributes: Attribute[];
+  modulesInPres: PresModule[];
 }
 
 export interface Mark {

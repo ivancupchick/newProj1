@@ -1,1 +1,24 @@
-<p>model-presentation works!</p>
+<div class="main-content">
+  <div class="main-photo">
+    <img [src]="model?.mainPresenPhoto?.url" alt="">
+  </div>
+  <div class="main-toolbar">
+    <div class="main-toolbar-price">
+      <span>от</span>
+      <span class="cost">от {{ price }} BYN</span>
+    </div>
+
+    <div class="main-toolbar-buttons">
+      <button>Найти представителя</button>
+      <button>Скачать прайс</button>
+    </div>
+  </div>
+
+  <div class="module">
+    <div *ngFor="let module of model.modulesInPres" class="module-wrapper">
+      <ng-container *ngIf="module.type === PresModuleType.design">
+        <span>{{ module.data.title }}</span>
+      </ng-container>
+    </div>
+  </div>
+</div>

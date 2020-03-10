@@ -1,6 +1,18 @@
 .main-content
   padding: 10px 0
 
+  .photo-in-carousel
+    display: flex
+    flex-direction: column
+    padding: 10px
+    border: black 1px solid
+    min-height: 200px
+    max-width: 250px
+
+    & > *
+      margin-bottom: 5px
+
+
   .panelBar
     padding: 5px
     display: flex
@@ -36,6 +48,24 @@
         margin: 0 5px
         padding: 5px
         display: flex
+
+        &-big
+          display: flex
+          padding: 5px
+          margin: 5px
+          border: 1px solid #cccccc
+          flex-direction: column
+
+          .modules-list
+            &-item
+              display: flex
+              flex-direction: column
+              width: 100%
+              margin-top: 30px
+              border: black 1px solid
+
+              &-row
+                margin: 15px 0
 
         span
           min-width: 30%
@@ -74,8 +104,12 @@ p-toolbar
 
 .ui-float-label.input-wifth100
   width: 100%
-
-
+  margin-bottom: 10px
 
   & > *
     width: 100%
+
+// .ui-inputtextarea
+//   width: 100%
+//   margin-top: 20px
+//   margin-bottom: 20px
