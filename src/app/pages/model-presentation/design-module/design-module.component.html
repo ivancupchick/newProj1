@@ -1,1 +1,27 @@
-<p>design-module works!</p>
+<div class="wrapper-module">
+  <p class="wrapper-module-title col-xs-12">
+    {{ moduleData.title }}
+  </p>
+  <h2 *ngIf="moduleData.subTitle && moduleData.subTitle !== ' '" class="wrapper-module-subTitle col-xs-12">
+    {{ moduleData.subTitle }}
+  </h2>
+
+  <div class="wrapper-module-content row l-row-regular searchable-content">
+    <div class="wrapper-module-content-image col-xs-12 col-sm-6 col-md-8">
+      <ng-container *ngIf="moduleData && moduleData.photos && moduleData.photos.length > 1 else onePhoto">
+        <p-carousel [value]="moduleData.photos" [autoplayInterval]="10000" [circular]="true">
+          <ng-template let-photo pTemplate="item">
+            <img [src]="photo.url" alt="">
+          </ng-template>
+        </p-carousel>
+      </ng-container>
+      <ng-template #onePhoto>
+        <img *ngIf="moduleData && moduleData.photos" [src]="moduleData.photos[0].url" alt="">
+      </ng-template>
+    </div>
+    <div class="wrapper-module-content-text col-xs-12 col-sm-6 col-md-4 ">
+      <h3>{{moduleData.descriptionTitle}}</h3>
+      <div>{{moduleData.descriptionText}}</div>
+    </div>
+  </div>
+</div>

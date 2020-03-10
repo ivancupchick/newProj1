@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div class="module">
+  <div class="module" *ngIf="model">
     <div *ngFor="let module of model.modulesInPres" class="module-wrapper">
       <app-design-module *ngIf="module.type === PresModuleType.design" [moduleData]="module.data"></app-design-module>
       <app-gallery-module *ngIf="module.type === PresModuleType.gallery" [moduleData]="module.data"></app-gallery-module>

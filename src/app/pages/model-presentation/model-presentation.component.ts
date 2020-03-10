@@ -18,30 +18,41 @@ export class ModelPresentationComponent implements OnInit {
   constructor(private route: ActivatedRoute, private marksService: MarksService) { }
 
   ngOnInit(): void {
-    const markId = +this.route.snapshot.queryParamMap.get('idMark');
-    const modelId = +this.route.snapshot.queryParamMap.get('idModel');
-    // this.route.queryParamMap.subscribe(queryParams => {
-    //   this.name = queryParams.get("paramName")
-    // });
-
-    this.marksService.getMarks().subscribe(marksWithKey => {
-      const marks = marksWithKey.map(m => m.mark);
-      this.mark = marks.find((m, i) => i === markId);
-      console.log(this.mark);
-
-      this.model = this.mark.models.find((m, i) => i === modelId);
-      console.log(this.model);
-
-      const priveObj = this.model.attributes.find(a => a.name === 'Стоимость');
-
-      this.price = priveObj ? (priveObj.value || '10470') : '10470';
-
-      this.modules = this.model.modulesInPres;
-
-      // let allModels: Model[] = [];
-      // this.marks.forEach(mark => {
-      //   allModels = [...allModels, ...((mark && mark.models) || [])];
+    this.route.queryParamMap.subscribe(params => {
+      const markId = +params.get('idMark');
+      const modelId = +params.get('idModel');
+      if (markId === undefined || Number.isNaN(markId)) {
+        return;
+      }
+      // this.route.queryParamMap.subscribe(queryParams => {
+      //   this.name = queryParams.get("paramName")
       // });
+
+      this.marksService.getMarks().subscribe(marksWithKey => {
+        if (!marksWithKey || marksWithKey.length === 0) {
+          return;
+        }
+
+        const marks = marksWithKey.map(m => m.mark);
+        this.mark = marks.find((m, i) => i === markId);
+        console.log(this.mark);
+
+        this.model = this.mark.models.find((m, i) => i === modelId);
+        console.log(this.model);
+
+        const priveObj = this.model.attributes.find(a => a.name === 'Стоимость');
+
+        this.price = priveObj ? (priveObj.value || '10470') : '10470';
+
+        this.modules = this.model.modulesInPres;
+
+        console.log(this.model.modulesInPres);
+
+        // let allModels: Model[] = [];
+        // this.marks.forEach(mark => {
+        //   allModels = [...allModels, ...((mark && mark.models) || [])];
+        // });
+      });
     });
   }
 

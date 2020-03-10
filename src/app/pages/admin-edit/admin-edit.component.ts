@@ -197,7 +197,8 @@ export class AdminEditComponent implements OnInit {
     return [null, ...data];
   }
 
-  deletePhotosFormModule(model: Model, modulee: PresModule) {
+  deletePhotosFormModule(presModule: PresModule, photo: PhotoUrlFirebase) {
+    presModule.data.photos = presModule.data.photos.filter(p => p !== photo);
     // console.log(modulee);
   }
 
