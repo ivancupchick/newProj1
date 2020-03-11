@@ -5,7 +5,7 @@
         <img [src]="model.mainPhoto.url" [alt]="model.name">
       </div>
       <span class="wrapper-model-name">{{ model.name }}</span>
-      <span *ngIf="getModelPrice(model)" class="wrapper-model-price">от {{ getModelPrice(model) }} BYN</span>
+      <span class="wrapper-model-price">{{ getModelPrice(model) }}</span>
     </div>
   </ng-container>
 

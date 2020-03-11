@@ -28,6 +28,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
 import { OrderListModule } from 'primeng/orderlist';
 import { CarouselModule as PrimeCarouselModule } from 'primeng/carousel';
+import { EditorModule } from 'primeng/editor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -96,6 +97,7 @@ import { EquipmentModuleComponent } from './pages/model-presentation/equipment-m
     FileUploadModule,
     OrderListModule,
     PrimeCarouselModule,
+    EditorModule,
 
     BsDropdownModule.forRoot(),
     CarouselModule.forRoot(),

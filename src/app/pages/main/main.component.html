@@ -32,8 +32,17 @@
   <br>
 
   <div class="container">
-    <tabset>
+    <tabset class="type-tabs">
       <tab *ngFor="let tab of tabs" [heading]="tab.title">
+        <app-models-grid
+          [models]="tab.models"
+          (selectionModel)="linkToModelPresentation($event)">
+        </app-models-grid>
+      </tab>
+    </tabset>
+    <hr>
+    <tabset class="mark-tabs">
+      <tab *ngFor="let tab of markTabs" [heading]="tab.title">
         <app-models-grid
           [models]="tab.models"
           (selectionModel)="linkToModelPresentation($event)">

@@ -21,8 +21,8 @@ export class ModelsGridComponent implements OnInit {
   }
 
   getModelPrice(model: Model) { // pass to pipe
-    const obj = model.attributes.find(a => a.name === 'Стоимость');
+    const obj = model.attributes ? model.attributes.find(a => a.name === 'Стоимость') : null;
 
-    return obj ? obj.value || '' : '';
+    return obj && obj.value ? `от ${obj.value} BYN` : '';
   }
 }

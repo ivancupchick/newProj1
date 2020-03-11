@@ -4,8 +4,10 @@
   </div>
   <div class="main-toolbar">
     <div class="main-toolbar-price">
-      <span>от</span>
-      <span class="cost">от {{ price }} BYN</span>
+      <ng-container *ngIf="price">
+        <span>от</span>
+        <span class="cost">{{ price }} BYN</span>
+      </ng-container>
     </div>
 
     <div class="main-toolbar-buttons">

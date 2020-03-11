@@ -165,9 +165,9 @@
                   <div class="model-row">
                     <label for="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}">Главная фотография модели</label>
                     <span>{{model.mainPhoto.filePathFirebase}}</span>
-                    <img style="width: 200px;" *ngIf="!!model.mainPhoto" [src]="model.mainPhoto.url" alt="" sizes="" srcset="">
+                    <img style="width: 200px;" *ngIf="model.mainPhoto && model.mainPhoto.filePathFirebase" [src]="model.mainPhoto.url" alt="" sizes="" srcset="">
                     <input
-                      *ngIf="!model.mainPhoto"
+                      *ngIf="!(model.mainPhoto && model.mainPhoto.filePathFirebase)"
                       class="originally"
                       type="file"
                       name="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
@@ -177,8 +177,14 @@
                   <div class="model-row">
                     <span>Фото сверху презентации</span>
                     <span>{{model.mainPresenPhoto?.filePathFirebase}}</span>
-                    <img style="width: 200px;" *ngIf="!!model.mainPresenPhoto" [src]="model.mainPresenPhoto.url" alt="" sizes="" srcset="">
-                    <input *ngIf="!model.mainPresenPhoto" class="originally" type="file" name="fileMainPresenPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}" id="" (change)="uploadMainPresenPhotoForModel($event, model)">
+                    <img style="width: 200px;" *ngIf="model.mainPresenPhoto && model.mainPresenPhoto.filePathFirebase" [src]="model.mainPresenPhoto.url" alt="" sizes="" srcset="">
+                    <input
+                      *ngIf="!(model.mainPresenPhoto && model.mainPresenPhoto.filePathFirebase)"
+                      class="originally"
+                      type="file"
+                      name="fileMainPresenPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      id=""
+                      (change)="uploadMainPresenPhotoForModel($event, model)">
                   </div>
                   <div class="model-row">
                     <span>Аттрибиты</span>

@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MarksService, Mark, Model } from 'src/app/services/marks.service';
 import { Router } from '@angular/router';
 
+interface ModelsTab {
+  title: string;
+  models: Model[];
+}
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -10,7 +15,7 @@ import { Router } from '@angular/router';
 export class MainComponent implements OnInit {
   marks: Mark[];
 
-  tabs: { title: string, models: Model[] }[] = [{
+  tabs: ModelsTab[] = [{
     title: 'Кроссоверы', models: []
   }, {
     title: 'Универсалы', models: []
@@ -22,11 +27,15 @@ export class MainComponent implements OnInit {
     title: 'Хэтчбэки', models: []
   }];
 
+  markTabs: ModelsTab[];
+
   constructor(private marksService: MarksService, private router: Router) { }
 
   ngOnInit(): void {
     this.marksService.getMarks().subscribe(marks => {
       this.marks = marks.map(m => m.mark);
+
+      this.markTabs = this.marks.map(m => ({ title: m.name, models: m.models }));
 
       const allModels: Model[] = [];
       this.marks.forEach(mark => {
