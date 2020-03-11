@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
-import 'firebase/database';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { DataService } from './data.service';
 
 export enum TypeAutoAttribute {
   select = 'select',
@@ -23,26 +22,20 @@ export interface AutoAttribute {
   providedIn: 'root'
 })
 export class AttributesService {
-  private attributesRef: AngularFireObject<{ attributes: AutoAttribute[] }>;
+  nameOfData = 'attributes';
   attributes: BehaviorSubject<AutoAttribute[]> = new BehaviorSubject([]);
 
-  constructor(private db: AngularFireDatabase) {
-    this.attributesRef = db.object('data');
-    this.attributesRef.valueChanges()
-      .subscribe(
-        arg => this.attributes.next(arg ? (arg.attributes || []) : []),
-        errors => console.log(errors)
-      );
+  constructor(private dataService: DataService) {
+    dataService.getData(this.nameOfData)
+      .subscribe(att => this.attributes.next(att ? att : []));
   }
 
   setAttributes(attributes: AutoAttribute[]) {
-    attributes.forEach(attribute => {
-      this.attributesRef
-        .set({ attributes })
-        .then(res => {
-          console.log(res);
-        });
-    });
+    this.dataService.setData(this.nameOfData, attributes)
+      .subscribe(
+        r => console.log(r),
+        err => console.log(err)
+      );
   }
 
   getAttributes(): Observable<AutoAttribute[]> {

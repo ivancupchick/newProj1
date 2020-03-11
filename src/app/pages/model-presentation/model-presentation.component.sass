@@ -6,6 +6,10 @@
 
     & > img
       width: 100%
+      height: 100%
+      object-fit: cover
+      object-position: top
+
   .main-toolbar
     width: 100%
     background: #cccccc
@@ -26,6 +30,10 @@
 
     &-buttons
       button
+        ::ng-deep
+          &.ui-button-text, &.ui-button-icon-right
+            font-size: 1.3rem
+
         // padding: 20px
         // background: bl
 

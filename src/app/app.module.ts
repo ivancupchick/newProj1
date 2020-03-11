@@ -54,6 +54,8 @@ import { ModelPresentationComponent } from './pages/model-presentation/model-pre
 import { DesignModuleComponent } from './pages/model-presentation/design-module/design-module.component';
 import { GalleryModuleComponent } from './pages/model-presentation/gallery-module/gallery-module.component';
 import { EquipmentModuleComponent } from './pages/model-presentation/equipment-module/equipment-module.component';
+import { DataService } from './services/data.service';
+import { UrlsService } from './services/urls.service';
 
 @NgModule({
   declarations: [
@@ -111,7 +113,9 @@ import { EquipmentModuleComponent } from './pages/model-presentation/equipment-m
   providers: [
     AuthService,
     MarksService,
-    UploadService
+    UploadService,
+    DataService,
+    UrlsService
   ],
   bootstrap: [AppComponent]
 })
