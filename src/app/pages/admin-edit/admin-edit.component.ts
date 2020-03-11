@@ -96,10 +96,9 @@ export class AdminEditComponent implements OnInit {
     const attributes = this.savedAttributes
       .map(sa => ({ name: sa.name, value: '', isRequired: sa.isRequired }));
 
-    const photo = {
-      url: '',
-      filePathFirebase: ''
-    };
+    if (!mark.models) {
+      mark.models = [];
+    }
 
     mark.models.push({
       name: '',

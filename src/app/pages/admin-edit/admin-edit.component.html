@@ -130,8 +130,14 @@
               </p-toolbar>
 
               <span>Список моделей:</span>
-              <div class="models">
-                <div class="model" *ngFor="let model of contextMarkAndKey.mark.models; let indexM = index">
+
+              <accordion [isAnimated]="true" class="models">
+                <accordion-group
+                  class="model"
+                  *ngFor="let model of contextMarkAndKey.mark.models; let indexM = index" heading="Модель №{{indexM}}, Название: '{{model.name}}'">
+
+                  <!-- <div class="models"> -->
+                    <!-- <div class="model" *ngFor="let model of contextMarkAndKey.mark.models; let indexM = index"> -->
                   <p-toolbar>
                     <div class="ui-toolbar-group-left">
                       <button (click)="createAttributeInModel(model)" pButton type="button" label="Добавить аттриут" icon="pi pi-plus"></button>
@@ -153,7 +159,6 @@
                       <button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button> -->
                     </div>
                   </p-toolbar>
-                  <!-- {{model.name}} -->
                   <div class="model-row">
                     <span>Название модели</span>
                     <input type="text" [(ngModel)]="model.name" name="nameOfModel-{{contextMarkAndKey.key}}={{'' + indexM}}" required>
@@ -344,8 +349,11 @@
                     </div>
 
                   </div>
-                </div>
-              </div>
+                </accordion-group>
+              </accordion>
+
+                <!-- </div>
+              </div> -->
 
               <div class="panelBar">
                 <button type="button" [disabled]="!formData.valid" class="btn btn-primary" (click)="createOrUpdateMark(contextMarkAndKey.mark)">Сохранить изменения</button>
