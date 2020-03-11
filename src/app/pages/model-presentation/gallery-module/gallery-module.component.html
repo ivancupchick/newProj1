@@ -5,7 +5,7 @@
 
   <p-carousel [value]="moduleData.photos" [autoplayInterval]="10000" [circular]="true">
     <ng-template let-photo pTemplate="item">
-      <img [src]="photo.url" alt="">
+      <img style="width: 100%;" [src]="photo.url" alt="">
     </ng-template>
   </p-carousel>
 </div>

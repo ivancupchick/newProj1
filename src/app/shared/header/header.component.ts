@@ -141,7 +141,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       this.marks = marks.map(m => m.mark);
       let allModels: Model[] = [];
       this.marks.forEach(mark => {
-        allModels = [...allModels, ...((mark && mark.models) || [])];
+        allModels = [
+          ...allModels,
+          ...(
+            (mark &&
+              mark.models
+                .map(
+                  m => Object.assign({}, m, { name: `${mark.name} ${m.name}` })
+                )
+            ) || []
+          )
+        ];
       });
 
       const routeNewCars = this.routes.find(r => r.route === 'new-cars');
