@@ -130,7 +130,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(
-    private renderer: Renderer2,
+    // private renderer: Renderer2,
     private router: Router,
     private authService: AuthService,
     private marksService: MarksService
@@ -173,7 +173,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       });
     });
 
-    this.renderer.listen('document', 'mouseover', (e: MouseEvent) => this.mouseOver(e) );
+    // this.renderer.listen('document', 'mouseover', (e: MouseEvent) => this.mouseOver(e) );
 
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
@@ -253,17 +253,24 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onHiddenDropdown() {
+    this.poppovers = this.poppovers.filter(popover => {
+      popover.popoverComponent.hide();
+      return false;
+    });
+  }
+
   mouseOver(e: MouseEvent) {
-    if (this.poppovers.length > 0) {
-      this.poppovers = this.poppovers.filter(popover => {
-        if (eventInTarget(e, popover.popoverRef) || eventInTarget(e, popover.eventInitiator)) {
-          return true;
-        } else {
-          popover.popoverComponent.hide();
-          return false;
-        }
-      });
-    }
+    // if (this.poppovers.length > 0) {
+    //   this.poppovers = this.poppovers.filter(popover => {
+    //     if (eventInTarget(e, popover.popoverRef) || eventInTarget(e, popover.eventInitiator)) {
+    //       return true;
+    //     } else {
+    //       popover.popoverComponent.hide();
+    //       return false;
+    //     }
+    //   });
+    // }
   }
 
   linkTo(...routes: CustomRoute[]) {

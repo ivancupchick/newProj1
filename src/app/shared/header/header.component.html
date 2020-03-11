@@ -31,7 +31,8 @@
         <li *ngIf="!!route.items else usualA"
             class="nav-item"
             [ngClass]="{ active: route.active, 'nav-items': !!route.items }"
-            dropdown>
+            dropdown
+            (onHidden)="onHiddenDropdown()">
 
           <a (click)="!route.items ? linkTo(route) : false"
             class="nav-link"
@@ -51,6 +52,7 @@
 
               <ng-template #popTemplate>
                 <app-models-grid
+                  [inHeader]="true"
                   [models]="childRoute && childRoute.custumParams && childRoute.custumParams.models"
                   (selectionModel)="linkToModelPresentation($event)">
                 </app-models-grid>
