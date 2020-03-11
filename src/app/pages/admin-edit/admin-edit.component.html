@@ -234,7 +234,14 @@
                     <p-toolbar>
                       <div class="ui-toolbar-group-left">
                         <form #formCreateMuduleData='ngForm'>
-                          <button [disabled]="!formCreateMuduleData.valid" (click)="addModuleToModelPres(model, formCreateMuduleData)" pButton type="button" label="Добавить модуль в презентацию" icon="pi pi-plus"></button>
+                          <button
+                            [disabled]="!formCreateMuduleData.valid"
+                            (click)="addModuleToModelPres(model, formCreateMuduleData)"
+                            pButton
+                            type="button"
+                            label="Добавить модуль в презентацию"
+                            icon="pi pi-plus">
+                          </button>
                           <p-dropdown
                             [options]="presModuleType"
                             name="type"

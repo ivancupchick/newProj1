@@ -26,11 +26,17 @@
     tab
       padding-top: 20px
 
+    // ::ng-deep.nav-tabs
+      border-bottom: 0px
+
     &.mark-tabs ::ng-deep.nav-tabs
+      border-bottom: 0px
+
       .nav-item
         position: relative
 
         .nav-link
+          border: 0px
           // background: red
 
         &.active
@@ -51,6 +57,7 @@
             border-left: 10px solid transparent
             border-right: 10px solid transparent
             border-top: 10px solid #eee
+            bottom: -9px
 
     &.type-tabs ::ng-deep.nav-tabs
       .nav-item

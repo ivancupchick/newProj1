@@ -39,7 +39,7 @@ export class MainComponent implements OnInit {
 
       const allModels: Model[] = [];
       this.marks.forEach(mark => {
-        allModels.push(...mark.models);
+        allModels.push(...(mark.models || []));
       });
 
       allModels.forEach(model => {
