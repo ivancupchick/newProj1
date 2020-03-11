@@ -19,4 +19,10 @@ export class ModelsGridComponent implements OnInit {
   selectModel(model: Model) {
     this.selectionModel.emit(model);
   }
+
+  getModelPrice(model: Model) { // pass to pipe
+    const obj = model.attributes.find(a => a.name === 'Стоимость');
+
+    return obj ? obj.value || '' : '';
+  }
 }

@@ -1,19 +1,57 @@
-:host
+$one-img-size: 150px
+
+.wrapper
   display: flex
-  flex-wrap: wrap
   justify-content: center
-  align-items: center
+  align-items: flex-start
   // width: 100%
   // height: 100%
 
-  .model
+  &.model1
+    min-width: $one-img-size * 1
+    flex-wrap: wrap
+
+  &.model2
+    min-width: $one-img-size * 2
+    flex-wrap: wrap
+
+  &.model3
+    min-width: $one-img-size * 3
+    flex-wrap: wrap
+
+  &.model4
+    min-width: $one-img-size * 4
+    flex-wrap: wrap
+
+  &-model
     display: flex
     flex-direction: column
 
     align-items: center
 
-    img
-      width: 150px
+    &-image
+      width: $one-img-size
+      height: $one-img-size/1.6
+      overflow: hidden
+
+      img
+        width: 100%
 
     &:hover
       outline: #ccc 1px solid
+
+    &-name
+      font-size: 0.9rem
+
+    &-price
+      font-size: 0.6rem
+
+  &-not-found
+    display: flex
+    justify-items: center
+    align-items: center
+
+    span
+      font-size: 1rem
+      color: #808080
+      text-align: center

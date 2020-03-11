@@ -1,4 +1,15 @@
-<div class="model" *ngFor="let model of models" (click)="selectModel(model)">
-  <img [src]="model.mainPhoto.url" [alt]="model.name">
-  <span>{{ model.name }}</span>
+<div class="wrapper" [ngClass]="{ 'model1': models.length < 2, 'model2': models.length === 2, 'model3': models.length === 3, 'model4': models.length > 3 }">
+  <ng-container *ngIf="models.length > 0">
+    <div class="wrapper-model" *ngFor="let model of models" (click)="selectModel(model)">
+      <div class="wrapper-model-image">
+        <img [src]="model.mainPhoto.url" [alt]="model.name">
+      </div>
+      <span class="wrapper-model-name">{{ model.name }}</span>
+      <span *ngIf="getModelPrice(model)" class="wrapper-model-price">от {{ getModelPrice(model) }} BYN</span>
+    </div>
+  </ng-container>
+
+  <div *ngIf="models.length === 0" class="wrapper-not-found">
+    <span>Таких моделей пока нет</span>
+  </div>
 </div>

@@ -1,1 +1,11 @@
-<p>gallery-module works!</p>
+<div class="wrapper col-xs-12">
+  <h3 *ngIf="moduleData.title && moduleData.title !== ' '" class="wrapper-title">
+    {{moduleData.title}}
+  </h3>
+
+  <p-carousel [value]="moduleData.photos" [autoplayInterval]="10000" [circular]="true">
+    <ng-template let-photo pTemplate="item">
+      <img [src]="photo.url" alt="">
+    </ng-template>
+  </p-carousel>
+</div>
