@@ -1,6 +1,44 @@
 .main-content
   padding: 10px 0
 
+  .fileupload
+    // width: 100px
+    display: flex
+    padding: 20px
+    align-items: center
+    border-radius: .25rem
+
+    height: 38px
+    position: relative
+    overflow: hidden
+    background: #cccccc  // and other things to make it pretty */
+
+    &:hover
+      background: #8b8b8b
+      color: #000000b2
+
+    &::before
+      // display: inline-block
+      // width: 0
+      // height: 0
+      // margin-left: -0.255em
+      // vertical-align: .255em
+      content: "Загрузить фото"
+      // border-top: .4em solid
+      // border-right: .3em solid transparent
+      // border-bottom: 0
+      // border-left: .3em solid transparent
+
+    input
+      position: absolute
+      top: 0
+      right: 0 // not left, because only the right part of the input seems to be clickable in some browser I can't remember */
+      cursor: pointer
+      opacity: 0.0
+      filter: alpha(opacity=0) // /* and all the other old opacity stuff you  want to support */
+      font-size: 300px // wtf, but apparently the most reliable way to make a large part of the input clickable in most browsers */
+      height: 200px
+
   .photo-in-carousel
     display: flex
     flex-direction: column

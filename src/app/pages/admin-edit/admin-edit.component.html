@@ -171,25 +171,29 @@
                     <label for="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}">Главная фотография модели</label>
                     <span>{{model.mainPhoto.filePathFirebase}}</span>
                     <img style="width: 200px;" *ngIf="model.mainPhoto && model.mainPhoto.filePathFirebase" [src]="model.mainPhoto.url" alt="" sizes="" srcset="">
-                    <input
-                      *ngIf="!(model.mainPhoto && model.mainPhoto.filePathFirebase)"
-                      class="originally"
-                      type="file"
-                      name="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
-                      id="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
-                      (change)="uploadMainPhotoForModel($event, model)">
+                    <div class="fileupload">
+                      <input
+                        *ngIf="!(model.mainPhoto && model.mainPhoto.filePathFirebase)"
+                        class="originally"
+                        type="file"
+                        name="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                        id="fileMainPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                        (change)="uploadMainPhotoForModel($event, model)">
+                    </div>
                   </div>
                   <div class="model-row">
                     <span>Фото сверху презентации</span>
                     <span>{{model.mainPresenPhoto?.filePathFirebase}}</span>
                     <img style="width: 200px;" *ngIf="model.mainPresenPhoto && model.mainPresenPhoto.filePathFirebase" [src]="model.mainPresenPhoto.url" alt="" sizes="" srcset="">
-                    <input
-                      *ngIf="!(model.mainPresenPhoto && model.mainPresenPhoto.filePathFirebase)"
-                      class="originally"
-                      type="file"
-                      name="fileMainPresenPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
-                      id=""
-                      (change)="uploadMainPresenPhotoForModel($event, model)">
+                    <div class="fileupload">
+                      <input
+                        *ngIf="!(model.mainPresenPhoto && model.mainPresenPhoto.filePathFirebase)"
+                        class="originally"
+                        type="file"
+                        name="fileMainPresenPhoto-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                        id=""
+                        (change)="uploadMainPresenPhotoForModel($event, model)">
+                    </div>
                   </div>
                   <div class="model-row">
                     <span>Аттрибиты</span>
@@ -333,11 +337,13 @@
                                 <img style="width: 200px;" *ngIf="!!photo" [src]="photo?.url" alt="" sizes="" srcset="">
                                 <!-- name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-photo-{{i}}"
                                   id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-photo-{{i}}" -->
-                                <input
-                                  *ngIf="!photo"
-                                  class="originally"
-                                  type="file"
-                                  (change)="uploadPhotoToModule($event, module)">
+                                <div class="fileupload">
+                                  <input
+                                    *ngIf="!photo"
+                                    class="originally"
+                                    type="file"
+                                    (change)="uploadPhotoToModule($event, module)">
+                                </div>
 
                                 <p-button *ngIf="!!photo" styleClass="ui-button-danger" icon="pi pi-times" iconPos="left" (click)="deletePhotosFormModule(module, photo)"></p-button>
 
