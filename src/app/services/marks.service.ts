@@ -7,6 +7,7 @@ export interface Attribute {
   name: string;
   value: string;
   variants?: any[]; // virtual
+  isRequired?: boolean;
 }
 
 interface Comp { // TODO!
@@ -30,17 +31,18 @@ export interface DesignModuleData {
 export interface GalleryModuleData {
   title: string;
   subTitle: string;
-  descriptionTitle: string;
-  descriptionText: string;
   photos: PhotoUrlFirebase[];
 }
 
-export interface EquipmentModuleData {
+export interface EquipmentsModuleData {
   title: string;
   subTitle: string;
-  descriptionTitle: string;
-  descriptionText: string;
-  photos: PhotoUrlFirebase[];
+  subSubTitle: string;
+  equipments: {
+    title: string;
+    description: string;
+    photo: PhotoUrlFirebase;
+  }[];
 }
 
 export enum PresModuleType {
@@ -49,9 +51,24 @@ export enum PresModuleType {
   equipment = 'equipment'
 }
 
-export type PresModule = { type: PresModuleType.design; data: DesignModuleData } |
-                         { type: PresModuleType.gallery; data: GalleryModuleData } |
-                         { type: PresModuleType.equipment; data: EquipmentModuleData };
+export interface PresDesignModule {
+  type: PresModuleType.design;
+  data: DesignModuleData;
+}
+
+export interface PresGalleryModule {
+  type: PresModuleType.gallery;
+  data: GalleryModuleData;
+}
+
+export interface PresEquipmentsModule {
+  type: PresModuleType.equipment;
+  data: EquipmentsModuleData;
+}
+
+export type PresModule = PresDesignModule |
+                         PresGalleryModule |
+                         PresEquipmentsModule;
 
 export interface Model {
   name: string;

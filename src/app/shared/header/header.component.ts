@@ -147,7 +147,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
             (mark &&
               mark.models
                 .map(
-                  m => Object.assign({}, m, { name: `${mark.name} ${m.name}` })
+                  m => {
+                    m.name = `${mark.name} ${m.name}`;
+                    return m;
+                  }
                 )
             ) || []
           )

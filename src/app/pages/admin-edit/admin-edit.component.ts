@@ -7,7 +7,11 @@ import {
   Attribute,
   PhotoUrlFirebase,
   PresModuleType,
-  PresModule
+  PresModule,
+  PresDesignModule,
+  DesignModuleData,
+  GalleryModuleData,
+  EquipmentsModuleData
 } from 'src/app/services/marks.service';
 import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/services/attributes.service';
 import { UploadService } from 'src/app/services/upload.service';
@@ -165,19 +169,22 @@ export class AdminEditComponent implements OnInit {
         moduleData.data = {
           title: '',
           subTitle: '',
-          descriptionTitle: '',
-          descriptionText: '',
           photos: []
         };
         break;
-
       case PresModuleType.equipment:
         moduleData.data = {
           title: '',
           subTitle: '',
-          descriptionTitle: '',
-          descriptionText: '',
-          photos: []
+          subSubTitle: '',
+          equipments: [{
+            title: '',
+            description: '',
+            photo: {
+              url: '',
+              filePathFirebase: ''
+            }
+          }]
         };
         break;
     }
@@ -196,12 +203,11 @@ export class AdminEditComponent implements OnInit {
     return [null, ...data];
   }
 
-  deletePhotosFormModule(presModule: PresModule, photo: PhotoUrlFirebase) {
+  deletePhotosFormDesignModule(presModule: PresDesignModule, photo: PhotoUrlFirebase) {
     presModule.data.photos = presModule.data.photos.filter(p => p !== photo);
-    // console.log(modulee);
   }
 
-  uploadPhotoToModule(event: DragEvent, modulee: PresModule) {
+  uploadPhotoToGalleryOrDesignModule(event: DragEvent, modulee: PresDesignModule) {
     const file = (event.target as HTMLInputElement).files[0];
     (event.target as HTMLInputElement).value = null;
     this.uploadService.uploadPhoto(file, `uploadModulePhotos/${file.name}`)
@@ -302,5 +308,22 @@ export class AdminEditComponent implements OnInit {
 
   deleteModelFromMark(mark: Mark, model: Model) {
     mark.models = mark.models.filter(m => m !== model);
+  }
+
+  // for Typing template
+  getMarkType(mark: Mark): Mark {
+    return mark as Mark;
+  }
+
+  getDesingDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): DesignModuleData {
+    return data as DesignModuleData;
+  }
+
+  getGalleryDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): GalleryModuleData {
+    return data as GalleryModuleData;
+  }
+
+  getEquipmentsDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): EquipmentsModuleData {
+    return data as EquipmentsModuleData;
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { EquipmentModuleData } from 'src/app/services/marks.service';
+import { EquipmentsModuleData } from 'src/app/services/marks.service';
 
 @Component({
   selector: 'app-equipment-module',
@@ -7,7 +7,7 @@ import { EquipmentModuleData } from 'src/app/services/marks.service';
   styleUrls: ['./equipment-module.component.sass']
 })
 export class EquipmentModuleComponent implements OnInit {
-  @Input() moduleData: EquipmentModuleData;
+  @Input() moduleData: EquipmentsModuleData;
 
   constructor() { }
 
