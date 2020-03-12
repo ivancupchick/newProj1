@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { BehaviorSubject, Observable } from 'rxjs';
 import 'firebase/database';
+import { map } from 'rxjs/operators';
 
 export interface Attribute {
   name: string;
@@ -34,21 +35,29 @@ export interface GalleryModuleData {
   photos: PhotoUrlFirebase[];
 }
 
-export interface EquipmentsModuleData {
+export interface EquipmentsData {
+  title: string;
+  description: string;
+  photo: PhotoUrlFirebase;
+}
+
+export interface EquipmentsModuleData { //
   title: string;
   subTitle: string;
   subSubTitle: string;
-  equipments: {
-    title: string;
-    description: string;
-    photo: PhotoUrlFirebase;
-  }[];
+  equipments: EquipmentsData[];
 }
 
 export enum PresModuleType {
   design = 'design',
   gallery = 'gallery',
   equipment = 'equipment'
+}
+
+export enum MainPhotoPosition {
+  center = 'center',
+  right = 'right',
+  left = 'left'
 }
 
 export interface PresDesignModule {
@@ -73,6 +82,7 @@ export type PresModule = PresDesignModule |
 export interface Model {
   name: string;
   description: string;
+  mainPhotoPosition: MainPhotoPosition;
   mainPhoto: PhotoUrlFirebase;
   mainPresenPhoto: PhotoUrlFirebase;
   photos: PhotoUrlFirebase[];
@@ -109,6 +119,16 @@ export class MarksService {
     //   );
 
     this.marksRef.snapshotChanges()
+      .pipe(
+        map(m => {
+          m.forEach(mm => {
+            mm.payload.val().models.forEach(mmm => {
+              mmm.mainPhotoPosition = mmm.mainPhotoPosition || MainPhotoPosition.center;
+            });
+          });
+          return m;
+        })
+      )
       .subscribe(changes => {
         const value: MarkWithKey[] = !changes
           ? []

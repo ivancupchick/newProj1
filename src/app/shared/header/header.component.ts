@@ -147,10 +147,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
             (mark &&
               mark.models
                 .map(
-                  m => {
-                    m.name = `${mark.name} ${m.name}`;
-                    return m;
-                  }
+                  m => Object.assign({}, m, { name: `${mark.name} ${m.name}` })
                 )
             ) || []
           )
@@ -303,7 +300,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   linkToModelPresentation(model: Model) {
     this.marks.find((ma, maI) => {
-      const idMarkModel = ma.models.findIndex(mo => mo === model);
+      const idMarkModel = ma.models.findIndex(mo => mo.mainPhoto === model.mainPhoto);
 
       if (idMarkModel !== -1) {
         this.router.navigateByUrl(`model-presentation?idMark=${maI}&idModel=${idMarkModel}`);

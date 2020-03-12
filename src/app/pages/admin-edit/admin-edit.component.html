@@ -181,6 +181,16 @@
                     </div>
                   </div>
                   <div class="model-row">
+                    <label for="mainPhotoPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}">Позиционирование фото на презентации</label>
+                    <p-dropdown
+                      [options]="mainPhotoPosition"
+                      [(ngModel)]="model.mainPhotoPosition"
+                      id="mainPhotoPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      name="mainPhotoPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      required>
+                    </p-dropdown>
+                  </div>
+                  <div class="model-row">
                     <span>Фото сверху презентации</span>
                     <span>{{model.mainPresenPhoto?.filePathFirebase}}</span>
                     <img style="width: 200px;" *ngIf="model.mainPresenPhoto && model.mainPresenPhoto.filePathFirebase" [src]="model.mainPresenPhoto.url" alt="" sizes="" srcset="">
@@ -324,7 +334,7 @@
                             </span>
 
                             <p-carousel
-                              [value]="getGalleryModulePhotos(getDesingDataType(module.data).photos)"
+                              [value]="addNullToArray(getDesingDataType(module.data).photos)"
                               [circular]="false"
                               [numVisible]="2">
                               <p-header>
@@ -380,7 +390,7 @@
                             </span>
 
                             <p-carousel
-                              [value]="getGalleryModulePhotos(getGalleryDataType(module.data).photos)"
+                              [value]="addNullToArray(getGalleryDataType(module.data).photos)"
                               [circular]="false"
                               [numVisible]="2">
                               <p-header>
@@ -409,6 +419,100 @@
                                 </div>
                               </ng-template>
                             </p-carousel>
+
+                          </ng-container>
+
+                          <ng-container *ngIf="module.type === PresModuleType.equipment">
+
+                            <span class="ui-float-label input-wifth100">
+                              <input
+                                id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-title"
+                                type="text"
+                                name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-title"
+                                [(ngModel)]="module.data.title"
+                                required
+                                pInputText>
+                              <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-title">Название блока</label>
+                            </span>
+
+                            <span class="ui-float-label input-wifth100">
+                              <input
+                                id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subTitle"
+                                type="text"
+                                name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subTitle"
+                                [(ngModel)]="module.data.subTitle"
+                                pInputText>
+                              <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subTitle">Подназвание</label>
+                            </span>
+
+                            <span class="ui-float-label input-wifth100">
+                              <input
+                                id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subSubTitle"
+                                type="text"
+                                name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subSubTitle"
+                                [(ngModel)]="getEquipmentsDataType(module.data).subSubTitle"
+                                pInputText>
+                              <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-subSubTitle">Подподназвание</label>
+                            </span>
+
+                            <div class="equipments-table">
+                              <div *ngFor="let equipment of getEquipmentsDataType(module.data).equipments; let indexMMM = index" class="equipments-table-equipment">
+                                <img
+                                  style="width: 200px;"
+                                  *ngIf="getEquipmentType(equipment).photo && getEquipmentType(equipment).photo.url"
+                                  [src]="getEquipmentType(equipment).photo?.url"
+                                  alt=""
+                                  sizes=""
+                                  srcset="">
+
+                                <div *ngIf="!getEquipmentType(equipment).photo || !getEquipmentType(equipment).photo.url" class="empty">
+                                  <span>Тут нету фотки</span>
+                                </div>
+
+                                <div class="upload-photo">
+                                  <div class="fileupload">
+                                    <input
+                                      class="originally"
+                                      type="file"
+                                      (change)="uploadPhotoToEquipmentModule($event, getEquipmentType(equipment))">
+                                  </div>
+
+                                  <div class="filechoise">
+                                    <span>Выбрать фото</span>
+                                  </div>
+                                </div>
+
+                                <span class="ui-float-label input-wifth100">
+                                  <input
+                                    id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title"
+                                    type="text"
+                                    name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title"
+                                    [(ngModel)]="getEquipmentType(equipment).title"
+                                    required
+                                    pInputText>
+                                  <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title">Заголовок</label>
+                                </span>
+
+                                <span class="ui-float-label input-wifth100">
+                                  <input
+                                    id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}--{{indexMMM + ''}}-description"
+                                    type="text"
+                                    name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-description"
+                                    [(ngModel)]="getEquipmentType(equipment).description"
+                                    required
+                                    pInputText>
+                                  <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-description">Описание</label>
+                                </span>
+
+                                <!-- <p-button
+                                  *ngIf="!!getEquipmentType(equipment).photo"
+                                  styleClass="ui-button-danger"
+                                  icon="pi pi-times"
+                                  iconPos="left"x
+                                  (click)="deletePhotosFormDesignModule(module, getEquipmentType(equipment).photo)">
+                                </p-button> -->
+                              </div>
+                            </div>
 
                           </ng-container>
 

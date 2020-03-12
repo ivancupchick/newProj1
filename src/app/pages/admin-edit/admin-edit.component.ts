@@ -11,7 +11,10 @@ import {
   PresDesignModule,
   DesignModuleData,
   GalleryModuleData,
-  EquipmentsModuleData
+  EquipmentsModuleData,
+  EquipmentsData,
+  PresEquipmentsModule,
+  MainPhotoPosition
 } from 'src/app/services/marks.service';
 import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/services/attributes.service';
 import { UploadService } from 'src/app/services/upload.service';
@@ -37,6 +40,18 @@ export class AdminEditComponent implements OnInit {
   }, {
     label: 'Оборудование',
     value: PresModuleType.equipment
+  }];
+
+  MainPhotoPosition = MainPhotoPosition;
+  mainPhotoPosition = [{
+    label: 'центр',
+    value: MainPhotoPosition.center
+  }, {
+    label: '<-',
+    value: MainPhotoPosition.left
+  }, {
+    label: '->',
+    value: MainPhotoPosition.right
   }];
 
   TypeAutoAttribute = TypeAutoAttribute;
@@ -111,6 +126,7 @@ export class AdminEditComponent implements OnInit {
         url: '',
         filePathFirebase: ''
       },
+      mainPhotoPosition: MainPhotoPosition.center,
       mainPresenPhoto: {
         url: '',
         filePathFirebase: ''
@@ -184,6 +200,13 @@ export class AdminEditComponent implements OnInit {
               url: '',
               filePathFirebase: ''
             }
+          }, {
+            title: '',
+            description: '',
+            photo: {
+              url: '',
+              filePathFirebase: ''
+            }
           }]
         };
         break;
@@ -196,7 +219,7 @@ export class AdminEditComponent implements OnInit {
     model.modulesInPres.push(moduleData);
   }
 
-  getGalleryModulePhotos(data: PhotoUrlFirebase[]): PhotoUrlFirebase[] {
+  addNullToArray(data: any[] | null): any[] {
     if (!data) {
       data = [];
     }
@@ -315,15 +338,36 @@ export class AdminEditComponent implements OnInit {
     return mark as Mark;
   }
 
-  getDesingDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): DesignModuleData {
+  getDesingDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): DesignModuleData { // TODO replace to pipe
     return data as DesignModuleData;
   }
 
-  getGalleryDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): GalleryModuleData {
+  getGalleryDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): GalleryModuleData { // TODO replace to pipe
     return data as GalleryModuleData;
   }
 
-  getEquipmentsDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): EquipmentsModuleData {
+  getEquipmentsDataType(data: DesignModuleData | GalleryModuleData | EquipmentsModuleData): EquipmentsModuleData { // TODO replace to pipe
+    if (!(data as EquipmentsModuleData).equipments) {
+      (data as EquipmentsModuleData).equipments = [];
+    }
     return data as EquipmentsModuleData;
+  }
+
+  getEquipmentType(data: EquipmentsData): EquipmentsData { // TODO replace to pipe, or not?
+    return data as EquipmentsData;
+  }
+
+  uploadPhotoToEquipmentModule(event: DragEvent, equipment: EquipmentsData) {
+    const file = (event.target as HTMLInputElement).files[0];
+    (event.target as HTMLInputElement).value = null;
+    this.uploadService.uploadPhoto(file, `uploadModulePhotos/${file.name}`)
+      .subscribe(res => {
+        if (res.url) {
+          equipment.photo = {
+            url: res.url,
+            filePathFirebase: res.filePathFirebase
+          };
+        }
+      });
   }
 }
