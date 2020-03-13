@@ -5,7 +5,6 @@ import {
   MarksService,
   MarkWithKey,
   Attribute,
-  PhotoUrlFirebase,
   PresModuleType,
   PresModule,
   PresDesignModule,
@@ -20,6 +19,7 @@ import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/ser
 import { UploadService } from 'src/app/services/upload.service';
 import { take } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
+import { PhotoUrlFirebase, UrlsService } from 'src/app/services/urls.service';
 
 @Component({
   selector: 'app-admin-edit',
@@ -82,7 +82,8 @@ export class AdminEditComponent implements OnInit {
     private attributesService: AttributesService,
     private uploadService: UploadService,
     private marksService: MarksService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private urlsService: UrlsService
   ) { }
 
   ngOnInit(): void {
@@ -131,7 +132,6 @@ export class AdminEditComponent implements OnInit {
         url: '',
         filePathFirebase: ''
       },
-      photos: [],
       comps: [],
       attributes,
       modulesInPres: []

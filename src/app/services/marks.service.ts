@@ -3,6 +3,7 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { BehaviorSubject, Observable } from 'rxjs';
 import 'firebase/database';
 import { map } from 'rxjs/operators';
+import { PhotoUrlFirebase } from './urls.service';
 
 export interface Attribute {
   name: string;
@@ -14,11 +15,6 @@ export interface Attribute {
 interface Comp { // TODO!
   name: string;
   description: string;
-}
-
-export interface PhotoUrlFirebase {
-  url: string;
-  filePathFirebase: string;
 }
 
 export interface DesignModuleData {
@@ -85,7 +81,6 @@ export interface Model {
   mainPhotoPosition: MainPhotoPosition;
   mainPhoto: PhotoUrlFirebase;
   mainPresenPhoto: PhotoUrlFirebase;
-  photos: PhotoUrlFirebase[];
   comps: Comp[];
   attributes: Attribute[];
   modulesInPres: PresModule[];
