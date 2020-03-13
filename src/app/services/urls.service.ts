@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { DataService } from './data.service';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 export interface PhotoUrlFirebase {
   url: string;
@@ -46,7 +46,7 @@ export class UrlsService {
       result[path[0]] = [];
     }
 
-    if (!Array.isArray(result[path[0]]) || !result[path[0]].find(fn => fn.filePathFirebase === photo.filePathFirebase) && photo.url) {
+    if (!result[path[0]].find(fn => fn.filePathFirebase === photo.filePathFirebase) && photo.url) {
       result[path[0]].push(photo);
 
       return this.dataService.setData(this.nameOfData, result)
@@ -54,11 +54,12 @@ export class UrlsService {
           tap(
             r => console.log(r),
             err => console.log(err)
-          )
+          ),
+          map(r => true)
         );
+    } else {
+      return of(true);
     }
-
-    return of<void>();
   }
 
   // setUrls(urls: Folders) { // TODO!!! danger method

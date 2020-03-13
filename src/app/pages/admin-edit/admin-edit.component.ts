@@ -248,32 +248,45 @@ export class AdminEditComponent implements OnInit {
       });
   }
 
-  uploadMainPhotoForModel(event: any, model: Model) {
-    const file = event.target.files[0];
-    this.uploadService.uploadPhoto(file, `uploadModelMainPhoto/${file.name}`)
-      .subscribe(res => {
-        if (res.url) {
-          if (!model.mainPhoto) {
-            model.mainPhoto = {} as PhotoUrlFirebase;
-          }
-          model.mainPhoto.url = res.url;
-          model.mainPhoto.filePathFirebase = res.filePathFirebase;
-        }
-      });
+  uploadMainPhotoForModel(photo: PhotoUrlFirebase, model: Model) {
+    if (!photo) {
+      return;
+    }
+
+    if (!model.mainPhoto) {
+      model.mainPhoto = {} as PhotoUrlFirebase;
+    }
+    model.mainPhoto = Object.assign({}, photo);
   }
 
-  uploadMainPresenPhotoForModel(event: any, model: Model) {
-    const file = event.target.files[0];
-    this.uploadService.uploadPhoto(file, `uploadModelMainPresentationPhoto/${file.name}`)
-      .subscribe(res => {
-        if (res.url) {
-          if (!model.mainPresenPhoto) {
-            model.mainPresenPhoto = {} as PhotoUrlFirebase;
-          }
-          model.mainPresenPhoto.url = res.url;
-          model.mainPresenPhoto.filePathFirebase = res.filePathFirebase;
-        }
-      });
+  deletePhotoFromModel(e: boolean, model: Model) {
+    if (e) {
+      model.mainPhoto = {
+        url: '',
+        filePathFirebase: ''
+      };
+    }
+  }
+
+  uploadMainPresenPhotoForModel(photo: PhotoUrlFirebase, model: Model) {
+    if (!photo) {
+      return;
+    }
+
+    if (!model.mainPresenPhoto) {
+      model.mainPresenPhoto = {} as PhotoUrlFirebase;
+    }
+
+    model.mainPresenPhoto = Object.assign({}, photo);
+  }
+
+  deleteMainPresenPhotoForModel(e: boolean, model: Model) {
+    if (e) {
+      model.mainPresenPhoto = {
+        url: '',
+        filePathFirebase: ''
+      };
+    }
   }
 
   createAttributes() {

@@ -56,6 +56,7 @@ import { GalleryModuleComponent } from './pages/model-presentation/gallery-modul
 import { EquipmentModuleComponent } from './pages/model-presentation/equipment-module/equipment-module.component';
 import { DataService } from './services/data.service';
 import { UrlsService } from './services/urls.service';
+import { UploadPhotoComponent } from './pages/admin-edit/upload-photo/upload-photo.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { UrlsService } from './services/urls.service';
     ModelPresentationComponent,
     DesignModuleComponent,
     GalleryModuleComponent,
-    EquipmentModuleComponent
+    EquipmentModuleComponent,
+    UploadPhotoComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

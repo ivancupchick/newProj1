@@ -1,0 +1,22 @@
+<img *ngIf="photo && photo.url" [src]="photo.url" alt="" sizes="" srcset="">
+
+<div class="buttons">
+  <div class="fileupload">
+    <input
+      class="originally"
+      type="file"
+      (change)="uploadPhoto($event)">
+  </div>
+
+  <div
+    class="filechoise"
+    (click)="choosePhoto($event)">
+    <span>Выбрать фото</span>
+  </div>
+
+  <div
+    class="deletePhoto"
+    (click)="deletePhoto($event)">
+    <span>Удалить фото</span>
+  </div>
+</div>
