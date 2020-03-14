@@ -177,18 +177,28 @@
                     </app-upload-photo>
                   </div>
                   <div class="model-row">
-                    <label for="mainPhotoPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}">Позиционирование фото на презентации</label>
+                    <label for="presPhotoHorizontalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}">Позиция фото по горизонтали </label>
                     <p-dropdown
-                      [options]="mainPhotoPosition"
-                      [(ngModel)]="model.mainPhotoPosition"
-                      id="mainPhotoPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
-                      name="mainPhotoPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      [options]="horizontalPosition"
+                      [(ngModel)]="model.presPhotoHorizontalPosition"
+                      id="presPhotoHorizontalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      name="presPhotoHorizontalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      required>
+                    </p-dropdown>
+                    <label for="presPhotoVerticalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}">По вертикали </label>
+                    <p-dropdown
+                      [options]="verticalPosition"
+                      [(ngModel)]="model.presPhotoVerticalPosition"
+                      id="presPhotoVerticalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
+                      name="presPhotoVerticalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
                       required>
                     </p-dropdown>
                   </div>
                   <div class="model-row">
                     <span>Фото сверху презентации</span>
                     <app-upload-photo
+                      [horisontal]="model.presPhotoHorizontalPosition"
+                      [vertical]="model.presPhotoVerticalPosition"
                       [photo]="model.mainPresenPhoto"
                       [folderName]="'uploadModelMainPresentationPhoto'"
                       (upload)="uploadMainPresenPhotoForModel($event, model)"

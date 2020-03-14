@@ -50,10 +50,16 @@ export enum PresModuleType {
   equipment = 'equipment'
 }
 
-export enum MainPhotoPosition {
+export enum HorizontalPosition {
   center = 'center',
   right = 'right',
   left = 'left'
+}
+
+export enum VerticalPosition {
+  center = 'center',
+  top = 'top',
+  bottom = 'bottom'
 }
 
 export interface PresDesignModule {
@@ -78,7 +84,8 @@ export type PresModule = PresDesignModule |
 export interface Model {
   name: string;
   description: string;
-  mainPhotoPosition: MainPhotoPosition;
+  presPhotoHorizontalPosition: HorizontalPosition;
+  presPhotoVerticalPosition: VerticalPosition;
   mainPhoto: PhotoUrlFirebase;
   mainPresenPhoto: PhotoUrlFirebase;
   comps: Comp[];
@@ -118,7 +125,13 @@ export class MarksService {
         map(m => {
           m.forEach(mm => {
             mm.payload.val().models.forEach(mmm => {
-              mmm.mainPhotoPosition = mmm.mainPhotoPosition || MainPhotoPosition.center;
+              if ((mmm as any).mainPhotoPosition) {
+                mmm.presPhotoHorizontalPosition = (mmm as any).mainPhotoPosition;
+                delete (mmm as any).mainPhotoPosition;
+              }
+
+              mmm.presPhotoHorizontalPosition = mmm.presPhotoHorizontalPosition || HorizontalPosition.center;
+              mmm.presPhotoVerticalPosition = mmm.presPhotoVerticalPosition || VerticalPosition.center;
             });
           });
           return m;

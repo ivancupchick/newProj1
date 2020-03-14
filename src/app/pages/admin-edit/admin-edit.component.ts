@@ -13,7 +13,8 @@ import {
   EquipmentsModuleData,
   EquipmentsData,
   PresEquipmentsModule,
-  MainPhotoPosition
+  HorizontalPosition as HorizontalPosition,
+  VerticalPosition
 } from 'src/app/services/marks.service';
 import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/services/attributes.service';
 import { UploadService } from 'src/app/services/upload.service';
@@ -42,16 +43,27 @@ export class AdminEditComponent implements OnInit {
     value: PresModuleType.equipment
   }];
 
-  MainPhotoPosition = MainPhotoPosition;
-  mainPhotoPosition = [{
-    label: 'центр',
-    value: MainPhotoPosition.center
+  HorizontalPosition = HorizontalPosition;
+  horizontalPosition = [{
+    label: 'По центру',
+    value: HorizontalPosition.center
   }, {
-    label: '<-',
-    value: MainPhotoPosition.left
+    label: 'Слева',
+    value: HorizontalPosition.left
   }, {
-    label: '->',
-    value: MainPhotoPosition.right
+    label: 'Справа',
+    value: HorizontalPosition.right
+  }];
+  VerticalPosition = VerticalPosition;
+  verticalPosition = [{
+    label: 'По центру',
+    value: VerticalPosition.center
+  }, {
+    label: 'Сверху',
+    value: VerticalPosition.top
+  }, {
+    label: 'Снизу',
+    value: VerticalPosition.bottom
   }];
 
   TypeAutoAttribute = TypeAutoAttribute;
@@ -127,7 +139,8 @@ export class AdminEditComponent implements OnInit {
         url: '',
         filePathFirebase: ''
       },
-      mainPhotoPosition: MainPhotoPosition.center,
+      presPhotoHorizontalPosition: HorizontalPosition.center,
+      presPhotoVerticalPosition: VerticalPosition.center,
       mainPresenPhoto: {
         url: '',
         filePathFirebase: ''

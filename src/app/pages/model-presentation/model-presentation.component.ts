@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Mark, Model, MarksService, PresModule, PresModuleType } from 'src/app/services/marks.service';
 
@@ -13,9 +13,13 @@ export class ModelPresentationComponent implements OnInit {
   model: Model;
   price: string;
 
+  objectPosition: 'center';
+
   modules: PresModule[];
 
-  constructor(private route: ActivatedRoute, private marksService: MarksService) { }
+  @ViewChild('image', { static: true }) imageRef: ElementRef;
+
+  constructor(private route: ActivatedRoute, private marksService: MarksService, private renderer: Renderer2) { }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
@@ -35,10 +39,14 @@ export class ModelPresentationComponent implements OnInit {
 
         const marks = marksWithKey.map(m => m.mark);
         this.mark = marks.find((m, i) => i === markId);
-        console.log(this.mark);
 
         this.model = this.mark.models.find((m, i) => i === modelId);
-        console.log(this.model);
+
+        this.renderer.setStyle(
+          this.imageRef.nativeElement,
+          'object-position',
+          `${this.model.presPhotoHorizontalPosition} ${this.model.presPhotoVerticalPosition}`
+        );
 
         const priveObj = this.model.attributes.find(a => a.name === 'Стоимость');
 

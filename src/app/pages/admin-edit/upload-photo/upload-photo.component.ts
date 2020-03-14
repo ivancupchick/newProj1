@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { PhotoUrlFirebase } from 'src/app/services/urls.service';
 import { UploadService } from 'src/app/services/upload.service';
+import { HorizontalPosition, VerticalPosition } from 'src/app/services/marks.service';
 
 @Component({
   selector: 'app-upload-photo',
@@ -11,12 +12,46 @@ export class UploadPhotoComponent implements OnInit {
   @Input() folderName = 'shared';
   @Input() photo: PhotoUrlFirebase = null;
 
+  private horizontalPosition: HorizontalPosition;
+  @Input() set horisontal(value: HorizontalPosition) {
+    this.horizontalPosition = value;
+
+    this.setProperties();
+  }
+
+  private verticalPosition: VerticalPosition;
+  @Input() set vertical(value: VerticalPosition) {
+    this.verticalPosition = value;
+
+    this.setProperties();
+  }
+
+  @ViewChild('image', { static: true }) imageRef: ElementRef;
+
   @Output() upload: EventEmitter<PhotoUrlFirebase> = new EventEmitter<PhotoUrlFirebase>();
   @Output() delete: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private uploadService: UploadService) { }
+  constructor(private uploadService: UploadService, private rootElem: ElementRef, private renderer: Renderer2) { }
 
   ngOnInit(): void {
+  }
+
+  setProperties() {
+    if (this.horizontalPosition && this.verticalPosition && this.imageRef) {
+      this.renderer.setStyle(
+        this.imageRef.nativeElement,
+        'object-position',
+        `${this.horizontalPosition} ${this.verticalPosition}`
+      );
+      this.renderer.setStyle(
+        this.imageRef.nativeElement,
+        'object-fit',
+        `cover`
+      );
+
+      this.renderer.setStyle(this.rootElem.nativeElement, 'width', `640px`);
+      this.renderer.setStyle(this.rootElem.nativeElement, 'height', `200px`);
+    }
   }
 
   uploadPhoto(event: any) {
