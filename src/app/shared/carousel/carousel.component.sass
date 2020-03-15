@@ -1,0 +1,70 @@
+// .animated
+//    -webkit-animation-duration: 1s
+//    animation-duration: 1s
+//    -webkit-animation-fill-mode: both
+//    animation-fill-mode: both
+
+// @-webkit-keyframes fadeIn
+//   0%
+//     opacity: 0
+//   100%
+//     opacity: 1
+
+// @keyframes fadeIn
+//   0%
+//     opacity: 0
+//   100%
+//     opacity: 1
+
+// .fadeIn
+//   -webkit-animation-name: fadeIn
+//   animation-name: fadeIn
+
+carousel.slide-animated
+  &-right
+    slide.item
+      animation-duration: 1s
+      animation-fill-mode: both
+      &.active
+        width: 100%
+        animation-name: carouselSlideIn-right
+
+      &:not(.active)
+        display: table-cell
+        animation-name: carouselSlideOut-right
+
+  &-left
+    slide.item
+      animation-duration: 1s
+      animation-fill-mode: both
+      &.active
+        width: 100%
+        animation-name: carouselSlideIn-left
+
+      &:not(.active)
+        display: table-cell
+        animation-name: carouselSlideOut-left
+
+@keyframes carouselSlideIn-right
+  0%
+    transform: translateX(100%)
+  100%
+    transform: translateX(0)
+
+@keyframes carouselSlideOut-right
+  0%
+    transform: translateX(0)
+  100%
+    transform: translateX(-100%)
+
+@keyframes carouselSlideIn-left
+  0%
+    transform: translateX(-100%)
+  100%
+    transform: translateX(0)
+
+@keyframes carouselSlideOut-left
+  0%
+    transform: translateX(0)
+  100%
+    transform: translateX(100%)
