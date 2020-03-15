@@ -1,1 +1,23 @@
-<p>equipment-module works!</p>
+<div class="mwrapper">
+  <h3 class="mwrapper-title">
+    {{ moduleData.title }}
+  </h3>
+  <h3 *ngIf="moduleData.subTitle && moduleData.subTitle !== ' '" class="mwrapper-subTitle">
+    {{ moduleData.subTitle }}
+  </h3>
+  <h3 *ngIf="moduleData.subSubTitle && moduleData.subSubTitle !== ' '" class="mwrapper-subSubTitle">
+    {{ moduleData.subSubTitle }}
+  </h3>
+
+  <div class="mwrapper-content">
+    <div *ngFor="let equiment of moduleData.equipments" class="mwrapper-content-item">
+      <div class="mwrapper-content-item-image">
+        <img [src]="equiment?.photo?.url" alt="" srcset="">
+      </div>
+      <h3 class="mwrapper-content-item-title">
+        {{ equiment.title }}
+      </h3>
+      <p class="mwrapper-content-item-description" [innerHTML]="equiment.description"></p>
+    </div>
+  </div>
+</div>

@@ -1,35 +1,13 @@
 <div class="main-content">
-  <carousel>
-    <slide class="animated fadeIn">
-      <img src="../../../assets/main/carusel/i-1-lg.jpg" alt="first slide" style="display: block; width: 100%;">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>First slide label</h3>
-        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-      </div>
-    </slide>
-    <slide class="animated fadeIn">
-      <img src="../../../assets/main/carusel/i-2-lg.jpg" alt="second slide" style="display: block; width: 100%;">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>Second slide label</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </div>
-    </slide>
-    <slide class="animated fadeIn">
-      <img src="../../../assets/main/carusel/i-3-lg.jpg" alt="third slide" style="display: block; width: 100%;">
+  <app-carousel [items]="topSliders">
+    <ng-template let-topSlide>
+      <img [src]="topSlide.image.link" [alt]="topSlide.image.alt" style="display: block; width: 100%;">
       <div class="carousel-caption d-none d-md-block">
         <h3>Third slide label</h3>
         <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
       </div>
-    </slide>
-    <slide class="animated fadeIn">
-      <img src="../../../assets/main/carusel/i-4-lg.jpg" alt="third slide" style="display: block; width: 100%;">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>Third slide label</h3>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-      </div>
-    </slide>
-  </carousel>
-  <br>
+    </ng-template>
+  </app-carousel>
 
   <div class="container">
     <tabset class="type-tabs">

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireObject, AngularFireDatabase } from '@angular/fire/database';
 import 'firebase/database';
-import { BehaviorSubject, Observable, from } from 'rxjs';
+import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 interface Data {
@@ -26,11 +26,17 @@ export class DataService {
 
   setData(name: string, value: any) {
     const obj = this.dataBSubj.getValue();
+    if (!obj) {
+      return of(false);
+    }
+
     obj[name] = value;
 
     return from(
       this.dataRef
         .set(obj)
+      ).pipe(
+        map(() => true)
       );
   }
 

@@ -52,10 +52,8 @@ export class UrlsService {
       return this.dataService.setData(this.nameOfData, result)
         .pipe(
           tap(
-            r => console.log(r),
-            err => console.log(err)
-          ),
-          map(r => true)
+            r => console.log(r)
+          )
         );
     } else {
       return of(true);

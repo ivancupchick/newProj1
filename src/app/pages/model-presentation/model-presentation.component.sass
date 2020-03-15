@@ -26,7 +26,6 @@
       display: flex
       flex-direction: column
       font-size: 1.5rem
-      // span:first-child
 
       .cost
         font-weight: 700
@@ -37,8 +36,20 @@
           &.ui-button-text, &.ui-button-icon-right
             font-size: 1.3rem
 
-        // padding: 20px
-        // background: bl
-
       button + button
         margin-left: 15px
+  .module
+    &-wrapper
+      & > *::ng-deep
+        & > div
+          padding-top: 20px
+          // padding-bottom: 15px
+
+      & > *
+        &::after
+          border-top: 3px solid #fc3
+          width: 35%
+          display: block
+          content: ''
+          height: 1px
+          margin: 50px auto 20px

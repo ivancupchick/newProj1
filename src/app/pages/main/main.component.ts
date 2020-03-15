@@ -1,10 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { MarksService, Mark, Model } from 'src/app/services/marks.service';
 import { Router } from '@angular/router';
 
 interface ModelsTab {
   title: string;
   models: Model[];
+}
+
+interface TopSlide {
+  image: {
+    link: string;
+    alt: string;
+  };
 }
 
 @Component({
@@ -14,6 +21,28 @@ interface ModelsTab {
 })
 export class MainComponent implements OnInit {
   marks: Mark[];
+
+  topSliders: TopSlide[] = [{
+    image: {
+      link: '../../../assets/main/carusel/i-1-lg.jpg',
+      alt: 'first slide'
+    }
+  }, {
+    image: {
+      link: '../../../assets/main/carusel/i-2-lg.jpg',
+      alt: 'second slide'
+    }
+  }, {
+    image: {
+      link: '../../../assets/main/carusel/i-3-lg.jpg',
+      alt: 'third slide'
+    }
+  }, {
+    image: {
+      link: '../../../assets/main/carusel/i-4-lg.jpg',
+      alt: 'fourth slide'
+    }
+  }];
 
   tabs: ModelsTab[] = [{
     title: 'Кроссоверы', models: []
