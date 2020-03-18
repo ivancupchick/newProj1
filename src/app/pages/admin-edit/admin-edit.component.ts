@@ -111,6 +111,21 @@ export class AdminEditComponent implements OnInit {
     });
   }
 
+  addEmptyEqupmentToModule(module: EquipmentsModuleData) {
+    module.equipments.push({
+      title: '',
+      description: '',
+      photo: {
+        url: '',
+        filePathFirebase: ''
+      }
+    });
+  }
+
+  deleteEquipmentFromModule(module: EquipmentsModuleData, equipment: EquipmentsData) {
+    module.equipments = module.equipments.filter(me => me !== equipment);
+  }
+
   isSelectableAttribute(attribute: Attribute) {
     const attributeObj = this.attributes.find(a => a.name === attribute.name);
 

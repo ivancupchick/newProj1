@@ -425,6 +425,17 @@
                           </ng-container>
 
                           <ng-container *ngIf="module.type === PresModuleType.equipment">
+                            <p-toolbar>
+                              <div class="ui-toolbar-group-left">
+                                <button
+                                  (click)="addEmptyEqupmentToModule(module.data)"
+                                  pButton
+                                  type="button"
+                                  label="Добавить элемент"
+                                  icon="pi pi-plus">
+                                </button>
+                              </div>
+                            </p-toolbar>
 
                             <span class="ui-float-label input-wifth100">
                               <input
@@ -497,22 +508,21 @@
 
                                 <span class="ui-float-label input-wifth100">
                                   <input
-                                    id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}--{{indexMMM + ''}}-description"
+                                    id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description"
                                     type="text"
-                                    name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-description"
+                                    name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description"
                                     [(ngModel)]="getEquipmentType(equipment).description"
                                     required
                                     pInputText>
-                                  <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-description">Описание</label>
+                                  <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description">Описание</label>
                                 </span>
 
-                                <!-- <p-button
-                                  *ngIf="!!getEquipmentType(equipment).photo"
+                                <p-button
                                   styleClass="ui-button-danger"
                                   icon="pi pi-times"
-                                  iconPos="left"x
-                                  (click)="deletePhotosFormDesignModule(module, getEquipmentType(equipment).photo)">
-                                </p-button> -->
+                                  iconPos="left"
+                                  (click)="deleteEquipmentFromModule(module.data, equipment)">
+                                </p-button>
                               </div>
                             </div>
 

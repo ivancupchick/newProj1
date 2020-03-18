@@ -6,7 +6,7 @@ import { Component, OnInit, ElementRef, ViewChild, Renderer2, Input, ContentChil
   styleUrls: ['./carousel.component.sass']
 })
 export class CarouselComponent implements OnInit {
-  currentSlideIndex = 2;
+  currentSlideIndex = 0;
 
   @Input() items: any[];
 
