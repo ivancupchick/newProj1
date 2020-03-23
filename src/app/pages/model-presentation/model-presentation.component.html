@@ -21,7 +21,8 @@
         class="ui-button-warning">
       </button>
       <button
-        (click)="null"
+        [disabled]="!model?.priseList?.url"
+        (click)="openInNewTab(model.priseList.url)"
         pButton
         type="button"
         label="Скачать прайс"
@@ -32,11 +33,38 @@
     </div>
   </div>
 
-  <div class="module" *ngIf="model">
-    <div *ngFor="let module of model.modulesInPres" class="module-wrapper">
+  <div class="modules" *ngIf="model">
+    <div *ngFor="let module of model.modulesInPres" class="modules-wrapper">
       <app-design-module *ngIf="module.type === PresModuleType.design" [moduleData]="module.data"></app-design-module>
       <app-gallery-module *ngIf="module.type === PresModuleType.gallery" [moduleData]="module.data"></app-gallery-module>
       <app-equipment-module *ngIf="module.type === PresModuleType.equipment" [moduleData]="module.data"></app-equipment-module>
     </div>
   </div>
+  <div class="footer">
+    <h3 class="footer-title">Готов испытать <span class="footer-title-markName">{{mark?.name}}</span>&nbsp;<span class="footer-title-modelName">{{model?.name}}</span></h3>
+    <div class="footer-buttons">
+      <button
+        type="button"
+        class="footer-buttons-item"
+        [disabled]="!model?.priseList?.url"
+        (click)="openInNewTab(model.priseList.url)"
+      >
+        <i class="pi pi-download"></i>
+        <span>Скачать прайс-list</span>
+      </button>
+
+      <button type="button" class="footer-buttons-item">
+        <i class="pi pi-key"></i>
+        <span>Вторая кнопка</span>
+      </button>
+
+      <button type="button" class="footer-buttons-item">
+        <i class="pi pi-check-square"></i>
+        <span>Третья кнопка</span>
+      </button>
+    </div>
+  </div>
+
+  <p style="padding: 20px;">Фотографии моделей автомобилей и аксессуаров, представленные на сайте, предназначены только для ознакомления. Цвета и некоторые внешние или внутренние элементы могут отличаться от реальных. Технические параметры, оборудование, цены и технические характеристики транспортных средств, а также цены на запчасти и аксессуары, а также стоимость обслуживания, могут изменяться и обновляться. Информация, представленная на сайте, не является коммерческим предложением, а также не является приглашением к переговорам. Индивидуальное соглашение о свойствах, технических характеристиках и ценах транспортного средства, запасных частей или аксессуаров, а также времени и метода доставки предусмотрено в договоре, заключенном с авторизованными партнерами.</p>
+
 </div>

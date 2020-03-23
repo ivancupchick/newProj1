@@ -64,4 +64,7 @@ export class ModelPresentationComponent implements OnInit {
     });
   }
 
+  openInNewTab(url: string) {
+    window.open(url, '_blank');
+  }
 }
