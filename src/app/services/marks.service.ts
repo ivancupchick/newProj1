@@ -3,7 +3,7 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { BehaviorSubject, Observable } from 'rxjs';
 import 'firebase/database';
 import { map } from 'rxjs/operators';
-import { PhotoUrlFirebase } from './urls.service';
+import { FileUrlFirebase } from './urls.service';
 
 export interface Attribute {
   name: string;
@@ -22,19 +22,19 @@ export interface DesignModuleData {
   subTitle: string;
   descriptionTitle: string;
   descriptionText: string;
-  photos: PhotoUrlFirebase[];
+  photos: FileUrlFirebase[];
 }
 
 export interface GalleryModuleData {
   title: string;
   subTitle: string;
-  photos: PhotoUrlFirebase[];
+  photos: FileUrlFirebase[];
 }
 
 export interface EquipmentsData {
   title: string;
   description: string;
-  photo: PhotoUrlFirebase;
+  photo: FileUrlFirebase;
 }
 
 export interface EquipmentsModuleData { //
@@ -86,11 +86,12 @@ export interface Model {
   description: string;
   presPhotoHorizontalPosition: HorizontalPosition;
   presPhotoVerticalPosition: VerticalPosition;
-  mainPhoto: PhotoUrlFirebase;
-  mainPresenPhoto: PhotoUrlFirebase;
+  mainPhoto: FileUrlFirebase;
+  mainPresenPhoto: FileUrlFirebase;
   comps: Comp[];
   attributes: Attribute[];
   modulesInPres: PresModule[];
+  priseList: FileUrlFirebase;
 }
 
 export interface Mark {
@@ -132,6 +133,10 @@ export class MarksService {
 
               mmm.presPhotoHorizontalPosition = mmm.presPhotoHorizontalPosition || HorizontalPosition.center;
               mmm.presPhotoVerticalPosition = mmm.presPhotoVerticalPosition || VerticalPosition.center;
+
+              if (!mmm.priseList) {
+                mmm.priseList = { url: '', filePathFirebase: '' };
+              }
             });
           });
           return m;

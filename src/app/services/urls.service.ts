@@ -3,13 +3,13 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { DataService } from './data.service';
 import { tap, map } from 'rxjs/operators';
 
-export interface PhotoUrlFirebase {
+export interface FileUrlFirebase {
   url: string;
   filePathFirebase: string;
 }
 
 interface Folders {
-  [name: string]: PhotoUrlFirebase[]; // | Folders;
+  [name: string]: FileUrlFirebase[]; // | Folders;
 }
 
 @Injectable({
@@ -24,7 +24,7 @@ export class UrlsService {
       .subscribe(att => this.foldersSubj.next(att ? att : []));
   }
 
-  addUrl(photo: PhotoUrlFirebase) {
+  addUrl(photo: FileUrlFirebase) {
     if (!photo || !photo.url || !photo.filePathFirebase) {
       return throwError('Url is empty');
     }

@@ -20,7 +20,7 @@ import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/ser
 import { UploadService } from 'src/app/services/upload.service';
 import { take } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
-import { PhotoUrlFirebase, UrlsService } from 'src/app/services/urls.service';
+import { FileUrlFirebase, UrlsService } from 'src/app/services/urls.service';
 
 @Component({
   selector: 'app-admin-edit',
@@ -162,7 +162,11 @@ export class AdminEditComponent implements OnInit {
       },
       comps: [],
       attributes,
-      modulesInPres: []
+      modulesInPres: [],
+      priseList: {
+        url: '',
+        filePathFirebase: ''
+      }
     });
   }
 
@@ -254,7 +258,7 @@ export class AdminEditComponent implements OnInit {
     return [null, ...data];
   }
 
-  deletePhotosFormDesignModule(presModule: PresDesignModule, photo: PhotoUrlFirebase) {
+  deletePhotosFormDesignModule(presModule: PresDesignModule, photo: FileUrlFirebase) {
     presModule.data.photos = presModule.data.photos.filter(p => p !== photo);
   }
 
@@ -276,13 +280,13 @@ export class AdminEditComponent implements OnInit {
       });
   }
 
-  uploadMainPhotoForModel(photo: PhotoUrlFirebase, model: Model) {
+  uploadMainPhotoForModel(photo: FileUrlFirebase, model: Model) {
     if (!photo) {
       return;
     }
 
     if (!model.mainPhoto) {
-      model.mainPhoto = {} as PhotoUrlFirebase;
+      model.mainPhoto = {} as FileUrlFirebase;
     }
     model.mainPhoto = Object.assign({}, photo);
   }
@@ -296,13 +300,13 @@ export class AdminEditComponent implements OnInit {
     }
   }
 
-  uploadMainPresenPhotoForModel(photo: PhotoUrlFirebase, model: Model) {
+  uploadMainPresenPhotoForModel(photo: FileUrlFirebase, model: Model) {
     if (!photo) {
       return;
     }
 
     if (!model.mainPresenPhoto) {
-      model.mainPresenPhoto = {} as PhotoUrlFirebase;
+      model.mainPresenPhoto = {} as FileUrlFirebase;
     }
 
     model.mainPresenPhoto = Object.assign({}, photo);
@@ -410,5 +414,43 @@ export class AdminEditComponent implements OnInit {
           };
         }
       });
+  }
+
+
+
+
+
+
+
+  /*
+
+  Prise list
+
+  */
+  checkPriseList(urlFire: FileUrlFirebase) {
+    window.open(urlFire.url, '_blank');
+  }
+
+  uploadPriseList(event: any, model: Model) {
+    const folderName = 'uploadModelPriseList';
+    const file = event.target.files[0];
+    this.uploadService.uploadPhoto(file, `${folderName}/${file.name}`)
+      .subscribe(res => {
+        if (res.url) {
+          model.priseList = {
+            url: res.url,
+            filePathFirebase: res.filePathFirebase
+          };
+        }
+      }, err => {
+        console.log(err);
+      });
+  }
+
+  deletePriseList(model: Model) {
+    model.priseList = {
+      url: '',
+      filePathFirebase: ''
+    };
   }
 }

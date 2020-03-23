@@ -205,6 +205,22 @@
                       (delete)="deleteMainPresenPhotoForModel($event, model)">
                     </app-upload-photo>
                   </div>
+
+                  <div class="model-row">
+                    <span>Прайслист</span>
+                    <span *ngIf="!model.priseList?.url">Прайлист не загружен</span>
+                    <button type="button" (click)="checkPriseList(model.priseList)" *ngIf="model.priseList?.url">Посмотреть прайс</button>
+                    <button type="button" (click)="deletePriseList(model)" *ngIf="model.priseList?.url">Удалить прайслист</button>
+                    <div class="fileupload">
+                      <input
+                        class="originally"
+                        type="file"
+                        (change)="uploadPriseList($event, model)"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- ATTRIBUTES -->
                   <div class="model-row">
                     <span>Аттрибиты</span>
                     <div class="table-attributes">
@@ -247,6 +263,7 @@
                     </div>
                   </div>
 
+                  <!-- MODULES -->
                   <div class="model-row-big">
                     <span>Модули</span>
 

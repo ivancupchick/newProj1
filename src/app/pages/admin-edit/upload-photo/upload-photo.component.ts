@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { PhotoUrlFirebase } from 'src/app/services/urls.service';
+import { FileUrlFirebase } from 'src/app/services/urls.service';
 import { UploadService } from 'src/app/services/upload.service';
 import { HorizontalPosition, VerticalPosition } from 'src/app/services/marks.service';
 
@@ -10,7 +10,7 @@ import { HorizontalPosition, VerticalPosition } from 'src/app/services/marks.ser
 })
 export class UploadPhotoComponent implements OnInit {
   @Input() folderName = 'shared';
-  @Input() photo: PhotoUrlFirebase = null;
+  @Input() photo: FileUrlFirebase = null;
 
   private horizontalPosition: HorizontalPosition;
   @Input() set horisontal(value: HorizontalPosition) {
@@ -28,7 +28,7 @@ export class UploadPhotoComponent implements OnInit {
 
   @ViewChild('image', { static: true }) imageRef: ElementRef;
 
-  @Output() upload: EventEmitter<PhotoUrlFirebase> = new EventEmitter<PhotoUrlFirebase>();
+  @Output() upload: EventEmitter<FileUrlFirebase> = new EventEmitter<FileUrlFirebase>();
   @Output() delete: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private uploadService: UploadService, private rootElem: ElementRef, private renderer: Renderer2) { }
