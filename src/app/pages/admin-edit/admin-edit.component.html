@@ -550,6 +550,163 @@
                     </div>
 
                   </div>
+
+                  <!-- COMPS -->
+                  <div class="model-row-bug">
+                    <span>Комплектации</span>
+
+                    <p-toolbar>
+                      <div class="ui-toolbar-group-left">
+                        <!-- <form #formCreateMuduleData='ngForm'> -->
+                          <!-- [disabled]="!formCreateMuduleData.valid" -->
+                          <button
+                            (click)="addCompToModel(model)"
+                            pButton
+                            type="button"
+                            label="Добавить комплектацию"
+                            icon="pi pi-plus">
+                          </button>
+                          <!-- <p-dropdown
+                            [options]="presModuleType"
+                            name="type"
+                            id="type"
+                            ngModel
+                            required>
+                          </p-dropdown> -->
+                        <!-- </form> -->
+                      </div>
+                    </p-toolbar>
+
+                    <div class="comps-table">
+                      <div *ngFor="let comp of model.comps; let indexMM = index" class="comps-table-comp">
+                        <span class="ui-float-label input-wifth100">
+                          <input
+                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name"
+                            type="text"
+                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name"
+                            [(ngModel)]="comp.name"
+                            required
+                            pInputText>
+                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name">Название комплектации</label>
+                        </span>
+
+                        <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-fuel">Тип мотора</label>
+                        <p-dropdown
+                          [options]="fuelEnum"
+                          [(ngModel)]="comp.fuel"
+                          id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-fuel"
+                          name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-fuel"
+                          required>
+                        </p-dropdown>
+
+                        <span class="ui-float-label input-wifth100">
+                          <input
+                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-engine"
+                            type="text"
+                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-engine"
+                            [(ngModel)]="comp.engine"
+                            required
+                            pInputText>
+                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-engine">Объём мотора, .</label>
+                        </span>
+
+                        <span class="ui-float-label input-wifth100">
+                          <input
+                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-hp"
+                            type="text"
+                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-hp"
+                            [(ngModel)]="comp.hp"
+                            required
+                            pInputText>
+                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-hp">Лошадиные силы, л.с.</label>
+                        </span>
+
+                        <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-transmission">Трансмиссия</label>
+                        <p-dropdown
+                          [options]="transmissionEnum"
+                          [(ngModel)]="comp.transmission"
+                          id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-transmission"
+                          name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-transmission"
+                          required>
+                        </p-dropdown>
+
+                        <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-drivetrain">Привод</label>
+                        <p-dropdown
+                          [options]="drivetrainEnum"
+                          [(ngModel)]="comp.drivetrain"
+                          id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-drivetrain"
+                          name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-drivetrain"
+                          required>
+                        </p-dropdown>
+
+                        <!-- <span class="ui-float-label input-wifth100"> -->
+                          <!-- <input
+                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name"
+                            type="text"
+                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name"
+                            [(ngModel)]="comp."
+                            required
+                            pInputText>
+                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name">Описание</label> -->
+
+                          <!-- <p-dropdown [options]="cities2" [(ngModel)]="selectedCity2" optionLabel="name"></p-dropdown>
+                        </span> -->
+                        <!-- <img
+                          style="width: 200px;"
+                          *ngIf="getEquipmentType(equipment).photo && getEquipmentType(equipment).photo.url"
+                          [src]="getEquipmentType(equipment).photo?.url"
+                          alt=""
+                          sizes=""
+                          srcset="">
+
+                        <div *ngIf="!getEquipmentType(equipment).photo || !getEquipmentType(equipment).photo.url" class="empty">
+                          <span>Тут нету фотки</span>
+                        </div>
+
+                        <div class="upload-photo">
+                          <div class="fileupload">
+                            <input
+                              class="originally"
+                              type="file"
+                              (change)="uploadPhotoToEquipmentModule($event, getEquipmentType(equipment))">
+                          </div>
+
+                          <div class="filechoise">
+                            <span>Выбрать фото</span>
+                          </div>
+                        </div>
+
+                        <span class="ui-float-label input-wifth100">
+                          <input
+                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title"
+                            type="text"
+                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title"
+                            [(ngModel)]="getEquipmentType(equipment).title"
+                            required
+                            pInputText>
+                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title">Заголовок</label>
+                        </span>
+
+                        <span class="ui-float-label input-wifth100">
+                          <input
+                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description"
+                            type="text"
+                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description"
+                            [(ngModel)]="getEquipmentType(equipment).description"
+                            required
+                            pInputText>
+                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description">Описание</label>
+                        </span> -->
+
+                        <p-button
+                          styleClass="ui-button-danger"
+                          icon="pi pi-times"
+                          iconPos="left"
+                          (click)="deleteCompFromModule(model, comp)">
+                        </p-button>
+                      </div>
+                    </div>
+                  </div>
                 </accordion-group>
               </accordion>
 

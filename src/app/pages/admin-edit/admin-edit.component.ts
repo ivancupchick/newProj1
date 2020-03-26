@@ -14,7 +14,11 @@ import {
   EquipmentsData,
   PresEquipmentsModule,
   HorizontalPosition as HorizontalPosition,
-  VerticalPosition
+  VerticalPosition,
+  Comp,
+  FuelEnum,
+  TransmissionEnum,
+  DrivetrainEnum
 } from 'src/app/services/marks.service';
 import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/services/attributes.service';
 import { UploadService } from 'src/app/services/upload.service';
@@ -28,6 +32,48 @@ import { FileUrlFirebase, UrlsService } from 'src/app/services/urls.service';
   styleUrls: ['./admin-edit.component.sass']
 })
 export class AdminEditComponent implements OnInit {
+  DrivetrainEnum = DrivetrainEnum;
+  drivetrainEnum = [{
+    label: 'Выберите привод',
+    value: null
+  }, {
+    label: 'Полный привод',
+    value: DrivetrainEnum.AWD
+  }, {
+    label: 'Передний привод',
+    value: DrivetrainEnum.FWD
+  }, {
+    label: 'Задний привод',
+    value: DrivetrainEnum.RWD
+  }];
+
+  TransmissionEnum = TransmissionEnum;
+  transmissionEnum = [{
+    label: 'Выберите трансмиссию',
+    value: null
+  }, {
+    label: 'Автомат',
+    value: TransmissionEnum.automatic
+  }, {
+    label: 'Ручная',
+    value: TransmissionEnum.manual
+  }];
+
+  FuelEnum = FuelEnum;
+  fuelEnum = [{
+    label: 'Выберите',
+    value: null
+  }, {
+    label: 'Дизель',
+    value: FuelEnum.diesel
+  }, {
+    label: 'Электро',
+    value: FuelEnum.electric
+  }, {
+    label: 'Бензин',
+    value: FuelEnum.petrol
+  }];
+
   PresModuleType = PresModuleType;
   presModuleType = [{
     label: 'Выберите значение',
@@ -170,11 +216,24 @@ export class AdminEditComponent implements OnInit {
     });
   }
 
-  createComp(model: Model) {
+  addCompToModel(model: Model) {
+    if (!model.comps) {
+      model.comps = [];
+    }
+
     model.comps.push({
       name: '',
-      description: ''
+      fuel: null, // enum
+      engine: '',
+      hp: '',
+      transmission: null, // enum
+      drivetrain: null, // enum
+      prise: ''
     });
+  }
+
+  deleteCompFromModule(model: Model, comp: Comp) {
+    model.comps = model.comps.filter(c => c !== comp);
   }
 
   createAttributeInModel(model: Model) {

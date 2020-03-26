@@ -12,9 +12,39 @@ export interface Attribute {
   isRequired?: boolean;
 }
 
-interface Comp { // TODO!
+export interface Comp { // TODO!
   name: string;
-  description: string;
+  fuel: FuelEnum; // enum
+  engine: string;
+  hp: string;
+  transmission: TransmissionEnum; // enum
+  drivetrain: DrivetrainEnum; // enum
+  prise: string;
+}
+
+// 1. Тип мотора (выбор бензин, дизель, Электро)
+// 2. Объём мотора, л. ( прописывается)
+// 3. Лошадиные силы, л.с. (Прописывается)
+// 4. Тип коробки передач ( выбор механика, автомат)
+// 5. Привод ( выбор полный, передний, задний)
+// 6. Комплектация (прописывается)
+// 7. Стоимость ( прописывается) - пишется в евро, а в соседнем окне подтягивается в бел рублях по курсу нбрб(с округлением до 100*)
+
+export enum FuelEnum {
+  diesel = 'diesel',
+  petrol = 'petrol',
+  electric = 'electric'
+}
+
+export enum TransmissionEnum {
+  automatic = 'automatic',
+  manual = 'manual'
+}
+
+export enum DrivetrainEnum {
+  AWD = 'AWD', // полный
+  FWD = 'FWD',
+  RWD = 'RWD'
 }
 
 export interface DesignModuleData {
