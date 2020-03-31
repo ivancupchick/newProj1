@@ -1,0 +1,76 @@
+<div class="main-content">
+  <div class="container">
+    <h3>Выберите ваш вариант финансирования на покупку автомобиля</h3>
+    <h2>Кредитный калькулятор</h2>
+
+    <div class="choice">
+      <div class="choice-field">
+        <!-- <label for="Марка"></label> -->
+        <p-dropdown
+          placeholder="Выберите марку"
+          [options]="marksDropdown"
+          [(ngModel)]="selectedMark"
+          (onChange)="changeMark()">
+        </p-dropdown>
+      </div>
+
+      <div class="choice-field">
+        <!-- <label for=""></label> -->
+        <p-dropdown
+          [disabled]="!selectedMark"
+          placeholder="Выберите модель"
+          [options]="modelDropdown"
+          [(ngModel)]="selectedModel"
+          (onChange)="changeModel()">>
+        </p-dropdown>
+      </div>
+
+      <div class="choice-field">
+        <!-- <label for=""></label> -->
+        <p-dropdown
+          [disabled]="!selectedModel"
+          placeholder="Выберите комплектацию"
+          [options]="compDropdown"
+          [(ngModel)]="selectedComp"
+          (onChange)="changeComp()">
+        </p-dropdown>
+      </div>
+    </div>
+
+    <div class="comp">
+      <div class="comp-settings">
+        <span class="comp-settings-label">Стоимость</span>
+        <span class="comp-settings-value">{{currentComp?.prise ? (currentComp.prise + ' руб.') : '25 890 руб. 00 коп.'}}</span>
+
+        <span class="comp-settings-label">Для меня важнее</span>
+        <app-slider [historyTemplate]="historyFirstTemplate"></app-slider>
+
+        <span class="comp-settings-label">Первый платеж</span>
+        <span class="comp-settings-value">{{'5 178 руб. 00 коп. (20%)'}}</span>
+        <app-slider [historyTemplate]="percentageTemplate" max="90" step="5"></app-slider>
+
+        <span class="comp-settings-label">Срок</span>
+        <span class="comp-settings-value">{{'114 месяцев'}}</span>
+        <app-slider [historyTemplate]="periodTemplate" max="120" step="6"></app-slider>
+      </div>
+      <div class="comp-conditions">
+        <div *ngIf="!selectedComp else bestChoice" class="comp-conditions-not-found">
+          <!-- По заданным параметрам программ финансирования нет. Измените значения первого платежа или срока. -->
+          <span>Вы не выбрали комплектацию</span>
+        </div>
+
+        <ng-template #bestChoice>
+          <img *ngIf="currentModel" [src]="currentModel.mainPhoto.url" alt="{{currentModel.name}}">
+          <span class="comp-conditions-specialLabel">Лучший выбор</span>
+          <!-- <img *ngIf="currentModel" [src]="currentModel.mainPhoto" alt="{{currentModel.name}}"> -->
+          <span class="comp-conditions-label">Ежемесячный платеж</span>
+          <span class="comp-conditions-value">{{'201 руб.'}}</span>
+          <span class="comp-conditions-label">Переплата</span>
+          <span class="comp-conditions-value">{{'9 918 руб.'}}</span>
+        </ng-template>
+
+      </div>
+    </div>
+
+  </div>
+</div>

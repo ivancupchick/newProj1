@@ -46,7 +46,7 @@
                 (mouseenter)="registerPopover(pop, eventInitiator, popTemplate)"
                 [popover]="childRoute && childRoute.custumParams && childRoute.custumParams.models ? popTemplate : null"
                 containerClass="custom-popover-class"
-                (click)="linkTo(route, childRoute.route)"
+                (click)="linkTo(route, childRoute)"
                 class="dropdown-item"
                 #pop="bs-popover">{{childRoute.name}}</a>
 

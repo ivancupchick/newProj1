@@ -1,0 +1,92 @@
+.slider
+  margin: 15px 0
+  display: inline-block
+  position: relative
+  height: 4px
+  width: 100%
+  vertical-align: middle
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  user-select: none
+  -ms-touch-action: pan-y
+  touch-action: pan-y
+
+.slider-container
+  opacity: 1
+  left: 0
+  -webkit-box-sizing: border-box
+  box-sizing: border-box
+  margin-top: -16px
+  padding-top: 16px
+  width: 100%
+  height: 32px
+  z-index: 1
+  white-space: nowrap
+  position: absolute
+  display: inline-block
+  user-select: none
+
+.slider-range
+  left: 0
+  width: 100%
+  height: 4px
+  z-index: 1
+  background: #d8e0f3
+  border-radius: 2px
+  white-space: nowrap
+  position: absolute
+  display: inline-block
+
+.slider-thumb
+  opacity: 1
+  visibility: visible
+  cursor: pointer
+  width: 32px
+  height: 32px
+  top: -14px
+  background-color: #0db9f0
+  z-index: 3
+  border-radius: 16px
+  white-space: nowrap
+  position: absolute
+  display: inline-block
+
+.slider-thumb:after
+  content: ''
+  width: 8px
+  height: 8px
+  position: absolute
+  top: 12px
+  left: 12px
+  border-radius: 4px
+  background: #fff
+
+.slider-thumb:active:after
+  content: ''
+  width: 8px
+  height: 8px
+  position: absolute
+  top: 12px
+  left: 12px
+  border-radius: 4px
+  background: #451aff
+
+.slider-thumb:focus:after
+  content: ''
+  width: 8px
+  height: 8px
+  position: absolute
+  top: 12px
+  left: 12px
+  border-radius: 4px
+  background: #451aff
+
+
+.ticks
+  display: flex
+  justify-content: space-between
+
+  &-item
+    color: #808890
+    cursor: pointer

@@ -639,64 +639,16 @@
                           required>
                         </p-dropdown>
 
-                        <!-- <span class="ui-float-label input-wifth100"> -->
-                          <!-- <input
-                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name"
-                            type="text"
-                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name"
-                            [(ngModel)]="comp."
-                            required
-                            pInputText>
-                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-name">Описание</label> -->
-
-                          <!-- <p-dropdown [options]="cities2" [(ngModel)]="selectedCity2" optionLabel="name"></p-dropdown>
-                        </span> -->
-                        <!-- <img
-                          style="width: 200px;"
-                          *ngIf="getEquipmentType(equipment).photo && getEquipmentType(equipment).photo.url"
-                          [src]="getEquipmentType(equipment).photo?.url"
-                          alt=""
-                          sizes=""
-                          srcset="">
-
-                        <div *ngIf="!getEquipmentType(equipment).photo || !getEquipmentType(equipment).photo.url" class="empty">
-                          <span>Тут нету фотки</span>
-                        </div>
-
-                        <div class="upload-photo">
-                          <div class="fileupload">
-                            <input
-                              class="originally"
-                              type="file"
-                              (change)="uploadPhotoToEquipmentModule($event, getEquipmentType(equipment))">
-                          </div>
-
-                          <div class="filechoise">
-                            <span>Выбрать фото</span>
-                          </div>
-                        </div>
-
                         <span class="ui-float-label input-wifth100">
                           <input
-                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title"
+                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-prise"
                             type="text"
-                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title"
-                            [(ngModel)]="getEquipmentType(equipment).title"
+                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-prise"
+                            [(ngModel)]="comp.prise"
                             required
                             pInputText>
-                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-title">Заголовок</label>
+                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-prise">Цена</label>
                         </span>
-
-                        <span class="ui-float-label input-wifth100">
-                          <input
-                            id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description"
-                            type="text"
-                            name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description"
-                            [(ngModel)]="getEquipmentType(equipment).description"
-                            required
-                            pInputText>
-                          <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-module-{{indexMM + ''}}-{{indexMMM + ''}}-description">Описание</label>
-                        </span> -->
 
                         <p-button
                           styleClass="ui-button-danger"
@@ -709,9 +661,6 @@
                   </div>
                 </accordion-group>
               </accordion>
-
-                <!-- </div>
-              </div> -->
 
               <div class="panelBar">
                 <button type="button" [disabled]="!formData.valid" class="btn btn-primary" (click)="createOrUpdateMark(contextMarkAndKey.mark)">Сохранить изменения</button>

@@ -1,0 +1,65 @@
+.main-content
+  .container
+    .choice
+      display: flex
+      justify-content: space-around
+
+      &-field
+
+    .comp
+      display: flex
+      border: 2px solid #001E50
+      padding: 20px
+      margin-top: 10px
+
+      &-settings
+        width: 63%
+        display: flex
+        flex-direction: column
+        align-items: flex-start
+        padding: 10px
+
+        &-label:first-child
+          margin-top: 0
+
+        &-label
+          font-size: 16px
+          margin-top: 20px
+
+        &-value
+          font-weight: 700
+          font-size: 25px
+
+        app-slider
+          width: 100%
+
+      &-conditions
+        width: 37%
+        background-color: #DFE4E8
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        align-items: flex-start
+        padding: 10px
+
+        &-specialLabel
+          font-weight: 700
+          font-size: 25px
+
+        &-value
+          font-size: 26px
+
+        &-label
+          font-size: 16px
+          margin-top: 10px
+
+        &-not-found
+          width: 100%
+          height: 100%
+          display: flex
+          align-items: center
+          justify-content: center
+
+        img
+          width: 100%
+          object-fit: contain

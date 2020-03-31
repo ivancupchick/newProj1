@@ -10,6 +10,8 @@ import { GuaranteeComponent } from './pages/guarantee/guarantee.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AdminEditComponent } from './pages/admin-edit/admin-edit.component';
 import { ModelPresentationComponent } from './pages/model-presentation/model-presentation.component';
+import { FinanceCalculatorComponent } from './pages/funding/finance-calculator/finance-calculator.component';
+import { FinanceConditionsComponent } from './pages/funding/finance-conditions/finance-conditions.component';
 
 
 const routes: Routes = [
@@ -21,7 +23,9 @@ const routes: Routes = [
   { path: 'contacts', component: ContactsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'admin-edit', component: AdminEditComponent },
-  { path: 'model-presentation', component: ModelPresentationComponent }
+  { path: 'model-presentation', component: ModelPresentationComponent },
+  { path: 'finance-calculator', component: FinanceCalculatorComponent },
+  { path: 'finance-conditions', component: FinanceConditionsComponent }
 ];
 
 @NgModule({

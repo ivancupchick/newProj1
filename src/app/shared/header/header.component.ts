@@ -38,45 +38,45 @@ function composedPath(el: Element): HTMLElement[] {
     }
 }
 
-function eventInTarget(event: MouseEvent, targetRef: TemplateRef<any> | HTMLElement): boolean {
-  const target: Element = !(targetRef instanceof TemplateRef)
-    ? targetRef
-    : (targetRef.elementRef.nativeElement as Comment).nextElementSibling;
+// function eventInTarget(event: MouseEvent, targetRef: TemplateRef<any> | HTMLElement): boolean {
+//   const target: Element = !(targetRef instanceof TemplateRef)
+//     ? targetRef
+//     : (targetRef.elementRef.nativeElement as Comment).nextElementSibling;
 
-  const targetRect = target && target.getBoundingClientRect ? target.getBoundingClientRect() : null;
+//   const targetRect = target && target.getBoundingClientRect ? target.getBoundingClientRect() : null;
 
-  if (!targetRect) {
-    return false;
-  }
+//   if (!targetRect) {
+//     return false;
+//   }
 
-  if (event.pageX >= targetRect.left && event.pageX <= targetRect.right &&
-      event.pageY >= targetRect.top && event.pageY <= targetRect.bottom) {
-    let isEventInTarget = false;
+//   if (event.pageX >= targetRect.left && event.pageX <= targetRect.right &&
+//       event.pageY >= targetRect.top && event.pageY <= targetRect.bottom) {
+//     let isEventInTarget = false;
 
-    const parents = getParentsOfTarget(event);
+//     const parents = getParentsOfTarget(event);
 
-    if (!parents) {
-      return false;
-    }
+//     if (!parents) {
+//       return false;
+//     }
 
-    parents.find((item: HTMLElement) => {
-      if (!item || item === document.body) {
-        return true;
-      }
+//     parents.find((item: HTMLElement) => {
+//       if (!item || item === document.body) {
+//         return true;
+//       }
 
-      if (!!item && (target === item)) {
-        isEventInTarget = true;
-        return true;
-      } else {
-        return false;
-      }
-    });
+//       if (!!item && (target === item)) {
+//         isEventInTarget = true;
+//         return true;
+//       } else {
+//         return false;
+//       }
+//     });
 
-    return !!isEventInTarget;
-  } else {
-    return false;
-  }
-}
+//     return !!isEventInTarget;
+//   } else {
+//     return false;
+//   }
+// }
 
 interface CustomRoute {
   name: string;
@@ -117,8 +117,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       active: false,
       route: 'funding',
       items: [
-        { name: 'Условия', active: false, route: 'conditions' },
-        { name: 'Расчет', active: false, route: 'calculations' }
+        { name: 'Условия', active: false, route: 'finance-conditions' },
+        { name: 'Расчет', active: false, route: 'finance-calculator' }
       ]
     }, {
       name: 'Трейд-ин', active: false, route: 'trade-in'
@@ -286,7 +286,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   linkTo(...routes: CustomRoute[]) {
     let url: string = routes[0].route;
     if (routes.length > 1) {
-      url += `?type=${routes.filter((v, i) => i !== 0).join(',')}`;
+      if (routes[0].route === 'funding') {
+        url = routes[1].route;
+      } else {
+        url += `?type=${routes
+          .filter((v, i) => i !== 0)
+          .map(r => r.route)
+          .join(',')}`;
+      }
     }
     this.router.navigateByUrl(url);
   }

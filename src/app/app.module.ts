@@ -58,6 +58,9 @@ import { DataService } from './services/data.service';
 import { UrlsService } from './services/urls.service';
 import { UploadPhotoComponent } from './pages/admin-edit/upload-photo/upload-photo.component';
 import { CarouselComponent } from './shared/carousel/carousel.component';
+import { FinanceCalculatorComponent } from './pages/funding/finance-calculator/finance-calculator.component';
+import { FinanceConditionsComponent } from './pages/funding/finance-conditions/finance-conditions.component';
+import { SliderComponent } from './shared/slider/slider.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +81,10 @@ import { CarouselComponent } from './shared/carousel/carousel.component';
     GalleryModuleComponent,
     EquipmentModuleComponent,
     UploadPhotoComponent,
-    CarouselComponent
+    CarouselComponent,
+    FinanceCalculatorComponent,
+    FinanceConditionsComponent,
+    SliderComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

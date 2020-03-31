@@ -1,0 +1,20 @@
+<!-- <div class="divForSlider"> -->
+  <!-- <div class="divSliderContainer repayment-period-slider"> -->
+    <div #slider class="slider repayment-period-slider-input">
+      <span class="slider-container">
+        <span #range class="slider-range">
+          <span #thumb class="slider-thumb">
+          </span>
+        </span>
+      </span>
+    </div>
+
+    <div
+      *ngIf="ticks && ticks.length > 0"
+      class="ticks"
+      [ngStyle]="{'padding-left': calculatedPaddingLeft, 'padding-right': calculatedPaddingRight}"
+    >
+      <span *ngFor="let tick of ticks" (click)="setSliderValue(tick.value)" class="ticks-item">{{tick.label}}</span>
+    </div>
+  <!-- </div> -->
+<!-- </div> -->

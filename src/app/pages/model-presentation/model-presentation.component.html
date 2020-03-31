@@ -15,10 +15,11 @@
         (click)="null"
         pButton
         type="button"
-        label="Найти представителя"
+        label="Рассчитать кредит"
         icon="pi pi-search"
         iconPos="right"
-        class="ui-button-warning">
+        class="ui-button-warning"
+        disabled>
       </button>
       <button
         [disabled]="!model?.priseList?.url"
@@ -53,14 +54,14 @@
         <span>Скачать прайс-list</span>
       </button>
 
-      <button type="button" class="footer-buttons-item">
+      <button type="button" class="footer-buttons-item" disabled>
         <i class="pi pi-key"></i>
-        <span>Вторая кнопка</span>
+        <span>Рассчитать кредит</span>
       </button>
 
-      <button type="button" class="footer-buttons-item">
+      <button type="button" class="footer-buttons-item" disabled>
         <i class="pi pi-check-square"></i>
-        <span>Третья кнопка</span>
+        <span>Подать заявку</span>
       </button>
     </div>
   </div>
