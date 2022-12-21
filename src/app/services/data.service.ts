@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireObject, AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireObject } from '@angular/fire/compat/database';
 import 'firebase/database';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,8 +18,8 @@ export class DataService {
   constructor(private db: AngularFireDatabase) {
     this.dataRef = db.object('data');
     this.dataRef.valueChanges()
-      .subscribe(
-        data => this.dataBSubj.next(data),
+      .subscribe( // TODO
+        data => this.dataBSubj.next(data || {}),
         errors => console.log(errors)
       );
   }

@@ -1,8 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import { AngularFireAuth} from '@angular/fire/auth';
-import { User, auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+
+import firebase from 'firebase/compat/app';
 
 import { Observable, from, of, zip, BehaviorSubject } from 'rxjs';
 import { take, tap, concatMap, catchError, map, mergeMap } from 'rxjs/operators';
@@ -11,21 +13,26 @@ import 'firebase/database';
 // import { UserInfosService } from '../server/user-infos.service';
 // import { UserGroupsService } from '../server/user-groups.service';
 
+enum UserRole {
+  User = 'User',
+  Admin = 'Admin'
+}
+
 export interface UserInfo {
   uid: string;
-  role: 'User' | 'Admin';
+  role: UserRole;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService implements OnDestroy {
-  user: Observable<User>;
+  user: Observable<firebase.User | null>;
 
-  currentUID: string;
+  currentUID: string = '';
 
   linkUsers: AngularFireList<UserInfo>;
-  userInfo: BehaviorSubject<UserInfo> = new BehaviorSubject(null);
+  userInfo: BehaviorSubject<UserInfo | null> = new BehaviorSubject<UserInfo | null>({ uid: '', role: UserRole.User});
 
   users: UserInfo[] = [];
 
@@ -48,7 +55,7 @@ export class AuthService implements OnDestroy {
     //
   }
 
-  public getUserInfo(): Observable<UserInfo> {
+  public getUserInfo(): Observable<UserInfo | null> {
     return zip(
         this.user.pipe( take(1) ),
         this.linkUsers.valueChanges().pipe( take(1) )
@@ -79,22 +86,22 @@ export class AuthService implements OnDestroy {
     // });
   }
 
-  private pushUserInfoToDB = (credential: auth.UserCredential): Observable<boolean> => {
+  private pushUserInfoToDB = (credential: firebase.auth.UserCredential | null): Observable<boolean> => {
     if (!credential) {
-      return null;
+      return of(false);
     }
 
     return new Observable((obs) => {
         let count = true; // we can delete this
         this.users.forEach( (user: UserInfo) => { // we can delete this
-          if (user.uid === credential.user.uid) { // we can delete this
+          if (user.uid === credential.user?.uid || '') { // we can delete this
             count = false; // we can delete this
           } // we can delete this
         }); // we can delete this
         if (count) { // we can delete this
           const user: UserInfo = {
-            uid: credential.user.uid,
-            role: 'User'
+            uid: credential.user?.uid || '',
+            role: UserRole.User
           };
 
           this.linkUsers
@@ -141,7 +148,7 @@ export class AuthService implements OnDestroy {
 
   loginWithGoogle(): Observable<boolean> {
     const self = this;
-    return from(self.afAuth.signInWithPopup( new auth.GoogleAuthProvider() ))
+    return from(self.afAuth.signInWithPopup( new firebase.auth.GoogleAuthProvider() ))
       .pipe(
         catchError(err => {
           console.log(err);
@@ -189,14 +196,8 @@ export class AuthService implements OnDestroy {
   //     );
   // }
 
-  public getUserInfoFromDBWithUID(uid: string): UserInfo {
-    let userResult: UserInfo;
-    this.users.forEach(user => {
-      if (user.uid === uid) {
-        userResult = user;
-      }
-    });
-    return userResult;
+  public getUserInfoFromDBWithUID(uid: string): UserInfo | undefined {
+    return this.users.find(user => user.uid === uid);
   }
 
   public logOut(): void {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
-import 'firebase/storage';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+// import 'firebase/storage'; // TODO!
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { UrlsService } from './urls.service';
@@ -24,7 +24,7 @@ export class UploadService {
                 this.urlsService.addUrl({ url: urlObj, filePathFirebase: filePath })
                   .subscribe(
                     () => {
-                      obs.next({ loading: null, url: urlObj, filePathFirebase: filePath });
+                      obs.next({ loading: 0, url: urlObj, filePathFirebase: filePath });
                     },
                     err => obs.error(err));
               });
@@ -32,7 +32,7 @@ export class UploadService {
       ).subscribe();
 
       task.percentageChanges().subscribe(percentage => {
-        obs.next({ loading: percentage, url: null, filePathFirebase: filePath });
+        obs.next({ loading: percentage || 0, url: '', filePathFirebase: filePath });
       });
     });
   }

@@ -16,9 +16,9 @@ export class SliderComponent implements OnInit {
     this.minValue = typeof value === 'string' ? +value : value;
   }
 
-  @ViewChild('slider', { static: true }) slider: ElementRef;
-  @ViewChild('range', { static: true }) range: ElementRef;
-  @ViewChild('thumb', { static: true }) thumb: ElementRef;
+  @ViewChild('slider', { static: true }) slider!: ElementRef;
+  @ViewChild('range', { static: true }) range!: ElementRef;
+  @ViewChild('thumb', { static: true }) thumb!: ElementRef;
 
   @Output() changeValue: EventEmitter<number> = new EventEmitter<number>();
 
@@ -35,7 +35,7 @@ export class SliderComponent implements OnInit {
   private minRectValue = 0;
   private maxRectValue = 0;
 
-  @Input() historyTemplate: (num: number) => string;
+  @Input() historyTemplate!: (num: number) => string;
 
   constructor(private renderer: Renderer2) { }
 
@@ -152,7 +152,7 @@ export class SliderComponent implements OnInit {
     thumb.addEventListener('mousedown', dragStart);
     thumb.addEventListener('touchstart', dragStart);
 
-    slider.addEventListener('click', (event) => {
+    slider.addEventListener('click', (event: MouseEvent) => {
       const x = event.pageX - range.getBoundingClientRect().left;
 
       this.moveThumbToPostion(x - (thumbWidth / 2), stepInPx);

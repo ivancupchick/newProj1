@@ -13,10 +13,10 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFireStorageModule } from '@angular/fire/storage';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+
 
 import { ChipsModule } from 'primeng/chips';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -48,6 +48,8 @@ import { AdminEditComponent } from './pages/admin-edit/admin-edit.component';
 import { MarksService } from './services/marks.service';
 import 'firebase/database';
 import 'firebase/storage';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+
 import { UploadService } from './services/upload.service';
 import { ModelsGridComponent } from './shared/models-grid/models-grid.component';
 import { ModelPresentationComponent } from './pages/model-presentation/model-presentation.component';
@@ -61,6 +63,7 @@ import { CarouselComponent } from './shared/carousel/carousel.component';
 import { FinanceCalculatorComponent } from './pages/funding/finance-calculator/finance-calculator.component';
 import { FinanceConditionsComponent } from './pages/funding/finance-conditions/finance-conditions.component';
 import { SliderComponent } from './shared/slider/slider.component';
+import { getStorage } from 'firebase/storage';
 
 @NgModule({
   declarations: [
@@ -87,9 +90,8 @@ import { SliderComponent } from './shared/slider/slider.component';
     SliderComponent
   ],
   imports: [
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFireDatabaseModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
     AngularFireStorageModule,
 
     BrowserModule,
@@ -125,7 +127,8 @@ import { SliderComponent } from './shared/slider/slider.component';
     MarksService,
     UploadService,
     DataService,
-    UrlsService
+    UrlsService,
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebase }
   ],
   bootstrap: [AppComponent]
 })

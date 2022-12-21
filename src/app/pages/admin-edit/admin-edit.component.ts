@@ -18,7 +18,8 @@ import {
   Comp,
   FuelEnum,
   TransmissionEnum,
-  DrivetrainEnum
+  DrivetrainEnum,
+  PresGalleryModule
 } from 'src/app/services/marks.service';
 import { AttributesService, AutoAttribute, TypeAutoAttribute } from 'src/app/services/attributes.service';
 import { UploadService } from 'src/app/services/upload.service';
@@ -121,8 +122,8 @@ export class AdminEditComponent implements OnInit {
     value: TypeAutoAttribute.text
   }];
 
-  markWithKey: MarkWithKey[];
-  marks: Mark[];
+  markWithKey!: MarkWithKey[];
+  marks!: Mark[];
 
   isShowCreateMarkForm = false;
 
@@ -181,8 +182,7 @@ export class AdminEditComponent implements OnInit {
   addVariantToAttribute(attribute: Attribute) {
     const attributeObj = this.attributes.find(a => a.name === attribute.name);
 
-    attribute.variants = [{label: 'Выберите значение', value: ''}, ...attributeObj.variants
-      .map(v => ({ label: v, value: v }))];
+    attribute.variants = [{label: 'Выберите значение', value: ''}, ...( attributeObj?.variants ? attributeObj.variants.map(v => ({ label: v, value: v })) : [])];
   }
 
   createModel(mark: Mark) {
@@ -223,11 +223,11 @@ export class AdminEditComponent implements OnInit {
 
     model.comps.push({
       name: '',
-      fuel: null, // enum
+      fuel: FuelEnum.diesel, // enum
       engine: '',
       hp: '',
-      transmission: null, // enum
-      drivetrain: null, // enum
+      transmission: TransmissionEnum.automatic, // enum
+      drivetrain: DrivetrainEnum.AWD, // enum
       prise: ''
     });
   }
@@ -258,47 +258,54 @@ export class AdminEditComponent implements OnInit {
   addModuleToModelPres(model: Model, formData: NgForm) {
     const type = formData.value.type;
     formData.setValue({ type: '' });
-    const moduleData: PresModule = {
-      type,
-      data: null
-    };
-    switch (moduleData.type) {
+    let moduleData;
+
+    switch (type) {
       case PresModuleType.design:
-        moduleData.data = {
-          title: '',
-          subTitle: '',
-          descriptionTitle: '',
-          descriptionText: '',
-          photos: []
+        moduleData = {
+          type,
+          data: {
+            title: '',
+            subTitle: '',
+            descriptionTitle: '',
+            descriptionText: '',
+            photos: []
+          }
         };
         break;
       case PresModuleType.gallery:
-        moduleData.data = {
-          title: '',
-          subTitle: '',
-          photos: []
+        moduleData = {
+          type,
+          data: {
+            title: '',
+            subTitle: '',
+            photos: []
+          }
         };
         break;
       case PresModuleType.equipment:
-        moduleData.data = {
-          title: '',
-          subTitle: '',
-          subSubTitle: '',
-          equipments: [{
+        moduleData = {
+          type,
+          data: {
             title: '',
-            description: '',
-            photo: {
-              url: '',
-              filePathFirebase: ''
-            }
-          }, {
-            title: '',
-            description: '',
-            photo: {
-              url: '',
-              filePathFirebase: ''
-            }
-          }]
+            subTitle: '',
+            subSubTitle: '',
+            equipments: [{
+              title: '',
+              description: '',
+              photo: {
+                url: '',
+                filePathFirebase: ''
+              }
+            }, {
+              title: '',
+              description: '',
+              photo: {
+                url: '',
+                filePathFirebase: ''
+              }
+            }]
+          }
         };
         break;
     }
@@ -307,7 +314,9 @@ export class AdminEditComponent implements OnInit {
       model.modulesInPres = [];
     }
 
-    model.modulesInPres.push(moduleData);
+    if (moduleData) {
+      model.modulesInPres.push(moduleData);
+    }
   }
 
   addNullToArray(data: any[] | null): any[] {
@@ -317,13 +326,16 @@ export class AdminEditComponent implements OnInit {
     return [null, ...data];
   }
 
-  deletePhotosFormDesignModule(presModule: PresDesignModule, photo: FileUrlFirebase) {
+  deletePhotosFormDesignModule(presModule: PresDesignModule | PresGalleryModule, photo: FileUrlFirebase) {
     presModule.data.photos = presModule.data.photos.filter(p => p !== photo);
   }
 
-  uploadPhotoToGalleryOrDesignModule(event: DragEvent, modulee: PresDesignModule) {
-    const file = (event.target as HTMLInputElement).files[0];
-    (event.target as HTMLInputElement).value = null;
+  uploadPhotoToGalleryOrDesignModule(event: Event | null, modulee: PresDesignModule | PresGalleryModule) {
+    if (!event) {
+      return;
+    }
+    const file = (event.target as any).files[0];
+    (event.target as any).value = null;
     this.uploadService.uploadPhoto(file, `uploadModulePhotos/${file.name}`)
       .subscribe(res => {
         if (res.url) {
@@ -339,7 +351,7 @@ export class AdminEditComponent implements OnInit {
       });
   }
 
-  uploadMainPhotoForModel(photo: FileUrlFirebase, model: Model) {
+  uploadMainPhotoForModel(photo: FileUrlFirebase | null, model: Model) {
     if (!photo) {
       return;
     }
@@ -359,7 +371,7 @@ export class AdminEditComponent implements OnInit {
     }
   }
 
-  uploadMainPresenPhotoForModel(photo: FileUrlFirebase, model: Model) {
+  uploadMainPresenPhotoForModel(photo: FileUrlFirebase | null, model: Model) {
     if (!photo) {
       return;
     }
@@ -461,9 +473,9 @@ export class AdminEditComponent implements OnInit {
     return data as EquipmentsData;
   }
 
-  uploadPhotoToEquipmentModule(event: DragEvent, equipment: EquipmentsData) {
-    const file = (event.target as HTMLInputElement).files[0];
-    (event.target as HTMLInputElement).value = null;
+  uploadPhotoToEquipmentModule(event: Event, equipment: EquipmentsData) {
+    const file = (event.target as any).files[0];
+    (event.target as any).value = null;
     this.uploadService.uploadPhoto(file, `uploadModulePhotos/${file.name}`)
       .subscribe(res => {
         if (res.url) {

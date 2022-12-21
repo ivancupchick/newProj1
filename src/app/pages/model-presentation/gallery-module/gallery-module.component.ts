@@ -7,7 +7,7 @@ import { GalleryModuleData } from 'src/app/services/marks.service';
   styleUrls: ['./gallery-module.component.sass']
 })
 export class GalleryModuleComponent implements OnInit {
-  @Input() moduleData: GalleryModuleData;
+  @Input() moduleData!: GalleryModuleData;
 
   constructor() { }
 

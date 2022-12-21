@@ -20,7 +20,7 @@ interface TopSlide {
   styleUrls: ['./main.component.sass']
 })
 export class MainComponent implements OnInit {
-  marks: Mark[];
+  marks: Mark[] = [];
 
   topSliders: TopSlide[] = [{
     image: {
@@ -56,7 +56,7 @@ export class MainComponent implements OnInit {
     title: 'Хэтчбэки', models: []
   }];
 
-  markTabs: ModelsTab[];
+  markTabs: ModelsTab[] = [];
 
   constructor(private marksService: MarksService, private router: Router) { }
 
@@ -77,7 +77,9 @@ export class MainComponent implements OnInit {
 
         const pushModel = (title: string) => {
           const tab = this.tabs.find(t => t.title === title);
-          tab.models.push(model);
+          if (tab) {
+            tab.models.push(model);
+          }
         };
 
         switch (typeValue) {

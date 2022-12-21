@@ -9,22 +9,22 @@ import { Mark, Model, MarksService, PresModule, PresModuleType } from 'src/app/s
 })
 export class ModelPresentationComponent implements OnInit {
   PresModuleType = PresModuleType;
-  mark: Mark;
-  model: Model;
-  price: string;
+  mark!: Mark;
+  model!: Model;
+  price!: string;
 
-  objectPosition: 'center';
+  objectPosition!: 'center';
 
-  modules: PresModule[];
+  modules!: PresModule[];
 
-  @ViewChild('image', { static: true }) imageRef: ElementRef;
+  @ViewChild('image', { static: true }) imageRef!: ElementRef;
 
   constructor(private route: ActivatedRoute, private marksService: MarksService, private renderer: Renderer2) { }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
-      const markId = +params.get('idMark');
-      const modelId = +params.get('idModel');
+      const markId = +(params.get('idMark') || 0);
+      const modelId = +(params.get('idModel') || 0);
       if (markId === undefined || Number.isNaN(markId)) {
         return;
       }
@@ -38,9 +38,10 @@ export class ModelPresentationComponent implements OnInit {
         }
 
         const marks = marksWithKey.map(m => m.mark);
-        this.mark = marks.find((m, i) => i === markId);
 
-        this.model = this.mark.models.find((m, i) => i === modelId);
+        this.mark = marks.find((m, i) => i === markId) || this.mark;
+
+        this.model = this.mark.models.find((m, i) => i === modelId) || this.model;
 
         this.renderer.setStyle(
           this.imageRef.nativeElement,

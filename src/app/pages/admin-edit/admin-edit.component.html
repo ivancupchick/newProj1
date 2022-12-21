@@ -49,7 +49,7 @@
                   <p-chips *ngIf="attribute?.type === TypeAutoAttribute.select" [(ngModel)]="attribute.variants" placeholder="Значения"></p-chips>
                 </td>
                 <td>
-                  <p-checkbox [(ngModel)]="attribute.isRequired" binary="true"></p-checkbox>
+                  <p-checkbox [(ngModel)]="attribute.isRequired" [binary]="true"></p-checkbox>
                 </td>
                 <td>
                   <p-button styleClass="ui-button-danger" icon="pi pi-times" iconPos="left" (click)="deleteAttribute(attribute)"></p-button>
@@ -183,7 +183,7 @@
                       [(ngModel)]="model.presPhotoHorizontalPosition"
                       id="presPhotoHorizontalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
                       name="presPhotoHorizontalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
-                      required>
+                      [required]="true">
                     </p-dropdown>
                     <label for="presPhotoVerticalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}">По вертикали </label>
                     <p-dropdown
@@ -191,7 +191,7 @@
                       [(ngModel)]="model.presPhotoVerticalPosition"
                       id="presPhotoVerticalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
                       name="presPhotoVerticalPosition-{{contextMarkAndKey.key}}-{{'' + indexM}}"
-                      required>
+                      [required]="true">
                     </p-dropdown>
                   </div>
                   <div class="model-row">
@@ -250,13 +250,13 @@
                             [options]="attribute.variants || []"
                             [(ngModel)]="attribute.value"
                             name="attribute-value-{{contextMarkAndKey.key}}-{{'' + indexM}}-{{indexMM}}"
-                            required>
+                            [required]="true">
                           </p-dropdown>
                         </div>
 
 
                         <div class="buttons">
-                          <p-button [disabled]="attribute.isRequired"  styleClass="ui-button-danger" icon="pi pi-trash" iconPos="left" (click)="deleteAttributeFromModel(model, attribute)"></p-button>
+                          <p-button [disabled]="attribute.isRequired || false"  styleClass="ui-button-danger" icon="pi pi-trash" iconPos="left" (click)="deleteAttributeFromModel(model, attribute)"></p-button>
                         </div>
 
                       </div>
@@ -283,7 +283,7 @@
                             name="type"
                             id="type"
                             ngModel
-                            required>
+                            [required]="true">
                           </p-dropdown>
                         </form>
                       </div>
@@ -490,7 +490,7 @@
                                 <img
                                   style="width: 200px;"
                                   *ngIf="getEquipmentType(equipment).photo && getEquipmentType(equipment).photo.url"
-                                  [src]="getEquipmentType(equipment).photo?.url"
+                                  [src]="getEquipmentType(equipment).photo.url"
                                   alt=""
                                   sizes=""
                                   srcset="">
@@ -596,7 +596,7 @@
                           [(ngModel)]="comp.fuel"
                           id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-fuel"
                           name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-fuel"
-                          required>
+                          [required]="true">
                         </p-dropdown>
 
                         <span class="ui-float-label input-wifth100">
@@ -627,7 +627,7 @@
                           [(ngModel)]="comp.transmission"
                           id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-transmission"
                           name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-transmission"
-                          required>
+                          [required]="true">
                         </p-dropdown>
 
                         <label for="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-drivetrain">Привод</label>
@@ -636,7 +636,7 @@
                           [(ngModel)]="comp.drivetrain"
                           id="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-drivetrain"
                           name="mark-{{contextMarkAndKey.key}}-model-{{indexM + ''}}-comp-{{indexMM + ''}}-drivetrain"
-                          required>
+                          [required]="true">
                         </p-dropdown>
 
                         <span class="ui-float-label input-wifth100">

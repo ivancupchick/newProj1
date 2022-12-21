@@ -10,25 +10,25 @@ import { HorizontalPosition, VerticalPosition } from 'src/app/services/marks.ser
 })
 export class UploadPhotoComponent implements OnInit {
   @Input() folderName = 'shared';
-  @Input() photo: FileUrlFirebase = null;
+  @Input() photo: FileUrlFirebase | null = null;
 
-  private horizontalPosition: HorizontalPosition;
+  private horizontalPosition!: HorizontalPosition;
   @Input() set horisontal(value: HorizontalPosition) {
     this.horizontalPosition = value;
 
     this.setProperties();
   }
 
-  private verticalPosition: VerticalPosition;
+  private verticalPosition!: VerticalPosition;
   @Input() set vertical(value: VerticalPosition) {
     this.verticalPosition = value;
 
     this.setProperties();
   }
 
-  @ViewChild('image', { static: true }) imageRef: ElementRef;
+  @ViewChild('image', { static: true }) imageRef!: ElementRef;
 
-  @Output() upload: EventEmitter<FileUrlFirebase> = new EventEmitter<FileUrlFirebase>();
+  @Output() upload: EventEmitter<FileUrlFirebase | null> = new EventEmitter<FileUrlFirebase | null>();
   @Output() delete: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private uploadService: UploadService, private rootElem: ElementRef, private renderer: Renderer2) { }
@@ -70,10 +70,10 @@ export class UploadPhotoComponent implements OnInit {
       });
   }
 
-  choosePhoto(event) {
+  choosePhoto() {
   }
 
-  deletePhoto(event) {
+  deletePhoto() {
     this.delete.emit(true);
   }
 

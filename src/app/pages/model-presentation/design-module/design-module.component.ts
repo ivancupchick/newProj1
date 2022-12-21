@@ -7,7 +7,7 @@ import { DesignModuleData } from 'src/app/services/marks.service';
   styleUrls: ['./design-module.component.sass']
 })
 export class DesignModuleComponent implements OnInit {
-  @Input() moduleData: DesignModuleData;
+  @Input() moduleData!: DesignModuleData;
 
   constructor() { }
 
