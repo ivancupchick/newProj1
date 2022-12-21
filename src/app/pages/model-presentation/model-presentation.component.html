@@ -1,6 +1,6 @@
 <div class="main-content">
   <div class="main-photo">
-    <img #image [src]="model?.mainPresenPhoto?.url" alt="">
+    <img #image [src]="model.mainPresenPhoto.url" alt="">
   </div>
   <div class="main-toolbar">
     <div class="main-toolbar-price">
@@ -22,7 +22,7 @@
         disabled>
       </button>
       <button
-        [disabled]="!model?.priseList?.url"
+        [disabled]="!model.priseList.url"
         (click)="openInNewTab(model.priseList.url)"
         pButton
         type="button"
@@ -42,12 +42,12 @@
     </div>
   </div>
   <div class="footer">
-    <h3 class="footer-title">Готов испытать <span class="footer-title-markName">{{mark?.name}}</span>&nbsp;<span class="footer-title-modelName">{{model?.name}}</span></h3>
+    <h3 class="footer-title">Готов испытать <span class="footer-title-markName">{{mark.name}}</span>&nbsp;<span class="footer-title-modelName">{{model.name}}</span></h3>
     <div class="footer-buttons">
       <button
         type="button"
         class="footer-buttons-item"
-        [disabled]="!model?.priseList?.url"
+        [disabled]="!model.priseList.url"
         (click)="openInNewTab(model.priseList.url)"
       >
         <i class="pi pi-download"></i>

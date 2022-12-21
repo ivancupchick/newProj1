@@ -1,12 +1,12 @@
 <div
   class="wrapper"
   [ngClass]="{
-    'model1': models?.length < 2,
-    'model2': models?.length === 2 || (models?.length > 2 && !isAvailableModel3),
-    'model3': (models?.length === 3 || (models?.length > 3 && !isAvailableModel4)) && isAvailableModel3,
-    'model4': models?.length > 3 && isAvailableModel4 && isAvailableModel3 }"
+    'model1': models.length < 2,
+    'model2': models.length === 2 || (models.length > 2 && !isAvailableModel3),
+    'model3': (models.length === 3 || (models.length > 3 && !isAvailableModel4)) && isAvailableModel3,
+    'model4': models.length > 3 && isAvailableModel4 && isAvailableModel3 }"
 >
-  <ng-container *ngIf="models?.length > 0">
+  <ng-container *ngIf="models.length > 0">
     <div class="wrapper-model" *ngFor="let model of models" (click)="selectModel(model)">
       <div class="wrapper-model-image">
         <img [src]="model.mainPhoto.url" [alt]="model.name">

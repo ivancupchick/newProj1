@@ -8,11 +8,11 @@ import { Component, OnInit, ElementRef, ViewChild, Renderer2, Input, ContentChil
 export class CarouselComponent implements OnInit {
   currentSlideIndex = 0;
 
-  @Input() items: any[];
+  @Input() items!: any[];
 
-  @ContentChild(TemplateRef) template: TemplateRef<any>;
+  @ContentChild(TemplateRef) template!: TemplateRef<any>;
 
-  @ViewChild('carouselRef', { read: ElementRef }) carouselRef: ElementRef;
+  @ViewChild('carouselRef', { read: ElementRef }) carouselRef!: ElementRef;
 
   constructor(private renderer: Renderer2) { }
 
@@ -20,7 +20,7 @@ export class CarouselComponent implements OnInit {
     this.currentSlideIndex = this.items.length - 2;
   }
 
-  activeSlideChange(slideIndex) {
+  activeSlideChange(slideIndex: number) {
     if (!this.carouselRef || !this.carouselRef.nativeElement) {
       return;
     }

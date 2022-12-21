@@ -44,7 +44,7 @@
             <li #eventInitiator *ngFor="let childRoute of route.items">
               <a placement="right"
                 (mouseenter)="registerPopover(pop, eventInitiator, popTemplate)"
-                [popover]="childRoute && childRoute.custumParams && childRoute.custumParams.models ? popTemplate : null"
+                [popover]="childRoute && childRoute.custumParams && childRoute.custumParams.models ? popTemplate : undefined"
                 containerClass="custom-popover-class"
                 (click)="linkTo(route, childRoute)"
                 class="dropdown-item"

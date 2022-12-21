@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { BehaviorSubject, Observable } from 'rxjs';
 import 'firebase/database';
 import { map } from 'rxjs/operators';
@@ -140,8 +140,8 @@ export interface MarkWithKey {
 })
 export class MarksService {
   private marksRef: AngularFireList<Mark>;
-  marks: BehaviorSubject<Mark[]> = new BehaviorSubject([]);
-  marksWithKeys: BehaviorSubject<MarkWithKey[]> = new BehaviorSubject([]);
+  marks: BehaviorSubject<Mark[]> = new BehaviorSubject<Mark[]>([]);
+  marksWithKeys: BehaviorSubject<MarkWithKey[]> = new BehaviorSubject<MarkWithKey[]>([]);
 
   constructor(private db: AngularFireDatabase) {
     this.marksRef = db.list('marks');
@@ -155,7 +155,7 @@ export class MarksService {
       .pipe(
         map(m => {
           m.forEach(mm => {
-            mm.payload.val().models.forEach(mmm => {
+            mm.payload.val()?.models.forEach(mmm => {
               if ((mmm as any).mainPhotoPosition) {
                 mmm.presPhotoHorizontalPosition = (mmm as any).mainPhotoPosition;
                 delete (mmm as any).mainPhotoPosition;
@@ -175,7 +175,7 @@ export class MarksService {
       .subscribe(changes => {
         const value: MarkWithKey[] = !changes
           ? []
-          : changes.map(c => ({ mark: c.payload.val(), key: c.payload.key }));
+          : changes.map(c => ({ mark: c.payload.val() || {} as Mark, key: c.payload.key || '' })); // TODO!
 
         this.marksWithKeys.next(value);
 

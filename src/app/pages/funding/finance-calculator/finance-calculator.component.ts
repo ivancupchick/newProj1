@@ -11,28 +11,28 @@ import { SelectItem } from 'primeng/api/selectitem';
   styleUrls: ['./finance-calculator.component.sass']
 })
 export class FinanceCalculatorComponent implements OnInit {
-  marksDropdown: SelectItem[];
-  selectedMark: string = null;
+  marksDropdown!: SelectItem[];
+  selectedMark: string = '';
 
-  modelDropdown: SelectItem[];
-  selectedModel: string = null;
+  modelDropdown!: SelectItem[];
+  selectedModel: string = '';
 
-  compDropdown: SelectItem[];
-  selectedComp: string = null;
+  compDropdown!: SelectItem[];
+  selectedComp: string = '';
 
-  currentMark: Mark;
-  currentModel: Model;
-  currentComp: Comp;
+  currentMark!: Mark;
+  currentModel!: Model;
+  currentComp!: Comp;
 
-  allMarks: Mark[];
+  allMarks!: Mark[];
 
   constructor(private route: ActivatedRoute, private marksService: MarksService) { }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
-      const markId = +params.get('mark');
-      const modelId = +params.get('model');
-      const compId = +params.get('comp');
+      const markId = +(params.get('mark') || 0);
+      const modelId = +(params.get('model') || 0);
+      const compId = +(params.get('comp') || 0);
 
       if (markId) {
 
@@ -88,7 +88,7 @@ export class FinanceCalculatorComponent implements OnInit {
   }
 
   changeMark() {
-    const selectedMark: Mark = this.allMarks.find(m => m.name === this.selectedMark);
+    const selectedMark = this.allMarks.find(m => m.name === this.selectedMark);
 
     if (selectedMark && selectedMark.models) {
       this.currentMark = selectedMark;
@@ -97,7 +97,7 @@ export class FinanceCalculatorComponent implements OnInit {
   }
 
   changeModel() {
-    const selectedModel: Model = this.currentMark.models.find(m => m.name === this.selectedModel);
+    const selectedModel = this.currentMark.models.find(m => m.name === this.selectedModel);
 
     if (selectedModel && selectedModel.comps) {
       this.currentModel = selectedModel;
@@ -106,7 +106,7 @@ export class FinanceCalculatorComponent implements OnInit {
   }
 
   changeComp() {
-    const selectedComp: Comp = this.currentModel.comps.find(m => m.name === this.selectedComp);
+    const selectedComp = this.currentModel.comps.find(m => m.name === this.selectedComp);
 
     if (selectedComp) {
       this.currentComp = selectedComp;

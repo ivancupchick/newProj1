@@ -23,7 +23,7 @@ export interface AutoAttribute {
 })
 export class AttributesService {
   nameOfData = 'attributes';
-  attributes: BehaviorSubject<AutoAttribute[]> = new BehaviorSubject([]);
+  attributes: BehaviorSubject<AutoAttribute[]> = new BehaviorSubject<AutoAttribute[]>([]);
 
   constructor(private dataService: DataService) {
     dataService.getData(this.nameOfData)

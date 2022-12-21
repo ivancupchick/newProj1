@@ -8,7 +8,7 @@ import { Model } from 'src/app/services/marks.service';
 })
 export class ModelsGridComponent implements OnInit {
   @Input() inHeader = false;
-  @Input() models: Model[];
+  @Input() models: Model[] = [];
 
   isAvailableModel4 = true;
   isAvailableModel3 = true;

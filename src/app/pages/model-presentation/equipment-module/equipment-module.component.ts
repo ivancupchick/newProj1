@@ -7,7 +7,7 @@ import { EquipmentsModuleData } from 'src/app/services/marks.service';
   styleUrls: ['./equipment-module.component.sass']
 })
 export class EquipmentModuleComponent implements OnInit {
-  @Input() moduleData: EquipmentsModuleData;
+  @Input() moduleData!: EquipmentsModuleData;
 
   constructor() { }
 

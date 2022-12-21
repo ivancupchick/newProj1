@@ -9,7 +9,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AuthService, UserInfo } from 'src/app/services/auth.service';
-import { User } from 'firebase';
+import firebase from 'firebase/compat/app';
 import { PopoverDirective } from 'ngx-bootstrap/popover/public_api';
 import { Model, MarksService, Mark, MarkWithKey } from 'src/app/services/marks.service';
 
@@ -21,8 +21,8 @@ function getParentsOfTarget(event: Event): HTMLElement[] {
       : composedPath(event.target as Element);
 }
 
-function composedPath(el: Element): HTMLElement[] {
-    const path = [];
+function composedPath(el: Element): (Element | Document | (Window & typeof globalThis))[] {
+    const path: (Element | Document | (Window & typeof globalThis))[] = [];
 
     while (el) {
       path.push(el);
@@ -34,8 +34,14 @@ function composedPath(el: Element): HTMLElement[] {
         return path;
       }
 
-      el = el.parentElement;
+      if (el.parentElement) {
+        el = el.parentElement;
+      } else {
+        return path;
+      }
     }
+
+    return path
 }
 
 // function eventInTarget(event: MouseEvent, targetRef: TemplateRef<any> | HTMLElement): boolean {
@@ -92,8 +98,8 @@ interface CustomRoute {
   styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
-  user: Observable<User>;
-  userInfo: BehaviorSubject<UserInfo>;
+  user: Observable<firebase.User | null> = new Observable<firebase.User | null>;
+  userInfo: BehaviorSubject<UserInfo | null> = new BehaviorSubject<UserInfo | null>(null);
 
   marks: Mark[] = [];
 
@@ -156,7 +162,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
       const routeNewCars = this.routes.find(r => r.route === 'new-cars');
 
-      routeNewCars.items.forEach(route => {
+      if (!routeNewCars) {
+        return;
+      }
+
+      routeNewCars.items?.forEach(route => {
         if (route && route.custumParams && route.custumParams.models) {
           route.custumParams.models = [];
         }
@@ -167,7 +177,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
         const typeValue = type ? type.value : null;
 
         const pushModel = (path: string) => {
-          const route = routeNewCars.items.find(r => r.route === path);
+          const route = routeNewCars.items?.find(r => r.route === path);
           if (route && route.custumParams && route.custumParams.models) {
             route.custumParams.models.push(model);
           }
@@ -219,7 +229,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
           this.authService.getUserInfo();
         });
       this.authService.getUserInfo();
-      this.userInfo = this.authService.userInfo;
+      this.authService.userInfo.subscribe(info => {
+        this.userInfo.next(info);
+      })
+      this.userInfo.next(this.authService.userInfo.getValue());
     });
     // console.log(this.router.url);
     // // this.route. .url.subscribe(res => console.log(...res));
